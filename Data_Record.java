@@ -36,7 +36,7 @@ public abstract class Data_Record
 	public abstract void update(String s);
 
 
-	public abstract void search(String primaryKey);
+	public abstract void search(String s);
 
 	//public abstract void searchByName(String name);
 
