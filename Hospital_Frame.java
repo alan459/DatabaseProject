@@ -1,18 +1,21 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class Hospital_Frame extends JFrame 
 {
 	public static final int WIDTH = 500;
-	public static final int HEIGHT = 500;
+	public static final int HEIGHT = 400;
+
+	private JPanel currentScreen;
 
 	public Hospital_Frame() 
 	{
 		setTitle("Hospital");
 		setSize(WIDTH, HEIGHT);
-		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+		setLocationRelativeTo(null);	// center the window
+		
 		createMainWindow();
 
 		setVisible(true);
@@ -24,7 +27,7 @@ public class Hospital_Frame extends JFrame
 	**/
 	public void createMainWindow()
 	{
-		add(new Main_Menu_Panel());
+		add(currentScreen = new Main_Menu_Panel());
 	}
 
 
@@ -46,6 +49,37 @@ public class Hospital_Frame extends JFrame
 		return "";
 	}
 
+	public void getPatientMenu()
+	{
+		remove(currentScreen);
+
+		add(new Patient_Menu_Panel()); 
+
+		revalidate();
+		repaint();
+	}
+
+
+	public void getDoctorMenu()
+	{
+		remove(currentScreen);
+
+		add(new Patient_Menu_Panel()); 
+
+		revalidate();
+		repaint();
+	}
+
+
+	public void getNurseMenu()
+	{
+		remove(currentScreen);
+
+		add(new Patient_Menu_Panel()); 
+
+		revalidate();
+		repaint();
+	}
 
 	private class Main_Menu_Panel extends JPanel 
 	{
@@ -55,15 +89,75 @@ public class Hospital_Frame extends JFrame
 
 		public Main_Menu_Panel() 
 		{
-			recordSearchLabel = new JLabel("RECORD Search");
+			recordSearchLabel = new JLabel("Record Search");
+
 			patientButton = new JButton("Patient");
 			doctorButton = new JButton("Doctor");
 			nurseButton = new JButton("Nurse");
 
-			this.add(recordSearchLabel);
+			patientButton.addActionListener(new ActionListener()
+			{
+			  public void actionPerformed(ActionEvent e)
+			  {
+			    getPatientMenu();			    
+			  }
+			});
+
+			doctorButton.addActionListener(new ActionListener()
+			{
+			  public void actionPerformed(ActionEvent e)
+			  {
+			    //getPatientMenu();			    
+			  }
+			});
+
+			nurseButton.addActionListener(new ActionListener()
+			{
+			  public void actionPerformed(ActionEvent e)
+			  {
+			    //getPatientMenu();			    
+			  }
+			});
+
+
+			add(recordSearchLabel);
 			add(patientButton);
 			add(doctorButton);
 			add(nurseButton);
+
+		}
+	}
+
+
+	private class Patient_Menu_Panel extends JPanel 
+	{
+
+		private JButton ssnLookupButton, infoLookupButton, recordLookupButton;
+		private JLabel patientLookupLabel, recordLookupLabel;
+
+		public Patient_Menu_Panel() 
+		{
+			patientLookupLabel = new JLabel("Patient Lookup");
+			recordLookupLabel = new JLabel("Record Lookup");
+
+			ssnLookupButton = new JButton("Submit");
+			infoLookupButton = new JButton("Submit");
+			recordLookupButton = new JButton("Submit");
+
+			ssnLookupButton.addActionListener(new ActionListener()
+			{
+			  public void actionPerformed(ActionEvent e)
+			  {
+			    		    
+			  }
+			});
+
+
+			add(patientLookupLabel);
+			add(recordLookupLabel);
+			add(ssnLookupButton);
+			add(infoLookupButton);
+			add(recordLookupButton);
 
 		}
 	}
