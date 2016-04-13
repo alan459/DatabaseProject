@@ -1,3 +1,3 @@
 # DatabaseProject
 
-Need to know which methodgets passed a patient ssn and returns a string containing the data and the format of that data. 
+Need to layout a mechanism for which the GUI sends a patient ssn to the backend and gets the data to display.
