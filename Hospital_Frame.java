@@ -3,17 +3,19 @@ import java.awt.*;
 
 public class Hospital_Frame extends JFrame 
 {
-	public static final int WIDTH = 300;
-	public static final int HEIGHT = 300;
+	public static final int WIDTH = 500;
+	public static final int HEIGHT = 500;
 
 	public Hospital_Frame() 
 	{
 		setTitle("Hospital");
 		setSize(WIDTH, HEIGHT);
-		setVisible(true);
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		createMainWindow();
+
+		setVisible(true);
 	}
 
 
@@ -58,7 +60,7 @@ public class Hospital_Frame extends JFrame
 			doctorButton = new JButton("Doctor");
 			nurseButton = new JButton("Nurse");
 
-			add(recordSearchLabel);
+			this.add(recordSearchLabel);
 			add(patientButton);
 			add(doctorButton);
 			add(nurseButton);
