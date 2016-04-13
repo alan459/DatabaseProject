@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+/***************************************************************************************************************
+* An interactive interface to interact with a hospital database.
+***************************************************************************************************************/
 public class Hospital_Frame extends JFrame 
 {
 	public static final int WIDTH = 500;
@@ -324,7 +328,7 @@ public class Hospital_Frame extends JFrame
 		*********************************************************************************/
 		private void displayPatientData(String data)
 		{
-			
+
 		}
 
 	}
