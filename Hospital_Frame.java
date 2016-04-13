@@ -9,6 +9,9 @@ public class Hospital_Frame extends JFrame
 
 	private JPanel currentScreen;
 
+	/*****************************************************************************************************
+	* Main constructor to initialize the frame.
+	*****************************************************************************************************/
 	public Hospital_Frame() 
 	{
 		setTitle("Hospital");
@@ -22,37 +25,37 @@ public class Hospital_Frame extends JFrame
 	}
 
 
-	/**
-	* Creates a jpanel with the frames displaying the main window options/menu and sets it as the main screen.
-	**/
+	/*****************************************************************************************************
+	* Creates a jpanel with the frame displaying the main menu options and sets it as the main screen.
+	*****************************************************************************************************/
 	public void createMainWindow()
 	{
 		add(currentScreen = new Main_Menu_Panel());
 	}
 
 
-	/**
+	/*****************************************************************************************************
 	* Fetches the data in the data fields and returns them in a tab-delimited string.
 	* (and checks for correct formatting?)
-	**/
+	*****************************************************************************************************/
 	public String getDataFields() 
 	{
 		return "";
 	}
 
 
-	/**
+	/*****************************************************************************************************
 	* Gets and returns the selected relation in the drop down menu
-	**/
+	*****************************************************************************************************/
 	public String getDataType() 
 	{
 		return "";
 	}
 
 
-	/**
+	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the main menu.
-	**/
+	*****************************************************************************************************/
 	public void getMainMenu()
 	{
 		remove(currentScreen);
@@ -65,9 +68,9 @@ public class Hospital_Frame extends JFrame
 	}
 
 
-	/**
+	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the patient menu.
-	**/
+	*****************************************************************************************************/
 	public void getPatientMenu()
 	{
 		remove(currentScreen);
@@ -78,9 +81,9 @@ public class Hospital_Frame extends JFrame
 		repaint();
 	}
 
-	/**
+	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the doctor menu.
-	**/
+	*****************************************************************************************************/
 	public void getDoctorMenu()
 	{
 		remove(currentScreen);
@@ -93,9 +96,9 @@ public class Hospital_Frame extends JFrame
 	}
 
 
-	/**
+	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the nurse menu.
-	**/
+	*****************************************************************************************************/
 	public void getNurseMenu()
 	{
 		remove(currentScreen);
@@ -108,15 +111,21 @@ public class Hospital_Frame extends JFrame
 	}
 
 
-	/**
+	/*****************************************************************************************************
 	* Represents an instance of a main menu to display on the JFrame.
-	**/
+	*****************************************************************************************************/
 	private class Main_Menu_Panel extends JPanel 
 	{
-
+		/* Buttons to select which type of entity the user is interested in */
 		private JButton patientButton, doctorButton, nurseButton;
+
+		/* Displays to the user some information as to where clicking the buttons will take them */
 		private JLabel recordSearchLabel;
 
+
+		/*********************************************************************************
+		* Main constructor used when creating a main menu.
+		*********************************************************************************/
 		public Main_Menu_Panel() 
 		{
 			intializeLabels();
@@ -133,11 +142,18 @@ public class Hospital_Frame extends JFrame
 		}
 
 
+		/*********************************************************************************
+		* Initialize the labels for the main menu.
+		*********************************************************************************/
 		private void intializeLabels()
 		{
 			recordSearchLabel = new JLabel("Record Search");
 		}
 
+
+		/*********************************************************************************
+		* Initialize the buttons for the main menu.
+		*********************************************************************************/
 		private void initializeButtons()
 		{
 			patientButton = new JButton("Patient");
@@ -145,6 +161,10 @@ public class Hospital_Frame extends JFrame
 			nurseButton = new JButton("Nurse");
 		}
 
+		
+		/*********************************************************************************
+		* Adds the action listeners for the main menu.
+		*********************************************************************************/
 		private void addActionListeners()
 		{
 			patientButton.addActionListener(new ActionListener()
@@ -174,15 +194,30 @@ public class Hospital_Frame extends JFrame
 
 	}
 
-
+	/*****************************************************************************************************
+	* Represents an instance of a patient menu to display on the JFrame.
+	*****************************************************************************************************/
 	private class Patient_Menu_Panel extends JPanel 
 	{
-		private JButton ssnLookupButton, infoLookupButton, recordLookupButton, mainMenuButton;
-		private JLabel patientLookupLabel, recordLookupLabel;
-		private JLabel enterSSNLabel;
-		private JTextField ssnLookupInput;
+		/* Input submission buttons */
+		private JButton ssnLookupButton, infoLookupButton, recordLookupButton, mainMenuButton;	
+
+		/* Main labels for the options on this screen - largest text blocks */
+		private JLabel patientLookupLabel, recordLookupLabel;	
+
+		/* Display to the user what type of information is being displayed in the adjacent position */
+		private JLabel enterSSNLabel, patientInfoLabel;	
+
+		/* Labels for displaying output data */
+		private JLabel patientNameOutputLabel, patientSSNOutputLabel, patientDOBOutputLabel;
+
+		/* Fields for getting input from the user */
+		private JTextField ssnLookupInput;	
 
 
+		/*********************************************************************************
+		* Represents an instance of a main menu to display on the JFrame.
+		*********************************************************************************/
 		public Patient_Menu_Panel() 
 		{
 			initializeLabels();
@@ -205,6 +240,9 @@ public class Hospital_Frame extends JFrame
 		}
 
 
+		/*********************************************************************************
+		* Initializes the labels for this panel.
+		*********************************************************************************/
 		private void intializeLabels()
 		{
 			patientLookupLabel = new JLabel("Patient Lookup");
@@ -214,6 +252,9 @@ public class Hospital_Frame extends JFrame
 		}
 
 
+		/*********************************************************************************
+		* Initializes the buttons for this panel.
+		*********************************************************************************/
 		private void initializeButtons()
 		{
 			ssnLookupButton = new JButton("Submit");
@@ -223,14 +264,21 @@ public class Hospital_Frame extends JFrame
 		}
 
 
+		/*********************************************************************************
+		* Initializes the textfields for this panel.
+		*********************************************************************************/
 		private void initializeTextFields()
 		{
 			ssnLookupInput = new JTextField(10);
 		}
 
 
+		/*********************************************************************************
+		* Adds the action listeners for the patient menu.
+		*********************************************************************************/
 		private void addActionListeners()
 		{
+			// lookup a patient based on ssn
 			ssnLookupButton.addActionListener(new ActionListener()
 			{
 			  public void actionPerformed(ActionEvent e)
@@ -249,7 +297,7 @@ public class Hospital_Frame extends JFrame
 			  }
 			});
 
-
+			// return to main menu option
 			mainMenuButton.addActionListener(new ActionListener()
 			{
 			  public void actionPerformed(ActionEvent e)
@@ -259,7 +307,9 @@ public class Hospital_Frame extends JFrame
 			});
 		}
 
-
+		/*********************************************************************************
+		* Returns the input in the "lookup patient by ssn" field.
+		*********************************************************************************/
 		private String getSSNData()
 		{
 			try {
@@ -269,9 +319,19 @@ public class Hospital_Frame extends JFrame
 			}
 		}
 
+		/*********************************************************************************
+		* Fills the patient search fields with a patient's data.
+		*********************************************************************************/
+		private void displayPatientData(String data)
+		{
+			
+		}
+
 	}
 
-
+	/*****************************************************************************************************
+	* Main method to start/run the program.
+	*****************************************************************************************************/
 	public static void main(String[] args)
 	{
 		Hospital_Frame frame = new Hospital_Frame();
