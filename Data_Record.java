@@ -16,11 +16,12 @@ public abstract class Data_Record
 	{
 		try{
 		//The information necessary to create a connection to the database, need to figure out what this will be
-		String USR = "";
-		String PWD = "";
-		String URL = "";
+		static final String URL = "jdbc:oracle:thin:@abacus1:1525:C325";     
+		static final String USR = "sl7dz";  
+		static final String PWD = "kookaburra";
 		
-		String driverName = "";
+		// Register driver by finding the class that corresponds do it             
+		String driverName = "oracle.jdbc.OracleDriver"; 
 		Class.forName(driverName);
 		
 		connection = DriverManager.getConnection(URL, USR, PWD);
