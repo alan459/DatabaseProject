@@ -29,11 +29,13 @@ public class Nurse extends Data_Record
 	}
 
 	/**
-	* Deletes a Nurse from the database
+	* Deletes a Nurse from the database where the string parameter is the primary key of the nurse to be deleted
 	*/
 	public void delete(String s)
 	{
-
+		String delete = "delete from NURSE where Nssn = " + s;
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(delete);
 	}
 
 	/**
@@ -52,7 +54,7 @@ public class Nurse extends Data_Record
 			query = "select * from NURSE where Nssn = " + info;
 
 			//The results from the original search query will be in here
-			ResultSet rs = conn.executeQuery(query);
+			ResultSet rs = stmt.executeQuery(query);
 
 			//We likely also want to get the actual name of the supervising doctor instead of just the ssn
 			rs.next();
@@ -60,7 +62,7 @@ public class Nurse extends Data_Record
 
 			String superQuery = "select Fname, Minit, Lname from DOCTOR where Dssn = " + superSsn;
 
-			ResultSet drName = conn.executeQuery(superQuery);
+			ResultSet drName = stmt.executeQuery(superQuery);
 
 			//We then use the result set to generate the string that will be returned to the user depending on the type of query
 			rs.next();
@@ -82,7 +84,7 @@ public class Nurse extends Data_Record
 			query = "select * from PROCEDURE where Nssn = " + info;
 
 			//The results from the search query will be in here
-			ResultSet rs = conn.executeQuery(query);
+			ResultSet rs = stmt.executeQuery(query);
 
 			rs.next();
 
@@ -90,13 +92,13 @@ public class Nurse extends Data_Record
 			{
 				//Get the name of the patient undergoing the procedure
 				String pQuery = "select Fname, Minit, Lname from PATIENT where Pssn = " + rs.getString("Pssn");
-				ResultSet p = conn.executeQuery(pQuery);
+				ResultSet p = stmt.executeQuery(pQuery);
 				p.next();
 				String patientName = p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname");
 
 				//Get the name of the Dr involved in the procedure
 				String dQuery = "select Fname, Minit, Lname from DOCTOR where Dssn = " + rs.getString("Dssn");
-				ResultSet d = conn.executeQuery(dQuery);
+				ResultSet d = stmt.executeQuery(dQuery);
 				d.next();
 				String docName = d.getString("Fname") + " " + d.getString("Minit") + " " + d.getString("Lname");
 
@@ -105,7 +107,6 @@ public class Nurse extends Data_Record
 				result = result + procedure;
 			}
 		}
-
 		return result;		
 	}
 }
