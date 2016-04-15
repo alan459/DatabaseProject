@@ -44,6 +44,7 @@ public class Nurse extends Data_Record
 	{
 		Statement stmt = conn.createStatement();
 		String query = "";
+		String result = "";
 
 		//Construct a select query using the appropriate key and table to search
 		if(table.equals("NURSE"))	//If you're searching the Nurse table using the Nssn then you'll return all the info about the requested Nurse
@@ -68,8 +69,10 @@ public class Nurse extends Data_Record
 			while(!rs.isAfterLast())
 			{
 				//Build the string to return the Nurse Information
-				String nName = rs.getString("Fname") + " " + rs.getString("Minit") + " " + rs.getString("Lname");
-				String supervisor = drName.getString("Fname") + " " + drName.getString("Minit") + " " + drName.getString("Lname");
+				String nName = "Nurse Name: " + rs.getString("Fname") + " " + rs.getString("Minit") + " " + rs.getString("Lname");
+				String supervisor = "Supervisor Name: " + drName.getString("Fname") + " " + drName.getString("Minit") + " " + drName.getString("Lname");
+
+				result = nName + "\n" + supervisor;
 			}
 
 			
@@ -80,9 +83,29 @@ public class Nurse extends Data_Record
 
 			//The results from the search query will be in here
 			ResultSet rs = conn.executeQuery(query);
-		}
-		
-		
 
-		
+			rs.next();
+
+			while(!rs.isAfterLast())
+			{
+				//Get the name of the patient undergoing the procedure
+				String pQuery = "select Fname, Minit, Lname from PATIENT where Pssn = " + rs.getString("Pssn");
+				ResultSet p = conn.executeQuery(pQuery);
+				p.next();
+				String patientName = p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname");
+
+				//Get the name of the Dr involved in the procedure
+				String dQuery = "select Fname, Minit, Lname from DOCTOR where Dssn = " + rs.getString("Dssn");
+				ResultSet d = conn.executeQuery(dQuery);
+				d.next();
+				String docName = d.getString("Fname") + " " + d.getString("Minit") + " " + d.getString("Lname");
+
+				String procedure = "Procedure type: " + rs.getString("procedureDescription") + ", Date/Time: " + rs.getDate("scheduled_Date") + " " + rs.getInt("scheduled_Time") + ":00, Supervising Doctor: " + docName + ", Patient: " + patientName + "\n";
+
+				result = result + procedure;
+			}
+		}
+
+		return result;		
 	}
+}
