@@ -30,6 +30,7 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+
 	/*****************************************************************************************************
 	* Creates a jpanel with the frame displaying the main menu options and sets it as the main screen.
 	*****************************************************************************************************/
@@ -37,6 +38,7 @@ public class Hospital_Frame extends JFrame
 	{
 		add(currentScreen = new Main_Menu_Panel());
 	}
+
 
 
 	/*****************************************************************************************************
@@ -49,6 +51,7 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+
 	/*****************************************************************************************************
 	* Gets and returns the selected relation in the drop down menu
 	*****************************************************************************************************/
@@ -56,6 +59,7 @@ public class Hospital_Frame extends JFrame
 	{
 		return "";
 	}
+
 
 
 	/*****************************************************************************************************
@@ -73,6 +77,7 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+
 	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the patient menu.
 	*****************************************************************************************************/
@@ -88,6 +93,7 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+
 	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the patient menu.
 	*****************************************************************************************************/
@@ -99,6 +105,7 @@ public class Hospital_Frame extends JFrame
 		revalidate();
 		repaint();
 	}
+
 
 
 	/*****************************************************************************************************
@@ -116,6 +123,7 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+
 	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the nurse menu.
 	*****************************************************************************************************/
@@ -131,6 +139,7 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+
 	/*****************************************************************************************************
 	* Main method to start/run the program.
 	*****************************************************************************************************/
@@ -138,6 +147,13 @@ public class Hospital_Frame extends JFrame
 	{
 		Hospital_Frame frame = new Hospital_Frame();
 	}
+
+
+
+
+
+
+
 
 
 
@@ -151,6 +167,7 @@ public class Hospital_Frame extends JFrame
 
 		/* Displays to the user some information as to where clicking the buttons will take them */
 		private JLabel recordSearchLabel;
+
 
 
 		/*********************************************************************************
@@ -172,6 +189,7 @@ public class Hospital_Frame extends JFrame
 		}
 
 
+
 		/*********************************************************************************
 		* Initialize the labels for the main menu.
 		*********************************************************************************/
@@ -179,6 +197,7 @@ public class Hospital_Frame extends JFrame
 		{
 			recordSearchLabel = new JLabel("Record Search");
 		}
+
 
 
 		/*********************************************************************************
@@ -190,6 +209,7 @@ public class Hospital_Frame extends JFrame
 			doctorButton = new JButton("Doctor");
 			nurseButton = new JButton("Nurse");
 		}
+
 
 		
 		/*********************************************************************************
@@ -222,82 +242,69 @@ public class Hospital_Frame extends JFrame
 			});
 		}
 
+
+
 	} // end main menu class
 
 
 
 
+
+
+
+
+
+
+
 	/*****************************************************************************************************
-	* Represents an instance of a patient menu to displaying to the user the options for interacting with 
-	* the patient relation.
+	* A patient menu to display to the user 2 panels, 1 for looking up a patient on the left side of the 
+	* window, and a 2nd on the right side which is selected from 3 options from buttons for updating 
+	* patient info, patient record lookup, and modify treatment plan.
 	*****************************************************************************************************/
 	private class Patient_Menu_Panel extends JPanel 
 	{
-		/* Input submission buttons */
-		private JButton updateInfoButton, recordLookupButton, modifyTreatmentButton, mainMenuButton;	
+		/* Button to return the screen to the main menu */
+		private JButton mainMenuButton;	
+
+		/* Left side interface displayed to the user to lookup a patient */
+		private JPanel patientLookup;
+
+		/* Right side interface displayed to the user, displaying either button options or
+		* an interface based on button pressed */
+		private JPanel currentInterface;
+
 
 
 		/*********************************************************************************
-		* Main constructor used for setting up the patient menu options.
+		* Main constructor used for setting up the Patient_Menu_Panel.
 		*********************************************************************************/
 		public Patient_Menu_Panel() 
 		{
 			initializeButtons();
 			addActionListeners();
 
-			// add the components to the panel
-			add(updateInfoButton);
-			add(recordLookupButton);
-			add(modifyTreatmentButton);
+			addButtonOptions();
 
 			add(mainMenuButton);
 		}
 
 
+
 		/*********************************************************************************
-		* Initializes the buttons for the patient menu.
+		* Initializes the buttons for Patient_Menu_Panel.
 		*********************************************************************************/
 		private void initializeButtons()
 		{
-			updateInfoButton = new JButton("UPDATE PATIENT INFO");
-			recordLookupButton = new JButton("PATIENT RECORD LOOKUP");
-			modifyTreatmentButton = new JButton("MODIFY TREATMENT PLAN");
-
 			mainMenuButton = new JButton("Main Menu");
 		}
 
 
+
 		/*********************************************************************************
-		* Adds the action listeners for the patient menu.
+		* Adds the action listeners for Patient_Menu_Panel.
 		*********************************************************************************/
 		private void addActionListeners()
 		{
-			/* Add functionality - Take user to update patient interface */
-			updateInfoButton.addActionListener(new ActionListener()
-			{
-			  public void actionPerformed(ActionEvent e)
-			  {
-			    	
-			  }
-			});
-
-			/* Add functionality - Take user to patient record lookup interface */
-			recordLookupButton.addActionListener(new ActionListener()
-			{
-			  public void actionPerformed(ActionEvent e)
-			  {
-			  	getPatientLookupMenu();
-			  }
-			});
-
-			/* Add functionality - Take user to modofy treatment plan interface */
-			modifyTreatmentButton.addActionListener(new ActionListener()
-			{
-			  public void actionPerformed(ActionEvent e)
-			  {
-			  }
-			});
-
 			/* Add functionality - Return user to main menu */
 			mainMenuButton.addActionListener(new ActionListener()
 			{
@@ -306,19 +313,214 @@ public class Hospital_Frame extends JFrame
 			  	getMainMenu();
 			  }
 			});
+
+		} // end addActionListeners()
+
+
+
+		/*********************************************************************************
+		* Adds a patient lookup interface in place of the buttons for selecting an 
+		* interface on the panel originally holding the buttons for selecting an interface.
+		*********************************************************************************/
+		private void addButtonOptions()
+		{
+			add(currentInterface = new Interface_Option_Buttons());
 		}
+
+
+
+		/*********************************************************************************
+		* Adds a patient lookup interface in place of the buttons for selecting an 
+		* interface on the panel originally holding the buttons for selecting an interface.
+		*
+		* Switches currentInterface from Interface_Option_Buttons to Patient_Lookup_Panel.
+		*********************************************************************************/
+		private void addPatientLookup()
+		{
+			add(currentInterface = new Patient_Lookup_Panel());
+		}
+
+
+
+
+		/*********************************************************************************
+		* INNER JPanel to be used as a display of the button options for the user 
+		* on the right side of the window to select an interface.
+		*********************************************************************************/
+		private class Interface_Option_Buttons extends JPanel
+		{
+			/* Input submission buttons */
+			private JButton updateInfoButton, recordLookupButton, modifyTreatmentButton;
+
+
+
+			/*********************************************************************************
+			* Main constructor for the Interface_Option_Buttons class used for setting up 
+			* the interface menu options.
+			*********************************************************************************/
+			public Interface_Option_Buttons()
+			{
+				initializeButtons();
+				addActionListeners();
+
+				// add the components to the panel
+				add(updateInfoButton);
+				add(recordLookupButton);
+				add(modifyTreatmentButton);
+			}
+
+
+			/*********************************************************************************
+			* Initializes the buttons for Interface_Option_Buttons.
+			*********************************************************************************/
+			private void initializeButtons()
+			{
+				updateInfoButton = new JButton("UPDATE PATIENT INFO");
+				recordLookupButton = new JButton("PATIENT RECORD LOOKUP");
+				modifyTreatmentButton = new JButton("MODIFY TREATMENT PLAN");
+			}
+
+
+
+			/*********************************************************************************
+			* Adds the action listeners for Interface_Option_Buttons.
+			*********************************************************************************/
+			private void addActionListeners()
+			{
+				/* Add functionality - Take user to update patient interface */
+				updateInfoButton.addActionListener(new ActionListener()
+				{
+				  public void actionPerformed(ActionEvent e)
+				  {
+				    	
+				  }
+				});
+
+				/* Add functionality - Display to user the patient record lookup interface */
+				recordLookupButton.addActionListener(new ActionListener()
+				{
+				  public void actionPerformed(ActionEvent e)
+				  {
+				  	addPatientLookup();
+				  }
+				});
+
+				/* Add functionality - Take user to modofy treatment plan interface */
+				modifyTreatmentButton.addActionListener(new ActionListener()
+				{
+				  public void actionPerformed(ActionEvent e)
+				  {
+				  }
+				});
+
+			} // end addActionListeners()
+
+
+		} // end Interface_Option_Buttons class
+
+
+
+
+
+		/*********************************************************************************
+		* 1 of the 3 INNER JPanels that result from a button being clicked in the button
+		* interface to display the patient record lookup interface on the right side of 
+		* the window after the "Patient Record Lookup" button is pressed.
+		*********************************************************************************/
+		private class Patient_Record_Lookup extends JPanel
+		{
+			/* Input submission buttons */
+			private JButton submitButton;
+
+			/* Labels for describing input/output fields */
+			private JLabel lookupLabel, ssnLabel, resultsLabel;
+
+			/* Input from the user */
+			private JTextField ssnField;
+
+
+			/*********************************************************************************
+			* Main constructor used for setting up the Patient_Record_Lookup panel.
+			*********************************************************************************/
+			public Patient_Record_Lookup()
+			{
+				initializeButtons();
+				addActionListeners();
+
+				// add the components to the panel
+				add(submitInfoButton);
+			}
+
+
+			/*********************************************************************************
+			* Initializes the buttons for the patient menu.
+			*********************************************************************************/
+			private void initializeButtons()
+			{
+				updateInfoButton = new JButton("UPDATE PATIENT INFO");
+				recordLookupButton = new JButton("PATIENT RECORD LOOKUP");
+				modifyTreatmentButton = new JButton("MODIFY TREATMENT PLAN");
+			}
+
+
+
+			/*********************************************************************************
+			* Adds the action listeners for Interface_Option_Buttons.
+			*********************************************************************************/
+			private void addActionListeners()
+			{
+				/* Add functionality - Take user to update patient interface */
+				updateInfoButton.addActionListener(new ActionListener()
+				{
+				  public void actionPerformed(ActionEvent e)
+				  {
+				    	
+				  }
+				});
+
+				/* Add functionality - Display to user the patient record lookup interface */
+				recordLookupButton.addActionListener(new ActionListener()
+				{
+				  public void actionPerformed(ActionEvent e)
+				  {
+				  	addPatientLookup();
+				  }
+				});
+
+				/* Add functionality - Take user to modofy treatment plan interface */
+				modifyTreatmentButton.addActionListener(new ActionListener()
+				{
+				  public void actionPerformed(ActionEvent e)
+				  {
+				  }
+				});
+
+			} // end addActionListeners()
+
+
+		} // end Interface_Option_Buttons class
+
 
 	} // end patient menu class
 
 
 
+
+
+
+
+
+
+
+
 	/*****************************************************************************************************
+	* To be used as an INNER panel part of a larger panel containing all the options for the user:
 	* A display for the user to lookup patients in the database.
 	*****************************************************************************************************/
 	private class Patient_Lookup_Panel extends JPanel 
 	{
 		/* Input submission buttons */
-		private JButton ssnLookupButton, infoLookupButton, recordLookupButton, mainMenuButton;	
+		private JButton ssnLookupButton, infoLookupButton, recordLookupButton;	
 
 		/* Main labels for the options on this screen - largest text blocks */
 		private JLabel patientLookupLabel, recordLookupLabel;	
