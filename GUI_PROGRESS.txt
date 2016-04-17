@@ -1,0 +1,63 @@
+
+Program Structure :
+
+
+	Hospital_Frame Class :
+
+		Variables:
+			JPanel variable 'currentScreen' holds the main panel being displayed to the user, usually an instance of 1 of the inner classes such as Main_Menu_Panel. Height and width variables are also defined for specifying the initial size of the frame displayed to the user.
+
+
+		Methods:
+			GET methods for getting different panels to display to the user - default panel displayed is an instance of the inner class Main_Menu_Panel.
+			These methods include getMainMenu(), getPatientLookupMenu(), getDoctorMenu(), and getNurseMenu(). And createMainWindow() for creating the main menu when there is no main window present to be removed such as when the program is first created.
+
+
+		Inner Classes: 
+
+			Main_Menu_Panel Class - Display to the user the different relations for interacting with [Patient, Doctor, Nurse] :
+
+				Consists of a label and 3 buttons to take the user to an interface displaying information for either Doctors, Patients, or Nurses.
+
+					-Action Listeners still need to be implemented for the Doctor and Nurse buttons to take the user to those menus.
+
+
+			Patient_Menu_Panel Class - Display patient lookup panel on left side and 1 of the other panels on right side :
+
+				2 panels displayed on the left and right side of the frame, 'patientLookup' on the left, and 'currentInterface' on the right.
+				'patientLookup' will typically display the same frame, an instance of Patient_Record_Lookup
+
+
+			Patient_Lookup_Panel Class - Used as an inner panel as part of the Patient_Menu_Panel class to be displayed by default on the left side of the frame to allow the user to option of looking up patient information. :
+
+				Variables: 
+					'ssnLookupButton' to lookup a patient by ssn. The label 'enterSSNLabel' and textfield 'ssnLookupInput' work to display to the user that these fields are asking for ssn input.
+
+					'infoLookupButton' to lookup a patient by first name, last name, and DOB. The labels 'enterFirstNameLabel', 'enterLastNameLabel', 'enterDOBLabel', and fields 'firstNameInput', 'lastNameInput', 'dobInput' work to display to the user a means of gathering the input.
+
+				Methods:
+					Initialization methods initializeLabels(), initializeButtons(), initializeTextFields(), to initialize JPanel components.
+
+					Event listener method addActionListeners() for button functionality to allow user to submit input data.
+						- Need to implement action listeners for both ssn submission and first/last name and DOB submission so that patient info is displayed in the labels below.
+
+
+
+			Inner Classes:
+
+				Interface_Option_Buttons Class - Panel consisting of 3 buttons on right side of Patient_Menu_Panel 
+				for the user to select 1 of the options [UPDATE PATIENT INFO, PATIENT RECORD LOOKUP, MODIFY TREATMENT PLAN] :
+
+					Variables: 
+						'updateInfoButton', 'recordLookupButton', 'modifyTreatmentButton' for selecting which panel to display on he right side of the frame. 
+
+					Methods:
+						Initialization method initializeButtons(), to initialize JPanel components and addActionListeners() method to add functionality
+						to those buttons.
+							- Need to implement action listeners for the buttons so that the right panel is displayed on the right side of the frame when a button is clicked, with each of those new panels having a button with the option to return back to the Interface_Option_Buttons display to again select a button.
+
+
+
+				Patient_Record_Lookup Class - 1 of 3 panels to be displayed to the user based on button clicked :
+
+

@@ -96,6 +96,9 @@ public class Hospital_Frame extends JFrame
 
 	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the patient menu.
+	*
+	* [This method should probably moved to the Patient_Menu_Panel and modified since it is expected to be
+	* used as an inner panel].
 	*****************************************************************************************************/
 	public void getPatientLookupMenu()
 	{
@@ -265,6 +268,9 @@ public class Hospital_Frame extends JFrame
 	{
 		/* Button to return the screen to the main menu */
 		private JButton mainMenuButton;	
+
+		/* Main labels for the options on this screen - largest text blocks - put above each inner panel */
+		private JLabel patientLookupLabel, recordLookupLabel;
 
 		/* Left side interface displayed to the user to lookup a patient */
 		private JPanel patientLookup;
@@ -498,7 +504,7 @@ public class Hospital_Frame extends JFrame
 			} // end addActionListeners()
 
 
-		} // end Interface_Option_Buttons class
+		} // end Patient_Record_Lookup class
 
 
 	} // end patient menu class
@@ -520,16 +526,13 @@ public class Hospital_Frame extends JFrame
 	private class Patient_Lookup_Panel extends JPanel 
 	{
 		/* Input submission buttons */
-		private JButton ssnLookupButton, infoLookupButton, recordLookupButton;	
-
-		/* Main labels for the options on this screen - largest text blocks */
-		private JLabel patientLookupLabel, recordLookupLabel;	
+		private JButton ssnLookupButton, infoLookupButton; //, recordLookupButton;		
 
 		/* Display to the user what type of information is being displayed in the adjacent position */
-		private JLabel enterSSNLabel, enterFirstNameLabel, enterLastNameLabel, enterDOBLabel, patientInfoLabel;	
+		private JLabel enterSSNLabel, enterFirstNameLabel, enterLastNameLabel, enterDOBLabel;	
 
 		/* Labels for displaying output data */
-		private JLabel patientNameOutputLabel, patientSSNOutputLabel, patientDOBOutputLabel;
+		private JLabel patientInfoLabel, patientNameOutputLabel, patientSSNOutputLabel, patientDOBOutputLabel;
 
 		/* Fields for getting input from the user */
 		private JTextField ssnLookupInput, firstNameInput, lastNameInput, dobInput;	
@@ -546,7 +549,7 @@ public class Hospital_Frame extends JFrame
 			addActionListeners();
 
 			// add the components to the panel
-			add(patientLookupLabel);
+			//add(patientLookupLabel);
 			//add(recordLookupLabel);
 			add(enterSSNLabel);
 			add(ssnLookupInput);
