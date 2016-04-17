@@ -436,13 +436,17 @@ public class Hospital_Frame extends JFrame
 		private class Patient_Record_Lookup extends JPanel
 		{
 			/* Input submission buttons */
-			private JButton submitButton;
+			private JButton submitInfoButton;
 
 			/* Labels for describing input/output fields */
 			private JLabel lookupLabel, ssnLabel, resultsLabel;
 
 			/* Input from the user */
 			private JTextField ssnField;
+
+			/* Return to Interface_Option_Buttons button */
+			private JButton returnButton;
+
 
 
 			/*********************************************************************************
@@ -451,10 +455,12 @@ public class Hospital_Frame extends JFrame
 			public Patient_Record_Lookup()
 			{
 				initializeButtons();
+
 				addActionListeners();
 
 				// add the components to the panel
 				add(submitInfoButton);
+				add(returnButton);
 			}
 
 
@@ -463,9 +469,9 @@ public class Hospital_Frame extends JFrame
 			*********************************************************************************/
 			private void initializeButtons()
 			{
-				updateInfoButton = new JButton("UPDATE PATIENT INFO");
-				recordLookupButton = new JButton("PATIENT RECORD LOOKUP");
-				modifyTreatmentButton = new JButton("MODIFY TREATMENT PLAN");
+				submitInfoButton = new JButton("submit");
+
+				returnButton = new JButton("return to options");
 			}
 
 
@@ -475,8 +481,8 @@ public class Hospital_Frame extends JFrame
 			*********************************************************************************/
 			private void addActionListeners()
 			{
-				/* Add functionality - Take user to update patient interface */
-				updateInfoButton.addActionListener(new ActionListener()
+				/* Add functionality - Submit user input */
+				submitInfoButton.addActionListener(new ActionListener()
 				{
 				  public void actionPerformed(ActionEvent e)
 				  {
@@ -484,22 +490,15 @@ public class Hospital_Frame extends JFrame
 				  }
 				});
 
-				/* Add functionality - Display to user the patient record lookup interface */
-				recordLookupButton.addActionListener(new ActionListener()
+				/* Add functionality - Return to Button options interface */
+				returnButton.addActionListener(new ActionListener()
 				{
 				  public void actionPerformed(ActionEvent e)
 				  {
-				  	addPatientLookup();
+
 				  }
 				});
 
-				/* Add functionality - Take user to modofy treatment plan interface */
-				modifyTreatmentButton.addActionListener(new ActionListener()
-				{
-				  public void actionPerformed(ActionEvent e)
-				  {
-				  }
-				});
 
 			} // end addActionListeners()
 
@@ -663,7 +662,7 @@ public class Hospital_Frame extends JFrame
 
 
 		/*********************************************************************************
-		* Fills the patient search fields with a patient's data.
+		* Fills the patient display fields with a patient's data.
 		*********************************************************************************/
 		private void displayPatientData(String data)
 		{
