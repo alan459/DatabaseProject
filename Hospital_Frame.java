@@ -514,7 +514,7 @@ public class Hospital_Frame extends JFrame
 			/*********************************************************************************
 			* Initializes the buttons for the patient menu.
 			*********************************************************************************/
-			private void initializeLabels()
+			private void initializeButtons()
 			{
 				submitInfoButton = new JButton("submit");
 
@@ -526,7 +526,7 @@ public class Hospital_Frame extends JFrame
 			/*********************************************************************************
 			* Initializes the buttons for the patient menu.
 			*********************************************************************************/
-			private void initializeButtons()
+			private void initializeLabels()
 			{
 				lookupLabel = new JLabel("lookup patient ");
 
