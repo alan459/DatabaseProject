@@ -286,12 +286,26 @@ public class Hospital_Frame extends JFrame
 		*********************************************************************************/
 		public Patient_Menu_Panel() 
 		{
+			//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			initializeButtons();
+			initializeLabels();
 			addActionListeners();
 
-			addButtonOptions();
+			//JPanel pan = new JPanel();
+			//pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
+			//add(patientLookupLabel);
+			add(new Patient_Lookup_Panel());
+			//setLayout(new FlowLayout());
+			//addButtonOptions();
+			//add(pan);
 
+
+			//add(recordLookupLabel);
+			add(currentInterface = new Interface_Option_Buttons()); 
+			//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			add(mainMenuButton);
+
+
 		}
 
 
@@ -302,6 +316,17 @@ public class Hospital_Frame extends JFrame
 		private void initializeButtons()
 		{
 			mainMenuButton = new JButton("Main Menu");
+		}
+
+
+
+		/*********************************************************************************
+		* Initializes the buttons for Patient_Menu_Panel.
+		*********************************************************************************/
+		private void initializeLabels()
+		{
+			patientLookupLabel = new JLabel("Patient Lookup");
+			recordLookupLabel = new JLabel("Record Lookup");
 		}
 
 
@@ -325,25 +350,39 @@ public class Hospital_Frame extends JFrame
 
 
 		/*********************************************************************************
-		* Adds a patient lookup interface in place of the buttons for selecting an 
-		* interface on the panel originally holding the buttons for selecting an interface.
+		* Removes any panel displayed on the right side of the patient menu window and
+		* adds 3 buttons options:
+		*
+		* ['UPDATE PATIENT INFO', 'PATIENT RECORD LOOKUP','MODIFY TREATMENT PLAN']
+		*
+		* Switches currentInterface to an instance of Interface_Option_Buttons.
 		*********************************************************************************/
 		private void addButtonOptions()
 		{
+			if(currentInterface != null)
+			{
+				remove(currentInterface);
+			}
+
 			add(currentInterface = new Interface_Option_Buttons());
+			revalidate();
+			repaint();
 		}
 
 
 
 		/*********************************************************************************
-		* Adds a patient lookup interface in place of the buttons for selecting an 
-		* interface on the panel originally holding the buttons for selecting an interface.
+		* Replaces the button interface with a patient lookup interface when the 
+		* 'PATIENT RECORD LOOKUP' button is pressed in the button interface. 
 		*
 		* Switches currentInterface from Interface_Option_Buttons to Patient_Lookup_Panel.
 		*********************************************************************************/
-		private void addPatientLookup()
+		private void addPatientRecordLookup()
 		{
-			add(currentInterface = new Patient_Lookup_Panel());
+			remove(currentInterface);
+			add(currentInterface = new Patient_Record_Lookup());
+			revalidate();
+			repaint();
 		}
 
 
@@ -366,6 +405,7 @@ public class Hospital_Frame extends JFrame
 			*********************************************************************************/
 			public Interface_Option_Buttons()
 			{
+				setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 				initializeButtons();
 				addActionListeners();
 
@@ -402,12 +442,12 @@ public class Hospital_Frame extends JFrame
 				  }
 				});
 
-				/* Add functionality - Display to user the patient record lookup interface */
+				/* Add functionality to button'PATIENT RECORD LOOKUP' - Display to user the patient record lookup interface */
 				recordLookupButton.addActionListener(new ActionListener()
 				{
 				  public void actionPerformed(ActionEvent e)
 				  {
-				  	addPatientLookup();
+				  	addPatientRecordLookup();
 				  }
 				});
 
@@ -454,11 +494,18 @@ public class Hospital_Frame extends JFrame
 			*********************************************************************************/
 			public Patient_Record_Lookup()
 			{
+				setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 				initializeButtons();
+				initializeLabels();
 
 				addActionListeners();
 
+
 				// add the components to the panel
+				add(lookupLabel);
+				add(ssnLabel);
+				add(resultsLabel);
+
 				add(submitInfoButton);
 				add(returnButton);
 			}
@@ -467,11 +514,25 @@ public class Hospital_Frame extends JFrame
 			/*********************************************************************************
 			* Initializes the buttons for the patient menu.
 			*********************************************************************************/
-			private void initializeButtons()
+			private void initializeLabels()
 			{
 				submitInfoButton = new JButton("submit");
 
 				returnButton = new JButton("return to options");
+			}
+
+
+
+			/*********************************************************************************
+			* Initializes the buttons for the patient menu.
+			*********************************************************************************/
+			private void initializeButtons()
+			{
+				lookupLabel = new JLabel("lookup patient ");
+
+				ssnLabel = new JLabel("by ssn ");
+
+				resultsLabel = new JLabel("Results");
 			}
 
 
@@ -495,7 +556,7 @@ public class Hospital_Frame extends JFrame
 				{
 				  public void actionPerformed(ActionEvent e)
 				  {
-
+				  	addButtonOptions();
 				  }
 				});
 
@@ -528,7 +589,7 @@ public class Hospital_Frame extends JFrame
 		private JButton ssnLookupButton, infoLookupButton; //, recordLookupButton;		
 
 		/* Display to the user what type of information is being displayed in the adjacent position */
-		private JLabel enterSSNLabel, enterFirstNameLabel, enterLastNameLabel, enterDOBLabel;	
+		private JLabel enterSSNLabel, enterFirstNameLabel, enterLastNameLabel, enterDOBLabel, patientLookupLabel;	
 
 		/* Labels for displaying output data */
 		private JLabel patientInfoLabel, patientNameOutputLabel, patientSSNOutputLabel, patientDOBOutputLabel;
@@ -542,13 +603,14 @@ public class Hospital_Frame extends JFrame
 		*********************************************************************************/
 		public Patient_Lookup_Panel() 
 		{
+			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			initializeLabels();
 			initializeButtons();
 			initializeTextFields();
 			addActionListeners();
 
 			// add the components to the panel
-			//add(patientLookupLabel);
+			add(patientLookupLabel);
 			//add(recordLookupLabel);
 			add(enterSSNLabel);
 			add(ssnLookupInput);
@@ -565,7 +627,7 @@ public class Hospital_Frame extends JFrame
 
 			add(infoLookupButton);
 			//add(recordLookupButton);
-			add(mainMenuButton);
+			//add(mainMenuButton);
 		}
 
 
@@ -575,7 +637,7 @@ public class Hospital_Frame extends JFrame
 		private void initializeLabels()
 		{
 			patientLookupLabel = new JLabel("Patient Lookup");
-			recordLookupLabel = new JLabel("Record Lookup");
+			//recordLookupLabel = new JLabel("Record Lookup");
 
 			enterSSNLabel = new JLabel("by ssn:");
 
@@ -593,8 +655,8 @@ public class Hospital_Frame extends JFrame
 		{
 			ssnLookupButton = new JButton("Submit");
 			infoLookupButton = new JButton("Submit");
-			recordLookupButton = new JButton("Submit");
-			mainMenuButton = new JButton("Main Menu");
+			//recordLookupButton = new JButton("Submit");
+			//mainMenuButton = new JButton("Main Menu");
 		}
 
 
@@ -634,12 +696,12 @@ public class Hospital_Frame extends JFrame
 			  }
 			});
 
-			/* Add functionality - Return to main menu option */
-			mainMenuButton.addActionListener(new ActionListener()
+			/* Add functionality - Submit info button */
+			infoLookupButton.addActionListener(new ActionListener()
 			{
 			  public void actionPerformed(ActionEvent e)
 			  {
-			   		getMainMenu();
+			   		
 			  }
 			});
 		}
