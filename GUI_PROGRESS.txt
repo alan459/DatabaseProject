@@ -61,7 +61,7 @@ Program Structure :
 					Methods:
 						Initialization method initializeButtons(), to initialize JPanel components and addActionListeners() method to add functionality
 						to those buttons.
-							- Need to implement action listeners for the buttons so that the right panel is displayed on the right side of the frame 
+							** Need to implement action listeners for the buttons so that the right panel is displayed on the right side of the frame 
 							when a button is clicked, with each of those new panels having a button with the option to return back to the 
 							Interface_Option_Buttons display to again select a button.
 
@@ -80,5 +80,9 @@ Program Structure :
 						to those buttons.
 							- Need to implement action listeners for the buttons so that the return button changes the right side panel back to the 
 							button options when clicked and the submit button gets user input data and displays output information.
+
+
+
+
 
 
