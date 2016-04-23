@@ -42,6 +42,20 @@ public class Hospital_Frame extends JFrame
 	}
 
 
+	/*****************************************************************************************************
+	* Removes the current screen and sets the current screen to the passed in menu.
+	*****************************************************************************************************/
+	public void changeScreen(JPanel menu)
+	{	
+		remove(currentScreen);
+
+		add(currentScreen = menu); 
+
+		revalidate();
+		repaint();
+	}
+
+
 
 	/*****************************************************************************************************
 	* Fetches the data in the data fields and returns them in a tab-delimited string.
