@@ -10,8 +10,9 @@ import java.awt.event.*;
 * interface to display the nurse record lookup interface on the right side of 
 * the window after the "nurse Record Lookup" button is pressed.
 *********************************************************************************/
-public class Nurse_Record_Lookup extends JPanel
+public class Modify_Nurse_Info_Panel extends JPanel
 {
+	/*  */
 	private Nurse_Menu_Panel outer_menu;
 
 	/* Input submission buttons */
@@ -26,11 +27,11 @@ public class Nurse_Record_Lookup extends JPanel
 	/* Return to Interface_Option_Buttons button */
 	private JButton return_button;
 
-	/* Types of records that can be looked up for a nurse */
+	/* Types of records that can be modified for a nurse */
 	private String[] nurse_record_options = {"Supervisor"};
 
 	/* Allows the user to select from the types of records that can be
-	*  looked up for a nurse */
+	*  modified up for a nurse */
 	private JComboBox nurse_record_selection;
 
 
@@ -38,7 +39,7 @@ public class Nurse_Record_Lookup extends JPanel
 	/*********************************************************************************
 	* Main constructor used for setting up the Nurse_Record_Lookup panel.
 	*********************************************************************************/
-	public Nurse_Record_Lookup(Nurse_Menu_Panel menu)
+	public Modify_Nurse_Info_Panel(Nurse_Menu_Panel menu)
 	{	
 		this.outer_menu = menu;
 
@@ -57,6 +58,10 @@ public class Nurse_Record_Lookup extends JPanel
 
 		// add combo box
 		add(nurse_record_selection);
+
+		add(new JLabel("to"));
+
+		add(new JTextField(6));
 
 		add(ssn_label);	// add "by ssn: " label
 
@@ -106,7 +111,7 @@ public class Nurse_Record_Lookup extends JPanel
 	*********************************************************************************/
 	private void initializeLabels()
 	{
-		lookup_label = new JLabel("Lookup: ");
+		lookup_label = new JLabel("Change: ");
 
 		ssn_label = new JLabel(" for Nurse with ssn: ");
 
@@ -123,19 +128,19 @@ public class Nurse_Record_Lookup extends JPanel
 		/* Add functionality - Submit user input */
 		submit_info_button.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		    	
-		  }
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
 		});
 
 		/* Add functionality - Return to Button options interface */
 		return_button.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		  	outer_menu.addNurseButtonOptions();
-		  }
+			public void actionPerformed(ActionEvent e)
+			{
+				outer_menu.addNurseButtonOptions();
+			}
 		});
 
 

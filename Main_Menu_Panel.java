@@ -11,14 +11,13 @@ import java.awt.event.*;
 public class Main_Menu_Panel extends JPanel 
 {
 	/* Pointer to the main java window to access its get() methods for other panels */
-	private Hospital_Frame HOSPITAL_FRAME;
+	private Hospital_Frame hospital_frame;
 
 	/* Buttons to select which type of entity the user is interested in */
-	private JButton PATIENT_BUTTON, DOCTOR_BUTTON, NURSE_BUTTON;
+	private JButton patient_button, doctor_button, nurse_button;
 
 	/* Displays to the user some information as to where clicking the buttons will take them */
-	private JLabel RECORD_SEARCH_LABEL;
-	private int a = 2;
+	private JLabel record_search_label;
 
 
 	/*********************************************************************************
@@ -26,7 +25,7 @@ public class Main_Menu_Panel extends JPanel
 	*********************************************************************************/
 	public Main_Menu_Panel(Hospital_Frame frame) 
 	{
-		this.HOSPITAL_FRAME = frame;
+		this.hospital_frame = frame;
 
 		intializeLabels();
 
@@ -34,11 +33,11 @@ public class Main_Menu_Panel extends JPanel
 
 		addActionListeners();
 
-		add(RECORD_SEARCH_LABEL);
+		add(record_search_label);
 
-		add(PATIENT_BUTTON);
-		add(DOCTOR_BUTTON);
-		add(NURSE_BUTTON);
+		add(patient_button);
+		add(doctor_button);
+		add(nurse_button);
 
 	}
 
@@ -49,7 +48,7 @@ public class Main_Menu_Panel extends JPanel
 	*********************************************************************************/
 	private void intializeLabels()
 	{
-		RECORD_SEARCH_LABEL = new JLabel("Record Search");
+		record_search_label = new JLabel("Record Search");
 	}
 
 
@@ -59,9 +58,9 @@ public class Main_Menu_Panel extends JPanel
 	*********************************************************************************/
 	private void initializeButtons()
 	{
-		PATIENT_BUTTON = new JButton("Patient");
-		DOCTOR_BUTTON = new JButton("Doctor");
-		NURSE_BUTTON = new JButton("Nurse");
+		patient_button = new JButton("Patient");
+		doctor_button = new JButton("Doctor");
+		nurse_button = new JButton("Nurse");
 	}
 
 
@@ -71,31 +70,31 @@ public class Main_Menu_Panel extends JPanel
 	*********************************************************************************/
 	private void addActionListeners()
 	{
-		PATIENT_BUTTON.addActionListener(new ActionListener()
+		patient_button.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				HOSPITAL_FRAME.getPatientMenu();			    
+				hospital_frame.getPatientMenu();			    
 			}
 
 		});
 
 
-		DOCTOR_BUTTON.addActionListener(new ActionListener()
+		doctor_button.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				//HOSPITAL_FRAME.getDoctorMenu();			    
+				hospital_frame.getDoctorMenu();			    
 			}
 
 		});
 
 
-		NURSE_BUTTON.addActionListener(new ActionListener()
+		nurse_button.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				HOSPITAL_FRAME.getNurseMenu();			    
+				hospital_frame.getNurseMenu();			    
 			}
 
 		});

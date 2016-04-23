@@ -9,9 +9,9 @@ import java.awt.event.*;
 * To be used as the leftside INNER panel as part of a larger panel containing all the options for 
 * the user. 
 *
-* A display for the user to lookup nurses in the database.
+* A display for the user to lookup Doctors in the database.
 *****************************************************************************************************/
-public class Nurse_Lookup_Panel extends JPanel 
+public class Doctor_Lookup_Panel extends JPanel 
 {
 	//private JPanel mainPanel;
 
@@ -19,10 +19,10 @@ public class Nurse_Lookup_Panel extends JPanel
 	private JButton ssn_lookup_button, info_lookup_button; //, recordLookupButton;		
 
 	/* Display to the user what type of information is being displayed in the adjacent position */
-	private JLabel enter_ssn_label, enter_first_name_label, enter_last_name_label, enter_dob_label, nurse_lookup_label;	
+	private JLabel enter_ssn_label, enter_first_name_label, enter_last_name_label, enter_dob_label, doctor_lookup_label;	
 
 	/* Labels for displaying output data */
-	private JLabel nurse_info_label, nurse_name_output_label, nurse_ssn_output_label, nurse_dob_output_label;
+	private JLabel doctor_info_label, doctor_name_output_label, doctor_ssn_output_label, doctor_dob_output_label;
 
 	/* Fields for getting input from the user */
 	private JTextField ssn_lookup_field, first_name_field, last_name_field, dob_field;	
@@ -30,9 +30,9 @@ public class Nurse_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Main constructor for setting up the nurse lookup menu. 
+	* Main constructor for setting up the Doctor lookup menu. 
 	*********************************************************************************/
-	public Nurse_Lookup_Panel() 
+	public Doctor_Lookup_Panel() 
 	{
 		//this.mainFrame = main;
 
@@ -44,7 +44,7 @@ public class Nurse_Lookup_Panel extends JPanel
 		addActionListeners();
 
 		// add the components to the panel
-		add(nurse_lookup_label);
+		add(doctor_lookup_label);
 		//add(recordLookupLabel);
 		add(enter_ssn_label);
 		add(ssn_lookup_field);
@@ -61,13 +61,13 @@ public class Nurse_Lookup_Panel extends JPanel
 
 		add(info_lookup_button);
 
-		// add labels that will display output info for nurses 
-		// labels will be appended with the nurse info after 'submit'
+		// add labels that will display output info for Doctors 
+		// labels will be appended with the Doctor info after 'submit'
 		// clicked (ex: ssn - setText(getSSNText() + ssn) )
-		add(nurse_info_label);
-		add(nurse_name_output_label);
-		add(nurse_ssn_output_label);
-		add(nurse_dob_output_label);
+		add(doctor_info_label);
+		add(doctor_name_output_label);
+		add(doctor_ssn_output_label);
+		add(doctor_dob_output_label);
 
 
 		//add(recordLookupButton);
@@ -76,11 +76,11 @@ public class Nurse_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Initializes the labels for the nurse lookup menu.
+	* Initializes the labels for the Doctor lookup menu.
 	*********************************************************************************/
 	private void initializeLabels()
 	{
-		nurse_lookup_label = new JLabel("Nurse Lookup");
+		doctor_lookup_label = new JLabel("Doctor Lookup");
 		//recordLookupLabel = new JLabel("Record Lookup");
 
 		enter_ssn_label = new JLabel("\nby ssn:");
@@ -91,16 +91,16 @@ public class Nurse_Lookup_Panel extends JPanel
 		enter_dob_label = new JLabel("dob:");
 
 
-		nurse_info_label = new JLabel("Nurse Info:");
+		doctor_info_label = new JLabel("Doctor Info:");
 
-		nurse_name_output_label = new JLabel("Name:");
-		nurse_ssn_output_label = new JLabel("SSN:");
-		nurse_dob_output_label = new JLabel("DOB:");
+		doctor_name_output_label = new JLabel("Name:");
+		doctor_ssn_output_label = new JLabel("SSN:");
+		doctor_dob_output_label = new JLabel("DOB:");
 	}
 
 
 	/*********************************************************************************
-	* Initializes the buttons for the nurse lookup menu.
+	* Initializes the buttons for the Doctor lookup menu.
 	*********************************************************************************/
 	private void initializeButtons()
 	{
@@ -112,7 +112,7 @@ public class Nurse_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Initializes the textfields for the nurse lookup menu.
+	* Initializes the textfields for the Doctor lookup menu.
 	*********************************************************************************/
 	private void initializeTextFields()
 	{
@@ -124,42 +124,42 @@ public class Nurse_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Adds the action listeners for the nurse lookup menu.
+	* Adds the action listeners for the Doctor lookup menu.
 	*********************************************************************************/
 	private void addActionListeners()
 	{
-		/* Add functionality - Lookup a nurse based on ssn */
+		/* Add functionality - Lookup a Doctor based on ssn */
 		ssn_lookup_button.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		    	String ssn = getSSNData();
-		    	if (ssn != null)
-		    	{
-		    		// pass the ssn data to a method that lookups nurse data and returns it as a string
-		    		// String nurseData = getnurseData(ssn);
-		    		//displaynurseData(nurseData); 
-		    	}
-		    	else
-		    	{
-		    		// display error message somewhere
-		    	}
-		  }
+			public void actionPerformed(ActionEvent e)
+			{
+				String ssn = getSSNData();
+				if (ssn != null)
+				{
+					// pass the ssn data to a method that lookups Doctor data and returns it as a string
+					// String DoctorData = getDoctorData(ssn);
+					//displayDoctorData(DoctorData); 
+				}
+				else
+				{
+					// display error message somewhere
+				}
+			}
 		});
 
 		/* Add functionality - Submit info button */
 		info_lookup_button.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		   		
-		  }
+			public void actionPerformed(ActionEvent e)
+			{
+					
+			}
 		});
 	}
 
 
 	/*********************************************************************************
-	* Returns the input in the "lookup nurse by ssn" field.
+	* Returns the input in the "lookup Doctor by ssn" field.
 	*********************************************************************************/
 	private String getSSNData()
 	{
@@ -175,11 +175,11 @@ public class Nurse_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Fills the nurse display fields with a nurse's data.
+	* Fills the Doctor display fields with a Doctor's data.
 	*********************************************************************************/
-	private void displayNurseData(String data)
+	private void displayDoctorData(String data)
 	{
 
 	}
 
-} // end nurse lookup class
+} // end Doctor lookup class

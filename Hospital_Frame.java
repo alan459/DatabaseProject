@@ -121,7 +121,7 @@ public class Hospital_Frame extends JFrame
 	{
 		remove(currentScreen);
 
-		add(currentScreen = new Patient_Menu_Panel(this)); 
+		add(currentScreen = new Doctor_Menu_Panel(this)); 
 
 		revalidate();
 

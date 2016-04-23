@@ -7,12 +7,12 @@ import java.awt.event.*;
 
 /*********************************************************************************
 * 1 of the 2 INNER JPanels that result from a button being clicked in the button
-* interface to display the nurse record lookup interface on the right side of 
-* the window after the "nurse Record Lookup" button is pressed.
+* interface to display the Doctor record lookup interface on the right side of 
+* the window after the "Doctor Record Lookup" button is pressed.
 *********************************************************************************/
-public class Nurse_Record_Lookup extends JPanel
+public class Doctor_Record_Lookup extends JPanel
 {
-	private Nurse_Menu_Panel outer_menu;
+	private Doctor_Menu_Panel outer_menu;
 
 	/* Input submission buttons */
 	private JButton submit_info_button;
@@ -23,22 +23,22 @@ public class Nurse_Record_Lookup extends JPanel
 	/* Input from the user */
 	private JTextField ssn_field;
 
-	/* Return to Interface_Option_Buttons button */
+	/* Return to Doctor_Button_Options button */
 	private JButton return_button;
 
-	/* Types of records that can be looked up for a nurse */
-	private String[] nurse_record_options = {"Supervisor"};
+	/* Types of records that can be looked up for a Doctor */
+	private String[] doctor_record_options = {"Supervisor"};
 
 	/* Allows the user to select from the types of records that can be
-	*  looked up for a nurse */
-	private JComboBox nurse_record_selection;
+	*  looked up for a Doctor */
+	private JComboBox doctor_record_selection;
 
 
 
 	/*********************************************************************************
-	* Main constructor used for setting up the Nurse_Record_Lookup panel.
+	* Main constructor used for setting up the Doctor_Record_Lookup panel.
 	*********************************************************************************/
-	public Nurse_Record_Lookup(Nurse_Menu_Panel menu)
+	public Doctor_Record_Lookup(Doctor_Menu_Panel menu)
 	{	
 		this.outer_menu = menu;
 
@@ -56,7 +56,7 @@ public class Nurse_Record_Lookup extends JPanel
 		add(lookup_label);
 
 		// add combo box
-		add(nurse_record_selection);
+		add(doctor_record_selection);
 
 		add(ssn_label);	// add "by ssn: " label
 
@@ -73,7 +73,7 @@ public class Nurse_Record_Lookup extends JPanel
 
 
 	/*********************************************************************************
-	* Initializes the JTextFields for the nurse menu.
+	* Initializes the JTextFields for the Doctor menu.
 	*********************************************************************************/
 	private void initializeFields()
 	{
@@ -81,16 +81,16 @@ public class Nurse_Record_Lookup extends JPanel
 	}
 
 	/*********************************************************************************
-	* Initializes the JComboBoxes for the nurse menu.
+	* Initializes the JComboBoxes for the Doctor menu.
 	*********************************************************************************/
 	private void initializeComboBoxes()
 	{
-		nurse_record_selection = new JComboBox(nurse_record_options);
+		doctor_record_selection = new JComboBox(doctor_record_options);
 	}
 
 
 	/*********************************************************************************
-	* Initializes the buttons for the nurse menu.
+	* Initializes the buttons for the Doctor menu.
 	*********************************************************************************/
 	private void initializeButtons()
 	{
@@ -102,13 +102,13 @@ public class Nurse_Record_Lookup extends JPanel
 
 
 	/*********************************************************************************
-	* Initializes the buttons for the nurse menu.
+	* Initializes the buttons for the Doctor menu.
 	*********************************************************************************/
 	private void initializeLabels()
 	{
 		lookup_label = new JLabel("Lookup: ");
 
-		ssn_label = new JLabel(" for Nurse with ssn: ");
+		ssn_label = new JLabel(" for Doctor with ssn: ");
 
 		results_label = new JLabel("Results:");
 	}
@@ -134,7 +134,7 @@ public class Nurse_Record_Lookup extends JPanel
 		{
 		  public void actionPerformed(ActionEvent e)
 		  {
-		  	outer_menu.addNurseButtonOptions();
+		  	outer_menu.addDoctorButtonOptions();
 		  }
 		});
 
@@ -142,4 +142,4 @@ public class Nurse_Record_Lookup extends JPanel
 	} // end addActionListeners()
 
 
-} // end Nurse_Record_Lookup class
+} // end Doctor_Record_Lookup class
