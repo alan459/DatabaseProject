@@ -111,22 +111,6 @@ public class Hospital_Frame extends JFrame
 
 
 
-	/*****************************************************************************************************
-	* Removes the current screen and sets the current screen to the patient menu.
-	*
-	* [This method should probably moved to the Patient_Menu_Panel and modified since it is expected to be
-	* used as an inner panel].
-	*****************************************************************************************************/
-	/*public void getPatientLookupMenu()
-	{
-		remove(currentScreen);
-		add(currentScreen = new Patient_Lookup_Panel()); 
-
-		revalidate();
-		repaint();
-	}*/
-
-
 
 	/*****************************************************************************************************
 	* Removes the current screen and sets the current screen to the doctor menu.

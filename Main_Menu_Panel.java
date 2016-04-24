@@ -25,7 +25,7 @@ public class Main_Menu_Panel extends JPanel
 	*********************************************************************************/
 	public Main_Menu_Panel(Hospital_Frame frame) 
 	{
-		setLayout(new GridLayout(2, 2));
+		setLayout(new GridLayout(2, 4));
 
 		this.hospital_frame = frame;
 
@@ -117,9 +117,14 @@ public class Main_Menu_Panel extends JPanel
 
 	private class Update_Panel extends JPanel
 	{
-		/* Buttons to select which type of entity the user is interested in */
-		private JButton patient_button, doctor_button, nurse_button;
+		/* Button to select which type of entity the user is interested in */
+		private JButton submit_button;
 
+		/* Drop down menu for selecting which relation to insert into */
+		private JComboBox relation_selection_combo_box;
+
+		/* Options for the user to select from in the drop down menu */
+		private String[] relation_selection_options = {"Patient", "Nurse", "Doctor", "Medication", "Prescription", "Treatment"};
 
 
 		/*********************************************************************************
@@ -132,9 +137,10 @@ public class Main_Menu_Panel extends JPanel
 			initializeButtons();
 			addActionListeners();
 
-			add(patient_button);
-			add(doctor_button);
-			add(nurse_button);
+			relation_selection_combo_box = new JComboBox(relation_selection_options);
+
+			add(relation_selection_combo_box);
+			add(submit_button);
 		}
 
 
@@ -143,9 +149,7 @@ public class Main_Menu_Panel extends JPanel
 		*********************************************************************************/
 		private void initializeButtons()
 		{
-			patient_button = new JButton("Patient");
-			doctor_button = new JButton("Doctor");
-			nurse_button = new JButton("Nurse");
+			submit_button = new JButton("Submit");
 		}
 
 
@@ -155,34 +159,50 @@ public class Main_Menu_Panel extends JPanel
 		*********************************************************************************/
 		private void addActionListeners()
 		{
-			patient_button.addActionListener(new ActionListener()
+			submit_button.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					hospital_frame.changeScreen( new Insert_Patient_Menu_Panel(hospital_frame) );					    
+					fetchDropDownMenuSelection();
 				}
 
 			});
 
+		}
 
-			doctor_button.addActionListener(new ActionListener()
+		/*********************************************************************************
+		* Get the selected relation from the drop down menu and change the screen to the 
+		* panel for inserting into that selection
+		*********************************************************************************/
+		private void fetchDropDownMenuSelection()
+		{
+			String selection = relation_selection_combo_box.getSelectedItem().toString();
+			//System.out.println(selection);
+			switch(selection)
 			{
-				public void actionPerformed(ActionEvent e)
-				{
-					//hospital_frame.changeScreen();			    
-				}
+				case "Patient": 
+					hospital_frame.changeScreen(new Insert_Patient_Menu_Panel(hospital_frame));
+					break;
+				case "Nurse": 
+					hospital_frame.changeScreen(new Insert_Nurse_Menu_Panel(hospital_frame));
+					break;
+				case "Doctor": 
+					hospital_frame.changeScreen(new Insert_Doctor_Menu_Panel(hospital_frame));
+					break;
+				case "Prescription": 
+					hospital_frame.changeScreen(new Insert_Prescription_Menu_Panel(hospital_frame));
+					break;
+				case "Treatment": 
+					hospital_frame.changeScreen(new Insert_Treatment_Menu_Panel(hospital_frame));
+					break;
+				case "Medication": 
+					hospital_frame.changeScreen(new Insert_Medication_Menu_Panel(hospital_frame));
+					break;
+				default:
+					hospital_frame.changeScreen(new Insert_Doctor_Menu_Panel(hospital_frame));
+					break;
 
-			});
-
-
-			nurse_button.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					//hospital_frame.changeScreen();			    
-				}
-
-			});
+			}
 		}
 		
 
