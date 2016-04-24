@@ -1,5 +1,3 @@
-//package hos;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,9 +14,6 @@ public class Main_Menu_Panel extends JPanel
 	/* Panels displaying different options to the user */
 	private JPanel panel1, panel2;
 
-	/* Displays to the user some information as to where clicking the buttons will take them */
-	// private JLabel record_search_label;
-
 
 	/*********************************************************************************
 	* Main constructor used when creating a main menu.
@@ -27,13 +22,14 @@ public class Main_Menu_Panel extends JPanel
 	{
 		setLayout(new GridLayout(2, 4));
 
+		// establish a reference to the frame to change the displayed panel
 		this.hospital_frame = frame;
 
 		add(new Centered_Text_Panel("Access Records for: "));
 
 		add(panel1 = new Records_Panel());
 
-		add(new Centered_Text_Panel("Insert Records for: "));
+		add(new Centered_Text_Panel("Insert/Delete Records for: "));
 
 		add(panel2 = new Update_Panel());
 
@@ -124,7 +120,7 @@ public class Main_Menu_Panel extends JPanel
 		private JComboBox relation_selection_combo_box;
 
 		/* Options for the user to select from in the drop down menu */
-		private String[] relation_selection_options = {"Patient", "Nurse", "Doctor", "Medication", "Prescription", "Treatment"};
+		private String[] relation_selection_options = {"Patient", "Nurse", "Doctor", "Medication", "Prescription", "Treatment", "Procedure"};
 
 
 		/*********************************************************************************
@@ -177,27 +173,38 @@ public class Main_Menu_Panel extends JPanel
 		private void fetchDropDownMenuSelection()
 		{
 			String selection = relation_selection_combo_box.getSelectedItem().toString();
-			//System.out.println(selection);
+
+			// Switch the screen to the selected option
 			switch(selection)
 			{
 				case "Patient": 
 					hospital_frame.changeScreen(new Insert_Patient_Menu_Panel(hospital_frame));
 					break;
+
 				case "Nurse": 
 					hospital_frame.changeScreen(new Insert_Nurse_Menu_Panel(hospital_frame));
 					break;
+
 				case "Doctor": 
 					hospital_frame.changeScreen(new Insert_Doctor_Menu_Panel(hospital_frame));
 					break;
+
 				case "Prescription": 
-					hospital_frame.changeScreen(new Insert_Prescription_Menu_Panel(hospital_frame));
+					hospital_frame.changeScreen(new Prescription_Menu_Panel(hospital_frame));
 					break;
+
 				case "Treatment": 
-					hospital_frame.changeScreen(new Insert_Treatment_Menu_Panel(hospital_frame));
+					hospital_frame.changeScreen(new Treatment_Menu_Panel(hospital_frame));
 					break;
+
 				case "Medication": 
 					hospital_frame.changeScreen(new Insert_Medication_Menu_Panel(hospital_frame));
 					break;
+
+				case "Procedure":
+					hospital_frame.changeScreen(new Procedure_Menu_Panel(hospital_frame));
+					break;
+
 				default:
 					hospital_frame.changeScreen(new Insert_Doctor_Menu_Panel(hospital_frame));
 					break;
@@ -206,9 +213,7 @@ public class Main_Menu_Panel extends JPanel
 		}
 		
 
-	}
-
-
+	} // end update panel class
 
 
 

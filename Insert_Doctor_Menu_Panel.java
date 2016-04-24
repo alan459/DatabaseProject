@@ -12,19 +12,11 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 	private Hospital_Frame main_frame;
 
 	/* Button to return the screen to the main menu */
-	private JButton main_menu_button;	
+	private JButton main_menu_button, submit_button;	
 
 	/* Text fields for the user to enter intput data */
 	private JTextField ssn_field, first_name_field, m_initial_field, last_name_field, code_field;
 
-
-
-	/* Left side interface displayed to the user to lookup a doctor */
-	private JPanel doctorLookup;
-
-	/* Right side interface displayed to the user, displaying either button options or
-	* an interface based on button pressed */
-	private JPanel currentInterface;
 
 
 	/*********************************************************************************
@@ -63,7 +55,7 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 
 		add(main_menu_button);
 
-		add(new JButton("submit"));
+		add(submit_button);
 	}
 
 	/*********************************************************************************
@@ -87,6 +79,7 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 	private void initializeButtons()
 	{
 		main_menu_button = new JButton("Main Menu");
+		submit_button = new JButton("Submit");
 	}
 
 
@@ -105,11 +98,19 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 			}
 		});
 
+
+		/* Add functionality - Return user to main menu */
+		submit_button.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
+
+
 	} // end addActionListeners()
 
-
-
-	//private class 
 
 
 

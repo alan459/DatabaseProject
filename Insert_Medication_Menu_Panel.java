@@ -11,8 +11,8 @@ public class Insert_Medication_Menu_Panel extends JPanel
 	/* Pointer to the main java window to access its get() methods for other panels */
 	private Hospital_Frame main_frame;
 
-	/* Button to return the screen to the main menu */
-	private JButton main_menu_button;	
+	/* Buttons to return the screen to the main menu and submit input data */
+	private JButton submit_button, main_menu_button;	
 
 	/* Text fields for the user to enter intput data */
 	private JTextField medication_id_field, medication_name_field, medication_use_field;
@@ -36,6 +36,7 @@ public class Insert_Medication_Menu_Panel extends JPanel
 		add(new JLabel("Enter information of Medication to be added: "));
 		add(new JLabel(""));
 
+		// skip a row in the grid layout
 		add(new JLabel(""));
 		add(new JLabel(""));
 
@@ -48,14 +49,16 @@ public class Insert_Medication_Menu_Panel extends JPanel
 		add(new JLabel(" Medication Use:"));
 		add(medication_use_field);
 
+		// skip a row in the grid layout
 		add(new JLabel(""));
 		add(new JLabel(""));
 
+		// skip a row in the grid layout
 		add(new JLabel(""));
 		add(new JLabel(""));
 
 		add(main_menu_button);
-		add(new JButton("submit"));
+		add(submit_button);
 
 	}
 
@@ -77,6 +80,7 @@ public class Insert_Medication_Menu_Panel extends JPanel
 	private void initializeButtons()
 	{
 		main_menu_button = new JButton("Main Menu");
+		submit_button = new JButton("Submit");
 	}
 
 
