@@ -8,11 +8,8 @@ import java.awt.event.*;
 *****************************************************************************************************/
 public class Insert_Prescription_Menu_Panel extends JPanel 
 {
-	/* Pointer to the main java window to access its get() methods for other panels */
-	private Hospital_Frame main_frame;
-
 	/* Button to return the screen to the main menu */
-	private JButton main_menu_button, submit_button;	
+	private JButton submit_button;	
 
 	/* Text fields for the user to enter intput data */
 	private JTextField prescription_id_field, patient_ssn_field, doctor_ssn_field, prescription_date_field, medicaton_field, dosage_field;
@@ -21,10 +18,8 @@ public class Insert_Prescription_Menu_Panel extends JPanel
 	/*********************************************************************************
 	* Main constructor used for setting up the Insert_Prescription_Menu_Panel.
 	*********************************************************************************/
-	public Insert_Prescription_Menu_Panel(Hospital_Frame frame) 
+	public Insert_Prescription_Menu_Panel() 
 	{
-		this.main_frame = frame;
-
 		setLayout(new GridLayout(8, 2));
 
 		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -54,8 +49,6 @@ public class Insert_Prescription_Menu_Panel extends JPanel
 		add(new JLabel(" Dosage:"));
 		add(dosage_field);
 
-		add(main_menu_button);
-
 		add(submit_button);
 
 
@@ -83,7 +76,6 @@ public class Insert_Prescription_Menu_Panel extends JPanel
 	*********************************************************************************/
 	private void initializeButtons()
 	{
-		main_menu_button = new JButton("Main Menu");
 		submit_button = new JButton("submit");
 	}
 
@@ -94,15 +86,6 @@ public class Insert_Prescription_Menu_Panel extends JPanel
 	*********************************************************************************/
 	private void addActionListeners()
 	{
-		/* Add functionality - Return user to main menu */
-		main_menu_button.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				main_frame.getMainMenu();
-			}
-		});
-
 		/* Add functionality - Submit data in text fields */
 		submit_button.addActionListener(new ActionListener()
 		{

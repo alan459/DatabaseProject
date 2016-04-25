@@ -9,13 +9,13 @@ import java.awt.event.*;
 *****************************************************************************************************/
 public class Procedure_Menu_Panel extends JPanel 
 {
-	/* Pointer to the main java window to access its get() methods for other panels */
-	protected Hospital_Frame hospital_frame;
-
-	/* Main screen displayed to the user */ 
+	/* Main panel displayed to the user */ 
 	private JPanel current_panel;
 
-	/* Panel with 1 BUTTON to return the screen to the MAIN MENU */
+	/* Pointer to the main java window for passing to new instances of a main menu button panel */
+	protected Hospital_Frame hospital_frame;
+
+	/* Pointer to menu button panel so it can be removed when necessary */
 	private JPanel main_menu_button;	
 
 
@@ -32,7 +32,7 @@ public class Procedure_Menu_Panel extends JPanel
 
 		add(current_panel = new Procedure_Button_Options());
 
-		add(main_menu_button = new Main_Menu_Button(hospital_frame));
+		add(main_menu_button = new Main_Menu_Button(frame));
 	}
 
 	

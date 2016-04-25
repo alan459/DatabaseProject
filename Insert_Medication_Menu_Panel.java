@@ -99,6 +99,15 @@ public class Insert_Medication_Menu_Panel extends JPanel
 			}
 		});
 
+		/* Add functionality - Submit input data */
+		submit_button.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
+
 
 	} // end addActionListeners()
 

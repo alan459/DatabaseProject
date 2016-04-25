@@ -4,43 +4,40 @@ import java.awt.event.*;
 
 
 /*****************************************************************************************************
-* Displays to the user options for looking up a patient by SSN and name. 
+* Displays to the user options for looking up records for a patient by SSN. 
 *
 * Reached when the user selects the 'Patient' option next to the 'Access' label and then 'Search 
-* Patients'.
+* Records for a Patient'.
 *****************************************************************************************************/
-public class Patient_Lookup_Panel extends JPanel 
+public class Patient_Record_Lookup_Panel extends JPanel 
 {
-	private JPanel patient_output_panel;
-
+	private JPanel record_output_panel;
 
 
 	/*********************************************************************************
 	* Main constructor for setting up the patient lookup menu. 
 	*********************************************************************************/
-	public Patient_Lookup_Panel() 
+	public Patient_Record_Lookup_Panel() 
 	{
-		setLayout(new GridLayout(4, 1));
+		setLayout(new GridLayout(3, 1));
 
-		add(new Centered_Text_Panel("Lookup Patient:"));
+		add(new Centered_Text_Panel("Record Lookup:"));
 
-		add(new By_SSN_Panel());
+		add(new Lookup_Panel());
 
-		add(new By_Name_Panel());		
-
-		add(new Patient_Info_Output());
+		add(new Record_Output());
 	}
 
 	/*********************************************************************************
 	* Display new output information for a patient, if any output is currently being
 	* displayed, remove it first.
 	*********************************************************************************/
-	protected void displayNewPatientOutput(JPanel output)
+	protected void displayNewRecordOutput(JPanel output)
 	{	
-		if(patient_output_panel != null)
-			remove(patient_output_panel);
+		if(record_output_panel != null)
+			remove(record_output_panel);
 
-		add(patient_output_panel = output);
+		add(record_output_panel = output);
 
 	}
 
@@ -48,48 +45,47 @@ public class Patient_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Panel for displaying option for getting patient output data from ssn input.
+	* Panel for displaying to the user options for selecting the type of record to 
+	* access and the ssn of the patient for which to access it.
 	*********************************************************************************/
-	protected class By_SSN_Panel extends JPanel
+	protected class Lookup_Panel extends JPanel
 	{
 		private JTextField ssn_field;
 
-		private String ssn;
+		private String selected_record_type, ssn;
 
+		private String record_types = {"Treatments", "Procedures", "Prescriptions"};
+
+		private JComboBox record_types_combo_box;
 
 		/***********************************************************************
-		* Main constructor for By_SSN_Panel.
+		* Main constructor for Lookup_Panel.
 		***********************************************************************/
-		public By_SSN_Panel()
+		public Lookup_Panel()
 		{
-			setLayout(new GridLayout(4, 3));
+			setLayout(new GridLayout(2, 4));
 
-			add(new Centered_Text_Panel("by:"));
-			add(new Centered_Text_Panel("SSN"));
+			add(new Centered_Text_Panel("Lookup"));
+			add(record_types_combo_box = new JComboBox(record_types));
+			add(new Centered_Text_Panel(" for patient with SSN "));
 			add(ssn_field = new JTextField(8));
 
 			add(new Centered_Text_Panel(""));
 			add(new Centered_Text_Panel(""));
 			add(new Centered_Text_Panel(""));
-
-			add(new Centered_Text_Panel(""));
 			add(new Submit_Button());
-
-			add(new Centered_Text_Panel(""));
-			add(new Centered_Text_Panel(""));
-			add(new Centered_Text_Panel(""));
 		}
 
 
 		/***********************************************************************
-		* Submit button to retrieve data from ssn field and display patient info
-		* for the patient with that ssn.
+		* Submit button to retrieve data from ssn field and type of record to 
+		* lookup and display record info for the patient with that ssn.
 		***********************************************************************/
 		private class Submit_Button extends JButton
 		{
 
 			/***********************************************************
-			* Main constructor for Submit_Button in By_SSN_Panel.
+			* Main constructor for Submit_Button in Lookup_Panel.
 			***********************************************************/
 			public Submit_Button()
 			{
@@ -131,100 +127,14 @@ public class Patient_Lookup_Panel extends JPanel
 				return false;	
 			}
 
-			// if this point is reached age and ssn were successfully retrieved
-			return true;
-
-		}
-
-
-	} // end By_SSN_Panel class
-
-
-
-
-
-
-	/*********************************************************************************
-	* Panel for displaying option for getting patient output data from name input.
-	*********************************************************************************/
-	protected class By_Name_Panel extends JPanel
-	{
-		private JTextField first_name_field, m_initial_field, last_name_field;
-
-		private String first_name, m_initial, last_name;
-
-
-		/***********************************************************************
-		* Main constructor for By_Name_Panel.
-		***********************************************************************/
-		public By_Name_Panel()
-		{
-			setLayout(new GridLayout(4, 3));
-
-			add(new Centered_Text_Panel("by:"));
-			add(new Centered_Text_Panel("First Name"));
-			add(first_name_field = new JTextField(8));
-
-			add(new Centered_Text_Panel(""));
-			add(new Centered_Text_Panel("Middle Initial"));
-			add(last_name_field = new JTextField(1));
-
-			add(new Centered_Text_Panel(""));
-			add(new Centered_Text_Panel("Last Name"));
-			add(last_name_field = new JTextField(8));
-
-			add(new Centered_Text_Panel(""));
-			add(new Submit_Button());
-		}
-
-
-		/***********************************************************************
-		* Submit button to retrieve data from the name fields and display
-		* patient info for the patient with matching name fields.
-		***********************************************************************/
-		private class Submit_Button extends JButton
-		{
-
-			/***********************************************************
-			* Main constructor for Submit_Button in By_Name_Panel.
-			***********************************************************/
-			public Submit_Button()
-			{
-				super("Submit");
-
-				addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						loadText();
-
-						// pass ssn input into patient instance to lookup tuple
-						
-						// create new instance of output panel to display result
-					}
-				});
-			}
-
-		} // end Submit_Button class
-
-
-
-		/******************************************************************
-		* Load input from ssn field into corresponding string variable.
-		*
-		* If load is successful, true is returned, otherwise false
-		* is returned.
-		******************************************************************/
-		private boolean loadText()
-		{
-			// get ssn from field
+			// get record type from combo box
 			try
 			{
-				first_name = first_name_field.getText();
+				selected_record_type = record_types_combo_box.getText();
 			} 
 			catch (Exception e)
 			{
-				JOptionPane.showMessageDialog(new JPanel(), "SSN input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JPanel(), "Selected Record Type could not be read", "Error", JOptionPane.ERROR_MESSAGE);
 				return false;	
 			}
 
@@ -234,10 +144,11 @@ public class Patient_Lookup_Panel extends JPanel
 		}
 
 
-	} // end By_Name_Panel class
+	} // end Lookup_Panel class
 
 
 
+// checkpoint
 
 	/*********************************************************************************
 	* Panel for displaying patient info output data based on input data from the user.
@@ -245,7 +156,7 @@ public class Patient_Lookup_Panel extends JPanel
 	protected class Patient_Info_Output extends JPanel
 	{
 		/***********************************************************************
-		* Default constructor for Patient_Info_Output.
+		* Default constructor for By_Name_Panel.
 		***********************************************************************/
 		public Patient_Info_Output()
 		{
@@ -269,7 +180,7 @@ public class Patient_Lookup_Panel extends JPanel
 
 
 		/***********************************************************************
-		* Primary constructor for Patient_Info_Output.
+		* Primary constructor for By_Name_Panel.
 		***********************************************************************/
 		public Patient_Info_Output(String name, String dob, String ssn, String room)
 		{
@@ -277,7 +188,7 @@ public class Patient_Lookup_Panel extends JPanel
 
 			add(new Centered_Text_Panel("Patient Info:"));
 			add(new Centered_Text_Panel(""));
-
+			
 			add(new Centered_Text_Panel("Name:"));
 			add(new Centered_Text_Panel(name));
 

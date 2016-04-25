@@ -11,6 +11,7 @@ public class Main_Menu_Button extends JPanel
 
 		JButton main_menu_button = new JButton("Main Menu");
 
+
 		/* Add functionality - Return user to main menu */
 		main_menu_button.addActionListener(new ActionListener()
 		{
@@ -19,6 +20,7 @@ public class Main_Menu_Button extends JPanel
 				hospital_frame.changeScreen(new Main_Menu_Panel(hospital_frame));
 			}
 		});
+		
 
 		add(main_menu_button);
 

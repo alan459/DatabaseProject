@@ -9,20 +9,18 @@ import java.awt.event.*;
 * INNER JPanel to be used as a display of the button options for the user 
 * on the right side of the window to select an interface.
 *********************************************************************************/
-public class Interface_Option_Buttons extends JPanel
+public class Patient_Button_Options extends JPanel
 {
-	private Patient_Menu_Panel outerPanel;
-
 	/* Input submission buttons */
-	private JButton updateInfoButton, recordLookupButton, modifyTreatmentButton;
+	private JButton modify_treatment_button, modify_patient_info_button, lookup_patients_button, lookup_records_button;
 
 
 
 	/*********************************************************************************
-	* Main constructor for the Interface_Option_Buttons class used for setting up 
+	* Main constructor for the Patient_Button_Options class used for setting up 
 	* the interface menu options.
 	*********************************************************************************/
-	public Interface_Option_Buttons(Patient_Menu_Panel outer)
+	public Patient_Button_Options()
 	{
 		this.outerPanel = outer;
 
@@ -38,7 +36,7 @@ public class Interface_Option_Buttons extends JPanel
 
 
 	/*********************************************************************************
-	* Initializes the buttons for Interface_Option_Buttons.
+	* Initializes the buttons for Patient_Button_Options.
 	*********************************************************************************/
 	private void initializeButtons()
 	{
@@ -50,7 +48,7 @@ public class Interface_Option_Buttons extends JPanel
 
 
 	/*********************************************************************************
-	* Adds the action listeners for Interface_Option_Buttons.
+	* Adds the action listeners for Patient_Button_Options.
 	*********************************************************************************/
 	private void addActionListeners()
 	{
@@ -83,4 +81,4 @@ public class Interface_Option_Buttons extends JPanel
 	} // end addActionListeners()
 
 
-} // end Interface_Option_Buttons class
+} // end Patient_Button_Options class
