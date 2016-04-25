@@ -100,9 +100,9 @@ public class Patient_Record_Lookup_Panel extends JPanel
 						loadText();
 
 						// pass ssn input into patient instance to lookup tuple
-
+						
 						// create new instance of output panel to display result
-						displayNewRecordOutput(new Patient_Record_Output(selected_record_type, ""));
+						//displayNewRecordOutput(new Patient_Record_Output(result));
 					}
 				});
 			}
@@ -169,11 +169,14 @@ public class Patient_Record_Lookup_Panel extends JPanel
 		/***********************************************************************
 		* Primary constructor for Patient_Record_Output.
 		***********************************************************************/
-		public Patient_Record_Output(String relation, String results)
+		public Patient_Record_Output(String result)
 		{
-			add(new Centered_Text_Panel("Results:"));
+			setLayout(new GridLayout(2, 1));
 
-			switch(relation)
+			add(new Centered_Text_Panel("Results:"));
+			add(new JTextField(result));
+
+			/*switch(relation)
 			{
 				case "Treatments":
 					add(new Tuple_Display_Panel(Relation_Attributes.treatment, results));
@@ -189,7 +192,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 				default:
 					break;				
-			}
+			}*/
 			
 
 		}
