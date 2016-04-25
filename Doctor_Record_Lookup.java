@@ -1,5 +1,3 @@
-//package hos;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,7 +25,7 @@ public class Doctor_Record_Lookup extends JPanel
 	private JButton return_button;
 
 	/* Types of records that can be looked up for a Doctor */
-	private String[] doctor_record_options = {"Supervisor"};
+	private String[] doctor_record_options = {"Patient List", "Nurse List", "Procedures", "Prescriptions", "Treatments"};
 
 	/* Allows the user to select from the types of records that can be
 	*  looked up for a Doctor */

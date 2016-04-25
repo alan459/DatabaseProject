@@ -1,158 +1,178 @@
-//package hos;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 
+
 /*****************************************************************************************************
 * A Doctor menu to display to the user 2 panels, 1 for looking up a Doctor on the left side of the 
-* window, and a 2nd on the right side which is selected from x options from buttons.
+* window, and a 2nd on the right side which is selected from 3 options from buttons for updating 
+* Doctor info, Doctor record lookup, and modify treatment plan.
 *****************************************************************************************************/
 public class Doctor_Menu_Panel extends JPanel 
 {
-
 	/* Pointer to the main java window to access its get() methods for other panels */
-	private Hospital_Frame hospital_frame;
+	protected Hospital_Frame main_frame;
 
-	/* BUTTON to return the screen to the MAIN MENU */
-	private JButton main_menu_button;	
+	/* Button to return the screen to the main menu */
+	protected JPanel main_menu_button;	
 
-	/* Main LABELS for displaying the options on this panel - largest text blocks, above
-	*  each inner panel */
-	private JLabel doctor_lookup_label, record_lookup_label;
-
-	/* LEFT SIDE interface displayed to the user to lookup a Doctor */
-	private JPanel left_side_panel;
-
-	/* RIGHT SIDE interface displayed to the user, displaying either button options or
-	*  an interface based on button pressed */
-	private JPanel right_side_panel;
-
+	/* Current interface displayed to the user, displaying either button options or an interface based 
+	* on button pressed */
+	protected JPanel current_panel;
 
 
 
 	/*********************************************************************************
 	* Main constructor used for setting up the Doctor_Menu_Panel.
 	*********************************************************************************/
-	public Doctor_Menu_Panel ( Hospital_Frame  frame ) 
+	public Doctor_Menu_Panel(Hospital_Frame main) 
 	{
-		this.hospital_frame = frame;
+		this.main_frame = main;
 
-		setLayout(new GridBagLayout());
-		initializeButtons();
-		initializeLabels();
-		addActionListeners();
+		//setLayout(new GridLayout(2, 1));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		add(main_menu_button);
+		add(current_panel = new Doctor_Button_Options());
 
-		//add(doctor_lookup_label);
-		add(left_side_panel = new Doctor_Lookup_Panel());
-		//setLayout(new FlowLayout());
+		// skip a row in the grid layout
+		//add(new JLabel(""));
 
-		//add(record_lookup_label);
-		add(right_side_panel = new Doctor_Button_Options(this)); 
-		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		
+		add(main_menu_button = new Main_Menu_Button(main_frame));
 
 
 	}
 
 
 
-	/*********************************************************************************
-	* Initializes the buttons for Doctor_Menu_Panel.
-	*********************************************************************************/
-	private void initializeButtons()
-	{
-		main_menu_button = new JButton("Main Menu");
-	}
-
-
 
 	/*********************************************************************************
-	* Initializes the buttons for Doctor_Menu_Panel.
+	* Switches the current main panel to the passed in one.
 	*********************************************************************************/
-	private void initializeLabels()
+	protected void changeCurrentPanel(JPanel panel)
 	{
-		doctor_lookup_label = new JLabel("Doctor Lookup");
-		record_lookup_label = new JLabel("Record Lookup");
-	}
+		// get rid of all components currently on the main_screen
+		removeAll();
+
+		add(current_panel = panel);
+
+		// re-add the main menu button so it appears after the panel again
+		add(main_menu_button = new Main_Menu_Button(main_frame));
+
+		revalidate();
+		repaint();
+
+	} // end changeCurrentPanel()
+
+
+
+
 
 
 
 	/*********************************************************************************
-	* Adds the action listeners for Doctor_Menu_Panel.
+	* Different button options for the user for interacting with the Doctor tuples
+	* in the database.
 	*********************************************************************************/
-	private void addActionListeners()
+	protected class Doctor_Button_Options extends JPanel
 	{
-		/* Add functionality - Return user to main menu */
-		main_menu_button.addActionListener(new ActionListener()
+		/*********************************************************************************
+		* Main constructor for the Doctor_Button_Options class.
+		*********************************************************************************/	
+		public Doctor_Button_Options()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		  	hospital_frame.getMainMenu();
-		  }
-		});
+			setLayout(new GridBagLayout());
 
-	} // end addActionListeners()
-
-
-
-	/*********************************************************************************
-	* Removes any panel displayed on the right side of the Doctor menu window and
-	* adds 2 buttons options:
-	*
-	* ['DOCTOR RECORD LOOKUP','MODIFY DOCTOR INFO']
-	*
-	* Switches right_side_panel to an instance of Interface_Option_Buttons.
-	*********************************************************************************/
-	public void addDoctorButtonOptions()
-	{
-		//if(right_side_panel != null)
-		{
-			remove(right_side_panel);
+			add(new Search_Doctors_Button());
+			add(new Search_Records_Doctors_Button());
 		}
 
-		add(right_side_panel = new Doctor_Button_Options(this));
-		revalidate();
-		repaint();
-	}
+
+
+		/*********************************************************************************
+		* Button to take user to search Doctors panel by switching the current panel
+		* to an instance of Search_Doctors_Panel.
+		*********************************************************************************/
+		private class Search_Doctors_Button extends JButton
+		{
+			public Search_Doctors_Button()
+			{
+				super("Search Doctors");
+
+				addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						changeCurrentPanel(new Doctor_Lookup_Panel());
+					}
+				});
+			}
+
+		}
+
+
+
+		/*********************************************************************************
+		* Button to take user to search Doctors panel by switching the current panel
+		* to an instance of Search_Records_Doctors_Panel.
+		*********************************************************************************/
+		private class Search_Records_Doctors_Button extends JButton
+		{
+			/******************************************************************
+			* Main constructor for Search_Records_Doctors_Button.
+			******************************************************************/
+			public Search_Records_Doctors_Button()
+			{
+				super("Search Records for a Doctor");
+
+				addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						changeCurrentPanel(new Doctor_Record_Lookup_Panel());
+					}
+				});
+			}
+
+		}
+
+	} // end Doctor_Button_Options class
+
+
+
+
+
+
+
 
 
 
 	/*********************************************************************************
-	* Replaces the button interface with a Doctor lookup interface when the 
-	* 'DOCTOR RECORD LOOKUP' button is pressed in the button interface. 
-	*
-	* Switches right_side_panel from Interface_Option_Buttons to Doctor_Lookup_Panel.
+	* Returns the user to the Doctor menu.
 	*********************************************************************************/
-	public void addDoctorRecordLookup()
+	private class Back_Button extends JButton
 	{
-		remove(right_side_panel);
-		add(right_side_panel = new Doctor_Record_Lookup(this));
-		revalidate();
-		repaint();
-	}
+		/******************************************************************
+		* Main constructor for Back_Button.
+		******************************************************************/
+		public Back_Button()
+		{
+			super("<- Back");
+
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					changeCurrentPanel(new Doctor_Button_Options());
+					//main_frame.changeScreen(new Doctor_Menu_Panel(main_frame));
+				}
+			});
+
+		}
+
+	} // end Back_Button class
 
 
-
-	/*********************************************************************************
-	* Replaces the button interface with a Doctor lookup interface when the 
-	* 'MODIFY DOCTOR INFO' button is pressed in the button interface. 
-	*
-	* Switches right_side_panel from Doctor_Button_Options to Modify_Doctor_Info_Panel.
-	*********************************************************************************/
-	public void addModifyDoctorInfo()
-	{
-		remove(right_side_panel);
-		add(right_side_panel = new Modify_Doctor_Info_Panel(this));
-		revalidate();
-		repaint();
-	}
-
-	//public static void main(String[] args)
-	{}
 
 
 } // end Doctor menu class

@@ -12,7 +12,7 @@ public class Main_Menu_Panel extends JPanel
 	protected Hospital_Frame hospital_frame;
 
 	/* Panels displaying different options to the user */
-	private JPanel panel1, panel2;
+	private JPanel access_panel, insert_delete_panel;
 
 
 	/*********************************************************************************
@@ -27,95 +27,122 @@ public class Main_Menu_Panel extends JPanel
 
 		add(new Centered_Text_Panel("Access Records for: "));
 
-		add(panel1 = new Records_Panel());
+		add(access_panel = new Records_Panel());
 
 		add(new Centered_Text_Panel("Insert/Delete Records for: "));
 
-		add(panel2 = new Update_Panel());
+		add(insert_delete_panel = new Update_Panel());
 
 	}
 
 
 
-
+	/*********************************************************************************
+	* Upper half of the main menu, displaying the buttons for accessing and modifying 
+	* the relations: patient, nurse, doctor.
+	*********************************************************************************/
 	private class Records_Panel extends JPanel
 	{
-		/* Buttons to select which type of entity the user is interested in */
-		private JButton patient_button, doctor_button, nurse_button;
-
 
 		/*********************************************************************************
-		* Main constructor used when creating a records panel.
+		* Main constructor used when creating Records_Panel.
 		*********************************************************************************/
 		public Records_Panel() 
 		{
 			setLayout(new GridBagLayout());
-			initializeButtons();
-			addActionListeners();
 
-			add(patient_button);
-			add(doctor_button);
-			add(nurse_button);
+			add(new Patient_Button());
+			add(new Doctor_Button());
+			add(new Nurse_Button());
 		}
 
 
-		/*********************************************************************************
-		* Initialize the buttons for the main menu.
-		*********************************************************************************/
-		private void initializeButtons()
+
+		/******************************************************************************
+		* Patient button for Records_Panel class.
+		******************************************************************************/
+		private class Patient_Button extends JButton
 		{
-			patient_button = new JButton("Patient");
-			doctor_button = new JButton("Doctor");
-			nurse_button = new JButton("Nurse");
-		}
+			/******************************************************************
+			* Main constructor for Patient_Button
+			******************************************************************/
+			public Patient_Button()
+			{
+				// name the button
+				super("Patient");
+
+				addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						hospital_frame.changeScreen( new Patient_Menu_Panel(hospital_frame) );		
+					}
+				});
+			}
+
+		} // end class Patient_Button
 
 
-		
-		/*********************************************************************************
-		* Adds the action listeners for the main menu.
-		*********************************************************************************/
-		private void addActionListeners()
+
+
+		/******************************************************************************
+		* Doctor button for Records_Panel class.
+		******************************************************************************/
+		private class Doctor_Button extends JButton
 		{
-			patient_button.addActionListener(new ActionListener()
+			/******************************************************************
+			* Main constructor for Doctor_Button
+			******************************************************************/
+			public Doctor_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				// name the button
+				super("Doctor");
+
+				addActionListener(new ActionListener()
 				{
-					hospital_frame.changeScreen( new Patient_Menu_Panel(hospital_frame) );			    
-				}
+					public void actionPerformed(ActionEvent e)
+					{
+						hospital_frame.changeScreen( new Doctor_Menu_Panel(hospital_frame) );		
+					}
+				});
+			}
+		} // end class Doctor_Button
 
-			});
 
-
-			doctor_button.addActionListener(new ActionListener()
+		/******************************************************************************
+		* Nurse button for Records_Panel class.
+		******************************************************************************/
+		private class Nurse_Button extends JButton
+		{
+			/******************************************************************
+			* Main constructor for Nurse_Button
+			******************************************************************/
+			public Nurse_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				// name the button
+				super("Nurse");
+
+				addActionListener(new ActionListener()
 				{
-					hospital_frame.changeScreen( new Doctor_Menu_Panel(hospital_frame) );		    
-				}
-
-			});
-
-
-			nurse_button.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					hospital_frame.changeScreen( new Nurse_Menu_Panel(hospital_frame) );		    
-				}
-
-			});
-		}
+					public void actionPerformed(ActionEvent e)
+					{
+						hospital_frame.changeScreen( new Nurse_Menu_Panel(hospital_frame) );		
+					}
+				});
+			}
+		} // end class Nurse_Button
 
 	} // end Records class
 
 
 
-
+	/*********************************************************************************
+	* Bottom half of the main menu, displaying a dropdown menu for inserting and deleting
+	* in the relations "Patient", "Nurse", "Doctor", "Medication", "Prescription", 
+	* "Treatment", "Procedure".
+	*********************************************************************************/
 	private class Update_Panel extends JPanel
 	{
-		/* Button to select which type of entity the user is interested in */
-		private JButton submit_button;
-
 		/* Drop down menu for selecting which relation to insert into */
 		private JComboBox relation_selection_combo_box;
 
@@ -130,40 +157,35 @@ public class Main_Menu_Panel extends JPanel
 		{
 			setLayout(new GridBagLayout());
 
-			initializeButtons();
-			addActionListeners();
-
 			relation_selection_combo_box = new JComboBox(relation_selection_options);
 
 			add(relation_selection_combo_box);
-			add(submit_button);
+
+			add(new Submit_Button());
 		}
 
 
-		/*********************************************************************************
-		* Initialize the buttons for the insert patient button in the main menu.
-		*********************************************************************************/
-		private void initializeButtons()
+		/******************************************************************************
+		* Submit button for Update_Panel class.
+		******************************************************************************/
+		private class Submit_Button extends JButton
 		{
-			submit_button = new JButton("Submit");
-		}
-
-
-		
-		/*********************************************************************************
-		* Adds the action listeners for the nsert patient button in the main menu.
-		*********************************************************************************/
-		private void addActionListeners()
-		{
-			submit_button.addActionListener(new ActionListener()
+			/******************************************************************
+			* Main constructor for Submit_Button
+			******************************************************************/
+			public Submit_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				// name the button
+				super("Submit");
+
+				addActionListener(new ActionListener()
 				{
-					fetchDropDownMenuSelection();
-				}
-
-			});
-
+					public void actionPerformed(ActionEvent e)
+					{
+						fetchDropDownMenuSelection();
+					}
+				});
+			}
 		}
 
 		/*********************************************************************************

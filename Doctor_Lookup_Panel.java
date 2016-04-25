@@ -1,31 +1,19 @@
-//package hos;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 
 /*****************************************************************************************************
-* To be used as the leftside INNER panel as part of a larger panel containing all the options for 
-* the user. 
-*
 * A display for the user to lookup Doctors in the database.
 *****************************************************************************************************/
 public class Doctor_Lookup_Panel extends JPanel 
 {
-	//private JPanel mainPanel;
-
-	/* Input submission buttons */
-	private JButton ssn_lookup_button, info_lookup_button; //, recordLookupButton;		
-
-	/* Display to the user what type of information is being displayed in the adjacent position */
-	private JLabel enter_ssn_label, enter_first_name_label, enter_last_name_label, enter_dob_label, doctor_lookup_label;	
-
-	/* Labels for displaying output data */
-	private JLabel doctor_info_label, doctor_name_output_label, doctor_ssn_output_label, doctor_dob_output_label;
+	/* Panel for displaying output data - deleted and re-added afer every click of 'submit' */
+	private JPanel doctor_output_panel;
 
 	/* Fields for getting input from the user */
-	private JTextField ssn_lookup_field, first_name_field, last_name_field, dob_field;	
+	private JTextField ssn_field;	
+	private String ssn;
 
 
 
@@ -34,81 +22,144 @@ public class Doctor_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	public Doctor_Lookup_Panel() 
 	{
-		//this.mainFrame = main;
-
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		initializeLabels();
-		initializeButtons();
 		initializeTextFields();
-		addActionListeners();
 
 		// add the components to the panel
-		add(doctor_lookup_label);
-		//add(recordLookupLabel);
-		add(enter_ssn_label);
-		add(ssn_lookup_field);
-		add(ssn_lookup_button);
+		add(new JLabel("Doctor Lookup"));
 
-		add(enter_first_name_label);
-		add(first_name_field);
+		add(new JLabel("by: SSN"));
+		add(ssn_field);
+		add(new Submit_Button());
 
-		add(enter_last_name_label);
-		add(last_name_field);
+		add(new JLabel("Doctor Info:"));
 
-		add(enter_dob_label);
-		add(dob_field);
-
-		add(info_lookup_button);
-
-		// add labels that will display output info for Doctors 
-		// labels will be appended with the Doctor info after 'submit'
-		// clicked (ex: ssn - setText(getSSNText() + ssn) )
-		add(doctor_info_label);
-		add(doctor_name_output_label);
-		add(doctor_ssn_output_label);
-		add(doctor_dob_output_label);
-
-
-		//add(recordLookupButton);
-		//add(mainMenuButton);
+		add(new Doctor_Info_Output());
 	}
 
 
 	/*********************************************************************************
-	* Initializes the labels for the Doctor lookup menu.
+	* Display new output information for a doctor, if any output is currently being
+	* displayed, remove it first.
 	*********************************************************************************/
-	private void initializeLabels()
-	{
-		doctor_lookup_label = new JLabel("Doctor Lookup");
-		//recordLookupLabel = new JLabel("Record Lookup");
+	protected void displayNewDoctorOutput(JPanel output)
+	{	
+		if(doctor_output_panel != null)
+			remove(doctor_output_panel);
 
-		enter_ssn_label = new JLabel("\nby ssn:");
+		add(doctor_output_panel = output);
 
-		enter_first_name_label = new JLabel("\n\nby first:");
-		enter_last_name_label = new JLabel("by last:");
-
-		enter_dob_label = new JLabel("dob:");
-
-
-		doctor_info_label = new JLabel("Doctor Info:");
-
-		doctor_name_output_label = new JLabel("Name:");
-		doctor_ssn_output_label = new JLabel("SSN:");
-		doctor_dob_output_label = new JLabel("DOB:");
 	}
+
+
+	/******************************************************************************
+	* Submit button for Doctor_Lookup_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
+	{
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
+		{
+			super("Submit");
+
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadText();
+
+					// pass input into Doctor instance to modify tuple
+					// Doctor doc = new Doctor(ssn);
+					// * somehow get string of doctors name, ssn, code from instance *  and then:
+
+					// extract fields from string and pass to doctor:
+					// displayNewDoctorOutput(new Doctor_Info_Output(doctorsName, doctorsSSN, doctorsCode)); 
+					// ^ doctorsName = firstname + lastname combined
+
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable.
+		*
+		* If load is successful, true is returned, otherwise false
+		* is returned.
+		******************************************************************/
+		private boolean loadText()
+		{
+			// get ssn from field
+			try
+			{
+				ssn = ssn_field.getText();
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "SSN input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+			// if this point is reached age and ssn were successfully retrieved
+			return true;
+
+		}
+
+	} // end Submit_Button class
+
 
 
 	/*********************************************************************************
-	* Initializes the buttons for the Doctor lookup menu.
+	* Panel for displaying Doctor info output data based on input data from the user.
 	*********************************************************************************/
-	private void initializeButtons()
+	protected class Doctor_Info_Output extends JPanel
 	{
-		ssn_lookup_button = new JButton("Submit");
-		info_lookup_button = new JButton("Submit");
-		//recordLookupButton = new JButton("Submit");
-		//mainMenuButton = new JButton("Main Menu");
-	}
+		/***********************************************************************
+		* Default constructor for Doctor_Info_Output, initializing empty results.
+		***********************************************************************/
+		public Doctor_Info_Output()
+		{
+			setLayout(new GridLayout(5, 2));
+
+			add(new Centered_Text_Panel("Doctor Info:"));
+			add(new Centered_Text_Panel(""));
+
+			add(new Centered_Text_Panel("Name:"));
+			add(new Centered_Text_Panel("<First><M><Last>"));
+
+			add(new Centered_Text_Panel("SSN:"));
+			add(new Centered_Text_Panel("ddd-dd-dddd"));
+
+			add(new Centered_Text_Panel("Dcode:"));
+			add(new Centered_Text_Panel("ddddd"));
+		}
+
+
+		/***********************************************************************
+		* Primary constructor for Doctor_Info_Output.
+		***********************************************************************/
+		public Doctor_Info_Output(String name, String dssn, String dcode)
+		{
+			add(new Centered_Text_Panel("Doctor Info:"));
+			add(new Centered_Text_Panel(""));
+
+			add(new Centered_Text_Panel("Name:"));
+			add(new Centered_Text_Panel(name));
+
+			add(new Centered_Text_Panel("Doctor SSN:"));
+			add(new Centered_Text_Panel(dssn));
+
+			add(new Centered_Text_Panel("Doctor Code:"));
+			add(new Centered_Text_Panel(dcode));
+		}
+
+
+	} // end Doctor_Info_Output class
+
+
 
 
 	/*********************************************************************************
@@ -116,70 +167,8 @@ public class Doctor_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	private void initializeTextFields()
 	{
-		ssn_lookup_field = new JTextField(10);
-		first_name_field = new JTextField(10);
-		last_name_field = new JTextField(10);
-		dob_field = new JTextField(10);
+		ssn_field = new JTextField(10);
 	}
 
-
-	/*********************************************************************************
-	* Adds the action listeners for the Doctor lookup menu.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Lookup a Doctor based on ssn */
-		ssn_lookup_button.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				String ssn = getSSNData();
-				if (ssn != null)
-				{
-					// pass the ssn data to a method that lookups Doctor data and returns it as a string
-					// String DoctorData = getDoctorData(ssn);
-					//displayDoctorData(DoctorData); 
-				}
-				else
-				{
-					// display error message somewhere
-				}
-			}
-		});
-
-		/* Add functionality - Submit info button */
-		info_lookup_button.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-					
-			}
-		});
-	}
-
-
-	/*********************************************************************************
-	* Returns the input in the "lookup Doctor by ssn" field.
-	*********************************************************************************/
-	private String getSSNData()
-	{
-		try 
-		{
-			return ssn_lookup_field.getText();
-		} 
-		catch (Exception e) 
-		{
-			return null;
-		}
-	}
-
-
-	/*********************************************************************************
-	* Fills the Doctor display fields with a Doctor's data.
-	*********************************************************************************/
-	private void displayDoctorData(String data)
-	{
-
-	}
 
 } // end Doctor lookup class

@@ -1,5 +1,3 @@
-//package hos;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -13,19 +11,17 @@ import java.awt.event.*;
 *****************************************************************************************************/
 public class Nurse_Lookup_Panel extends JPanel 
 {
-	//private JPanel mainPanel;
-
 	/* Input submission buttons */
-	private JButton ssn_lookup_button, info_lookup_button; //, recordLookupButton;		
+	private JButton ssn_lookup_button; //, recordLookupButton;		
 
 	/* Display to the user what type of information is being displayed in the adjacent position */
-	private JLabel enter_ssn_label, enter_first_name_label, enter_last_name_label, enter_dob_label, nurse_lookup_label;	
+	private JLabel enter_ssn_label, nurse_lookup_label;	
 
 	/* Labels for displaying output data */
 	private JLabel nurse_info_label, nurse_name_output_label, nurse_ssn_output_label, nurse_dob_output_label;
 
 	/* Fields for getting input from the user */
-	private JTextField ssn_lookup_field, first_name_field, last_name_field, dob_field;	
+	private JTextField ssn_lookup_field;	
 
 
 
@@ -34,8 +30,6 @@ public class Nurse_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	public Nurse_Lookup_Panel() 
 	{
-		//this.mainFrame = main;
-
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		initializeLabels();
@@ -49,17 +43,6 @@ public class Nurse_Lookup_Panel extends JPanel
 		add(enter_ssn_label);
 		add(ssn_lookup_field);
 		add(ssn_lookup_button);
-
-		add(enter_first_name_label);
-		add(first_name_field);
-
-		add(enter_last_name_label);
-		add(last_name_field);
-
-		add(enter_dob_label);
-		add(dob_field);
-
-		add(info_lookup_button);
 
 		// add labels that will display output info for nurses 
 		// labels will be appended with the nurse info after 'submit'
@@ -85,12 +68,6 @@ public class Nurse_Lookup_Panel extends JPanel
 
 		enter_ssn_label = new JLabel("\nby ssn:");
 
-		enter_first_name_label = new JLabel("\n\nby first:");
-		enter_last_name_label = new JLabel("by last:");
-
-		enter_dob_label = new JLabel("dob:");
-
-
 		nurse_info_label = new JLabel("Nurse Info:");
 
 		nurse_name_output_label = new JLabel("Name:");
@@ -105,9 +82,6 @@ public class Nurse_Lookup_Panel extends JPanel
 	private void initializeButtons()
 	{
 		ssn_lookup_button = new JButton("Submit");
-		info_lookup_button = new JButton("Submit");
-		//recordLookupButton = new JButton("Submit");
-		//mainMenuButton = new JButton("Main Menu");
 	}
 
 
@@ -117,9 +91,6 @@ public class Nurse_Lookup_Panel extends JPanel
 	private void initializeTextFields()
 	{
 		ssn_lookup_field = new JTextField(10);
-		first_name_field = new JTextField(10);
-		last_name_field = new JTextField(10);
-		dob_field = new JTextField(10);
 	}
 
 
@@ -131,30 +102,22 @@ public class Nurse_Lookup_Panel extends JPanel
 		/* Add functionality - Lookup a nurse based on ssn */
 		ssn_lookup_button.addActionListener(new ActionListener()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		    	String ssn = getSSNData();
-		    	if (ssn != null)
-		    	{
-		    		// pass the ssn data to a method that lookups nurse data and returns it as a string
-		    		// String nurseData = getnurseData(ssn);
-		    		//displaynurseData(nurseData); 
-		    	}
-		    	else
-		    	{
-		    		// display error message somewhere
-		    	}
-		  }
-		});
+			public void actionPerformed(ActionEvent e)
+			{
+				String ssn = getSSNData();
+				if (ssn != null)
+				{
+					// pass the ssn data to a method that lookups nurse data and returns it as a string
+					// String nurseData = getnurseData(ssn);
+					//displaynurseData(nurseData); 
+				}
+				else
+				{
+					// display error message somewhere
+				}
+			}
+			});
 
-		/* Add functionality - Submit info button */
-		info_lookup_button.addActionListener(new ActionListener()
-		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		   		
-		  }
-		});
 	}
 
 
