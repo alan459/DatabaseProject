@@ -155,7 +155,7 @@ public class Patient_Menu_Panel extends JPanel
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						//changeCurrentPanel(new Search_Records_Patients_Panel());
+						changeCurrentPanel(new Patient_Record_Lookup_Panel());
 					}
 				});
 			}

@@ -25,7 +25,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 		add(new Lookup_Panel());
 
-		add(new Record_Output());
+		add(new Patient_Record_Output());
 	}
 
 	/*********************************************************************************
@@ -54,7 +54,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 		private String selected_record_type, ssn;
 
-		private String record_types = {"Treatments", "Procedures", "Prescriptions"};
+		private String[] record_types = {"Treatments", "Procedures", "Prescriptions"};
 
 		private JComboBox record_types_combo_box;
 
@@ -100,6 +100,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 						// pass ssn input into patient instance to lookup tuple
 
 						// create new instance of output panel to display result
+						displayNewRecordOutput(new Patient_Record_Output(selected_record_type, ""));
 					}
 				});
 			}
@@ -130,7 +131,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 			// get record type from combo box
 			try
 			{
-				selected_record_type = record_types_combo_box.getText();
+				selected_record_type = record_types_combo_box.getSelectedItem().toString();
 			} 
 			catch (Exception e)
 			{
@@ -148,62 +149,50 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 
 
-// checkpoint
 
 	/*********************************************************************************
 	* Panel for displaying patient info output data based on input data from the user.
 	*********************************************************************************/
-	protected class Patient_Info_Output extends JPanel
+	protected class Patient_Record_Output extends JPanel
 	{
 		/***********************************************************************
-		* Default constructor for By_Name_Panel.
+		* Default constructor for Patient_Record_Output.
 		***********************************************************************/
-		public Patient_Info_Output()
+		public Patient_Record_Output()
 		{
-			setLayout(new GridLayout(5, 2));
-
-			add(new Centered_Text_Panel("Patient Info:"));
-			add(new Centered_Text_Panel(""));
-
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel("<First><M><Last>"));
-
-			add(new Centered_Text_Panel("DOB:"));
-			add(new Centered_Text_Panel("mm/dd/yyyy"));
-
-			add(new Centered_Text_Panel("SSN:"));
-			add(new Centered_Text_Panel("ddd-dd-dddd"));
-
-			add(new Centered_Text_Panel("Room:"));
-
+			add(new Centered_Text_Panel("Results:"));
 		}
 
 
 		/***********************************************************************
-		* Primary constructor for By_Name_Panel.
+		* Primary constructor for Patient_Record_Output.
 		***********************************************************************/
-		public Patient_Info_Output(String name, String dob, String ssn, String room)
+		public Patient_Record_Output(String relation, String results)
 		{
-			add(new Centered_Text_Panel("Patient Info:"));
+			add(new Centered_Text_Panel("Results:"));
 
-			add(new Centered_Text_Panel("Patient Info:"));
-			add(new Centered_Text_Panel(""));
+			switch(relation)
+			{
+				case "Treatments":
+					add(new Tuple_Display_Panel(Relation_Attributes.treatment, results));
+					break;
+
+				case "Procedures":
+					add(new Tuple_Display_Panel(Relation_Attributes.procedure, results));
+					break;
+
+				case "Prescriptions":
+					add(new Tuple_Display_Panel(Relation_Attributes.prescription, results));
+					break;
+
+				default:
+					break;				
+			}
 			
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel(name));
-
-			add(new Centered_Text_Panel("DOB:"));
-			add(new Centered_Text_Panel(dob));
-
-			add(new Centered_Text_Panel("SSN:"));
-			add(new Centered_Text_Panel(ssn));
-
-			add(new Centered_Text_Panel("Room:"));
-			add(new Centered_Text_Panel(room));
 
 		}
 
-	} // end Patient_Info_Output class
+	} // end Patient_Record_Output class
 	
 
 
