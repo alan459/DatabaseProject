@@ -230,29 +230,32 @@ public class Doctor extends DataRecord
     /**
      * Inserts a new treatment/procedure/prescription
      */
-    public static void insertPPT(String s, String x)
+    public static String insertPPT(String s, String x)
     {
+        String result = "";
         if(s.equals("PRESCRIPTION"))
         {
-            Doctor.insertPre(x);
+            result = Doctor.insertPre(x);
         }
         else if(s.equals("PROCEDURE"))
         {
-            Doctor.insertPro(x);
+            result = Doctor.insertPro(x);
         }
         else if(s.equals("TREATMENT"))
         {
-            Doctor.insertTre(x);
+            result = Doctor.insertTre(x);
         }
+        return result;
     }
     
     /**
      * Inserts a new prescription using the information provided by the GUI
      */
-    private static void insertPre(String s)
+    private static String insertPre(String s)
     {
         String tmp = "insert into Prescription (prescriptionID, Pssn, Dssn, prescribed_date, medication, dosage, optional_generic, num_refills) values (?,?,?,?,?,?,?,?)";
         String[] values = s.split("\t");
+        String success = "";
         try
         {
             if(values.length == 7)
@@ -276,9 +279,9 @@ public class Doctor extends DataRecord
            
                     int affectedRows = pstmt.executeUpdate();
                     if(affectedRows == 0)
-                    { System.err.println("Failed to insert to Prescription table.");} 
+                    { success = "Failed to insert to Prescription table.";} 
                     else 
-                    { System.out.println("\n Successfully inserted new Prescription. \n");}
+                    { success = "Successfully inserted new Prescription.";}
                 pstmt.close();
                 }
         } catch (Exception e)
@@ -286,6 +289,7 @@ public class Doctor extends DataRecord
             System.err.println(e);
             e.printStackTrace();
         }
+        return success;
     }
     
         /**
@@ -308,10 +312,11 @@ public class Doctor extends DataRecord
     /**
      * Inserts a new procedure using the information provided by the GUI
      */
-    private static void insertPro(String s)
+    private static String insertPro(String s)
     {
         String tmp = "insert into Procedure (procedureID, procedureDescription, scheduled_Time, scheduled_Date, Pssn, Dssn, Nssn) values (?,?,?,?,?,?,?)";
         String[] values = s.split("\t");
+        String success = "";
         try
         {
             if(values.length == 6)
@@ -322,8 +327,6 @@ public class Doctor extends DataRecord
                     ResultSet vals = max.executeQuery();
                     vals.next();
                     int proID = Integer.parseInt(vals.getString(1)) + 1;
-                    
-                    System.out.println(values[1]);
                     
                     PreparedStatement pstmt = conn.prepareStatement(tmp);
                     pstmt.setString(1, String.valueOf(proID)); //This one you need to assign the procedureID based on how many prescriptions are already in the database
@@ -336,9 +339,9 @@ public class Doctor extends DataRecord
            
                     int affectedRows = pstmt.executeUpdate();
                     if(affectedRows == 0)
-                    { System.err.println("Failed to insert to Procedure table.");} 
+                    { success = "Failed to insert to Procedure table.";} 
                     else 
-                    { System.out.println("\n Successfully inserted new Procedure. \n");}
+                    { success = "Successfully inserted new Procedure.";}
                 pstmt.close();
                 }
         } catch (Exception e)
@@ -346,15 +349,17 @@ public class Doctor extends DataRecord
             System.err.println(e);
             e.printStackTrace();
         }
+        return success;
     }
     
     /**
      * Inserts a new treatment using the information provided by the GUI
      */
-    private static void insertTre(String s)
+    private static String insertTre(String s)
     {
         String tmp = "insert into Treatment (treatmentID, Pssn, Dssn, start_date, end_date, medication, dosage, method_of_delivery) values (?,?,?,?,?,?,?,?)";
         String[] values = s.split("\t");
+        String success = "";
         try
         {
             if(values.length == 7)
@@ -365,8 +370,6 @@ public class Doctor extends DataRecord
                     ResultSet vals = max.executeQuery();
                     vals.next();
                     int trtID = Integer.parseInt(vals.getString(1)) + 1;
-                    
-                    System.out.println(values[1]);
                     
                     PreparedStatement pstmt = conn.prepareStatement(tmp);
                     pstmt.setString(1, String.valueOf(trtID)); //This one you need to assign the procedureID based on how many prescriptions are already in the database
@@ -380,9 +383,9 @@ public class Doctor extends DataRecord
            
                     int affectedRows = pstmt.executeUpdate();
                     if(affectedRows == 0)
-                    { System.err.println("Failed to insert to Treatment table.");} 
+                    { success = "Failed to insert to Treatment table.";} 
                     else 
-                    { System.out.println("\n Successfully inserted new Treatment. \n");}
+                    { success = "Successfully inserted new Treatment.";}
                 pstmt.close();
                 }
         } catch (Exception e)
@@ -390,6 +393,7 @@ public class Doctor extends DataRecord
             System.err.println(e);
             e.printStackTrace();
         }
+        return success;
     }
 
     /**
