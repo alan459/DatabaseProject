@@ -18,6 +18,9 @@ public class Insert_Nurse_Menu_Panel extends JPanel
 	private JTextField ssn_field, first_name_field, m_initial_field, last_name_field, supervisor_field;
 	// fields that might need to be drop down - dob, gender, location
 
+	/* String to get input data from fields */
+	private String input;
+
 
 	/*********************************************************************************
 	* Main constructor used for setting up the Insert_Nurse_Menu_Panel.
@@ -29,8 +32,6 @@ public class Insert_Nurse_Menu_Panel extends JPanel
 		setLayout(new GridLayout(7, 2));
 
 		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		initializeButtons();
-		addActionListeners();
 
 		initializeTextFields();
 
@@ -52,8 +53,8 @@ public class Insert_Nurse_Menu_Panel extends JPanel
 		add(new JLabel(" Supervisor:"));
 		add(supervisor_field);
 
-		add(mainMenuButton);
-		add(submit_button);
+		add(new Main_Menu_Button(frame));
+		add(new Submit_Button());
 
 
 	}
@@ -73,41 +74,48 @@ public class Insert_Nurse_Menu_Panel extends JPanel
 	}
 
 
-	/*********************************************************************************
-	* Initializes the buttons for Insert_Nurse_Menu_Panel.
-	*********************************************************************************/
-	private void initializeButtons()
+	/******************************************************************************
+	* Submit button for Insert_Nurse_Menu_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
 	{
-		mainMenuButton = new JButton("Main Menu");
-		submit_button = new JButton("Submit");
-	}
-
-
-
-	/*********************************************************************************
-	* Adds the action listeners for Insert_Nurse_Menu_Panel.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Return user to main menu */
-		mainMenuButton.addActionListener(new ActionListener()
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
 		{
-			public void actionPerformed(ActionEvent e)
-			{
-				main_frame.getMainMenu();
-			}
-		});
+			super("Submit");
 
-		/* Add functionality - Submit input data */
-		submit_button.addActionListener(new ActionListener()
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadInput();
+
+					//Nurse.insert(input);s
+
+					// display a new popup saying insertion was successful?
+					JOptionPane.showMessageDialog(null,"Submitted");
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable and
+		* return that string.
+		******************************************************************/
+		private String loadInput()
 		{
-			public void actionPerformed(ActionEvent e)
-			{
+			// get input from textfields and load them into a single string
 
-			}
-		});
+			input = ssn_field.getText() + "\t" + first_name_field.getText() + "\t" + m_initial_field.getText() + "\t" + 
+			last_name_field.getText() + "\t" + supervisor_field.getText();
+			
+			return input;
+		}
 
-	} // end addActionListeners()
+	} // end Submit_Button class
 
 
 

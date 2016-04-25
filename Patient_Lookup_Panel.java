@@ -28,7 +28,7 @@ public class Patient_Lookup_Panel extends JPanel
 
 		add(new By_Name_Panel());		
 
-		add(new Patient_Info_Output());
+		add(patient_output_panel = new Patient_Info_Output());
 	}
 
 	/*********************************************************************************
@@ -42,6 +42,8 @@ public class Patient_Lookup_Panel extends JPanel
 
 		add(patient_output_panel = output);
 
+		revalidate();
+		repaint();
 	}
 
 
@@ -101,9 +103,13 @@ public class Patient_Lookup_Panel extends JPanel
 					{
 						loadText();
 
-						// pass ssn input into patient instance to lookup tuple
+						// pass input into Patient instance to modify tuple
+						//Patient pat = new Patient(ssn);
 
-						// create new instance of output panel to display result
+						//String result = pat.search("PATIENT");
+
+						// extract fields from string and pass to Patient:
+						//displayNewPatientOutput(new Patient_Info_Output(result)); 
 					}
 				});
 			}
@@ -153,6 +159,8 @@ public class Patient_Lookup_Panel extends JPanel
 
 		private String first_name, m_initial, last_name;
 
+		private String input;
+
 
 		/***********************************************************************
 		* Main constructor for By_Name_Panel.
@@ -196,11 +204,16 @@ public class Patient_Lookup_Panel extends JPanel
 				{
 					public void actionPerformed(ActionEvent e)
 					{
+						// get input from name fields into a string variable
 						loadText();
 
-						// pass ssn input into patient instance to lookup tuple
-						
-						// create new instance of output panel to display result
+						// pass input into Doctor instance to modify tuple
+						//Patient pat = new Patient(input);
+
+						//String result = pat.search("PATIENT");
+
+						// extract fields from string and pass to doctor:
+						//displayNewPatientOutput(new Patient_Info_Output(result)); 
 					}
 				});
 			}
@@ -215,21 +228,13 @@ public class Patient_Lookup_Panel extends JPanel
 		* If load is successful, true is returned, otherwise false
 		* is returned.
 		******************************************************************/
-		private boolean loadText()
+		private String loadText()
 		{
-			// get ssn from field
-			try
-			{
-				first_name = first_name_field.getText();
-			} 
-			catch (Exception e)
-			{
-				JOptionPane.showMessageDialog(new JPanel(), "SSN input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
-				return false;	
-			}
+			// get name from fields
+			input = first_name_field.getText() + "\t" + m_initial_field.getText() + "\t" + last_name_field.getText();
 
 			// if this point is reached age and ssn were successfully retrieved
-			return true;
+			return input;
 
 		}
 
@@ -271,24 +276,14 @@ public class Patient_Lookup_Panel extends JPanel
 		/***********************************************************************
 		* Primary constructor for Patient_Info_Output.
 		***********************************************************************/
-		public Patient_Info_Output(String name, String dob, String ssn, String room)
+		public Patient_Info_Output(String result)
 		{
-			add(new Centered_Text_Panel("Patient Info:"));
+			setLayout(new GridLayout(2, 1));
 
 			add(new Centered_Text_Panel("Patient Info:"));
-			add(new Centered_Text_Panel(""));
 
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel(name));
-
-			add(new Centered_Text_Panel("DOB:"));
-			add(new Centered_Text_Panel(dob));
-
-			add(new Centered_Text_Panel("SSN:"));
-			add(new Centered_Text_Panel(ssn));
-
-			add(new Centered_Text_Panel("Room:"));
-			add(new Centered_Text_Panel(room));
+			//add(new Centered_Text_Panel(result));
+			add(new JTextField(result));
 
 		}
 

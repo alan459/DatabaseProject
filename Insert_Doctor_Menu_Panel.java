@@ -11,12 +11,11 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 	/* Pointer to the main java window to access its get() methods for other panels */
 	private Hospital_Frame main_frame;
 
-	/* Button to return the screen to the main menu */
-	private JButton main_menu_button, submit_button;	
-
 	/* Text fields for the user to enter intput data */
 	private JTextField ssn_field, first_name_field, m_initial_field, last_name_field, code_field;
 
+	/* String to get input data from fields */
+	private String input;
 
 
 	/*********************************************************************************
@@ -29,8 +28,6 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 		setLayout(new GridLayout(7, 2));
 
 		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		initializeButtons();
-		addActionListeners();
 
 		initializeTextFields();
 
@@ -53,9 +50,8 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 		add(code_field);
 
 
-		add(main_menu_button);
-
-		add(submit_button);
+		add(new Main_Menu_Button(frame));
+		add(new Submit_Button());
 	}
 
 	/*********************************************************************************
@@ -73,45 +69,48 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 	}
 
 
-	/*********************************************************************************
-	* Initializes the buttons for Insert_Doctor_Menu_Panel.
-	*********************************************************************************/
-	private void initializeButtons()
+	/******************************************************************************
+	* Submit button for Insert_Doctor_Menu_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
 	{
-		main_menu_button = new JButton("Main Menu");
-		submit_button = new JButton("Submit");
-	}
-
-
-
-	/*********************************************************************************
-	* Adds the action listeners for Insert_Doctor_Menu_Panel.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Return user to main menu */
-		main_menu_button.addActionListener(new ActionListener()
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
 		{
-			public void actionPerformed(ActionEvent e)
+			super("Submit");
+
+			addActionListener(new ActionListener()
 			{
-				main_frame.getMainMenu();
-			}
-		});
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadInput();
 
+					//Doctor.insert(input);s
 
-		/* Add functionality - Return user to main menu */
-		submit_button.addActionListener(new ActionListener()
+					// display a new popup saying insertion was successful?
+					JOptionPane.showMessageDialog(null,"Submitted");
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable and
+		* return that string.
+		******************************************************************/
+		private String loadInput()
 		{
-			public void actionPerformed(ActionEvent e)
-			{
+			// get input from textfields and load them into a single string
 
-			}
-		});
+			input = ssn_field.getText() + "\t" + first_name_field.getText() + "\t" + m_initial_field.getText() + "\t" + 
+			last_name_field.getText() + "\t" + code_field.getText();
+			
+			return input;
+		}
 
-
-	} // end addActionListeners()
-
-
+	} // end Submit_Button class
 
 
 } // end insert doctor menu class

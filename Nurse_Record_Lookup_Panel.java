@@ -4,20 +4,20 @@ import java.awt.event.*;
 
 
 /*****************************************************************************************************
-* Displays to the user options for looking up records for a Doctor by SSN. 
+* Displays to the user options for looking up records for a Nurse by SSN. 
 *
-* Reached when the user selects the 'Doctor' option next to the 'Access' label and then 'Search 
-* Records for a Doctor'.
+* Reached when the user selects the 'Nurse' option next to the 'Access' label and then 'Search 
+* Records for a Nurse'.
 *****************************************************************************************************/
-public class Doctor_Record_Lookup_Panel extends JPanel 
+public class Nurse_Record_Lookup_Panel extends JPanel 
 {
 	private JPanel record_output_panel;
 
 
 	/*********************************************************************************
-	* Main constructor for setting up the Doctor lookup menu. 
+	* Main constructor for setting up the Nurse lookup menu. 
 	*********************************************************************************/
-	public Doctor_Record_Lookup_Panel() 
+	public Nurse_Record_Lookup_Panel() 
 	{
 		setLayout(new GridLayout(3, 1));
 
@@ -25,11 +25,11 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 		add(new Lookup_Panel());
 
-		add(record_output_panel = new Doctor_Record_Output());
+		add(record_output_panel = new Nurse_Record_Output());
 	}
 
 	/*********************************************************************************
-	* Display new output information for a Doctor, if any output is currently being
+	* Display new output information for a Nurse, if any output is currently being
 	* displayed, remove it first.
 	*********************************************************************************/
 	protected void displayNewRecordOutput(JPanel output)
@@ -48,17 +48,18 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 	/*********************************************************************************
 	* Panel for displaying to the user options for selecting the type of record to 
-	* access and the ssn of the Doctor for which to access it.
+	* access and the ssn of the Nurse for which to access it.
 	*********************************************************************************/
 	protected class Lookup_Panel extends JPanel
 	{
 		private JTextField ssn_field;
+		private String input;
 
-		private String selected_record_type, ssn;
-
-		private String[] record_types = {"Patients", "Nurses", "Treatments", "Procedures", "Prescriptions"};
-
+		// variables involved with selecting record type
+		private String selected_record_type;
+		private String[] record_types = {"Supervisor"};
 		private JComboBox record_types_combo_box;
+
 
 		/***********************************************************************
 		* Main constructor for Lookup_Panel.
@@ -69,7 +70,7 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 			add(new Centered_Text_Panel("Lookup"));
 			add(record_types_combo_box = new JComboBox(record_types));
-			add(new Centered_Text_Panel(" for Doctor with SSN "));
+			add(new Centered_Text_Panel(" for Nurse with SSN "));
 			add(ssn_field = new JTextField(8));
 
 			add(new Centered_Text_Panel(""));
@@ -81,7 +82,7 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 		/***********************************************************************
 		* Submit button to retrieve data from ssn field and type of record to 
-		* lookup and display record info for the Doctor with that ssn.
+		* lookup and display record info for the Nurse with that ssn.
 		***********************************************************************/
 		private class Submit_Button extends JButton
 		{
@@ -97,13 +98,15 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						loadText();
+						loadInput();
 
-						// pass ssn input into Doctor instance to lookup tuple
-						// Doctor a = new Doctor(ssn);
+						// pass ssn input and/or type of record?
+						// Nurse a = new Nurse(input);
+
+						//String result = a.search("NURSE");
 
 						// create new instance of output panel to display result
-						// displayNewRecordOutput(new Doctor_Record_Output(result));
+						// displayNewRecordOutput(new Nurse_Record_Output(result));
 					}
 				});
 			}
@@ -113,38 +116,16 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 
 		/******************************************************************
-		* Load input from ssn field into corresponding string variable.
-		*
-		* If load is successful, true is returned, otherwise false
-		* is returned.
+		* Load input from ssn field into corresponding string variable and
+		* return that string.
 		******************************************************************/
-		private boolean loadText()
+		private String loadInput()
 		{
-			// get ssn from field
-			try
-			{
-				ssn = ssn_field.getText();
-			} 
-			catch (Exception e)
-			{
-				JOptionPane.showMessageDialog(new JPanel(), "SSN input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
-				return false;	
-			}
+			// get input from textfields and load them into a single string
 
-			// get record type from combo box
-			try
-			{
-				selected_record_type = record_types_combo_box.getSelectedItem().toString();
-			} 
-			catch (Exception e)
-			{
-				JOptionPane.showMessageDialog(new JPanel(), "Selected Record Type could not be read", "Error", JOptionPane.ERROR_MESSAGE);
-				return false;	
-			}
-
-			// if this point is reached age and ssn were successfully retrieved
-			return true;
-
+			input = ssn_field.getText();
+			
+			return input;
 		}
 
 
@@ -154,54 +135,35 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 
 	/*********************************************************************************
-	* Panel for displaying Doctor info output data based on input data from the user.
+	* Panel for displaying Nurse info output data based on input data from the user.
 	*********************************************************************************/
-	protected class Doctor_Record_Output extends JPanel
+	protected class Nurse_Record_Output extends JPanel
 	{
 		/***********************************************************************
-		* Default constructor for Doctor_Record_Output.
+		* Default constructor for Nurse_Record_Output.
 		***********************************************************************/
-		public Doctor_Record_Output()
+		public Nurse_Record_Output()
 		{
 			add(new Centered_Text_Panel("Results:"));
-			add(new JTextField(10));
 		}
 
 
 		/***********************************************************************
-		* Primary constructor for Doctor_Record_Output.
+		* Primary constructor for Nurse_Record_Output.
 		***********************************************************************/
-		public Doctor_Record_Output(String result)
+		public Nurse_Record_Output(String result)
 		{
 			setLayout(new GridLayout(2, 1));
 
 			add(new Centered_Text_Panel("Results:"));
 			add(new JTextField(result));
-
-			/*switch(relation)
-			{
-				case "Treatments":
-					add(new Tuple_Display_Panel(Relation_Attributes.treatment, results));
-					break;
-
-				case "Procedures":
-					add(new Tuple_Display_Panel(Relation_Attributes.procedure, results));
-					break;
-
-				case "Prescriptions":
-					add(new Tuple_Display_Panel(Relation_Attributes.prescription, results));
-					break;
-
-				default:
-					break;				
-			}*/
 			
 
 		}
 
-	} // end Doctor_Record_Output class
+	} // end Nurse_Record_Output class
 	
 
 
 
-} // end Doctor lookup class
+} // end Nurse lookup class

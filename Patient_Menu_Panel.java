@@ -4,9 +4,9 @@ import java.awt.event.*;
 
 
 /*****************************************************************************************************
-* A patient menu to display to the user 2 panels, 1 for looking up a patient on the left side of the 
-* window, and a 2nd on the right side which is selected from 3 options from buttons for updating 
-* patient info, patient record lookup, and modify treatment plan.
+* A Patient menu to display to the user 3 options, modify, lookup, record lookup. Each button takes you
+* to a different panel, the modify panel is an inner class in this file, the other 2 are seperate files
+* named Patient_Lookup_Panel and Patient_Record_Lookup_Panel.
 *****************************************************************************************************/
 public class Patient_Menu_Panel extends JPanel 
 {
@@ -41,20 +41,6 @@ public class Patient_Menu_Panel extends JPanel
 
 
 	}
-
-	/*********************************************************************************
-	* Constructor used for setting up the Patient_Menu_Panel.
-	*********************************************************************************
-	public Patient_Menu_Panel() 
-	{
-		setLayout(new GridLayout(2, 2));
-
-		// skip a row in the grid layout
-		//add(new JLabel(""));
-
-		//main_menu_button = new Main_Menu_Button(main_frame);
-
-	}*/
 
 	/*********************************************************************************
 	* Switches the current main panel to the passed in one.
@@ -132,8 +118,8 @@ public class Patient_Menu_Panel extends JPanel
 
 				addActionListener(new ActionListener()
 				{
-					public void actionPerformed(ActionEvent e)
-					{
+								public void actionPerformed(ActionEvent e)
+		{
 						changeCurrentPanel(new Patient_Lookup_Panel());
 					}
 				});

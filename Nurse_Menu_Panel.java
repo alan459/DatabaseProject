@@ -1,160 +1,383 @@
-//package hos;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 
 /*****************************************************************************************************
-* A nurse menu to display to the user 2 panels, 1 for looking up a nurse on the left side of the 
-* window, and a 2nd on the right side which is selected from x options from buttons.
+* A Nurse menu to display to the user 3 options, modify, lookup, record lookup. Each button takes you
+* to a different panel, the modify panel is an inner class in this file, the other 2 are seperate files
+* named Nurse_Lookup_Panel and Nurse_Record_Lookup_Panel.
 *****************************************************************************************************/
 public class Nurse_Menu_Panel extends JPanel 
 {
-
 	/* Pointer to the main java window to access its get() methods for other panels */
-	private Hospital_Frame hospital_frame;
+	protected Hospital_Frame main_frame;
 
-	/* BUTTON to return the screen to the MAIN MENU */
-	private JButton main_menu_button;	
+	/* Button to return the screen to the main menu */
+	protected JPanel main_menu_button;	
 
-	/* Main LABELS for displaying the options on this panel - largest text blocks, above
-	*  each inner panel */
-	private JLabel nurse_lookup_label, record_lookup_label;
-
-	/* LEFT SIDE interface displayed to the user to lookup a nurse */
-	private JPanel left_side_panel;
-
-	/* RIGHT SIDE interface displayed to the user, displaying either button options or
-	*  an interface based on button pressed */
-	private JPanel right_side_panel;
-
+	/* Current interface displayed to the user, displaying either button options or an interface based 
+	* on button pressed */
+	protected JPanel current_panel;
 
 
 
 	/*********************************************************************************
 	* Main constructor used for setting up the Nurse_Menu_Panel.
 	*********************************************************************************/
-	public Nurse_Menu_Panel ( Hospital_Frame  frame ) 
+	public Nurse_Menu_Panel(Hospital_Frame main) 
 	{
-		this.hospital_frame = frame;
+		this.main_frame = main;
 
-		setLayout(new GridBagLayout());
-		initializeButtons();
-		initializeLabels();
-		addActionListeners();
-		add(main_menu_button);
-		//JPanel pan = new JPanel();
-		//pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
-		//add(nurse_lookup_label);
-		add(left_side_panel = new Nurse_Lookup_Panel());
-		//setLayout(new FlowLayout());
-		//addButtonOptions();
-		//add(pan);
+		//setLayout(new GridLayout(2, 1));
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
+		add(current_panel = new Nurse_Button_Options());
 
-		//add(record_lookup_label);
-		add(right_side_panel = new Nurse_Button_Options(this)); 
-		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		
+		// skip a row in the grid layout
+		//add(new JLabel(""));
+
+		add(main_menu_button = new Main_Menu_Button(main_frame));
 
 
 	}
 
+	/*********************************************************************************
+	* Switches the current main panel to the passed in one.
+	*********************************************************************************/
+	protected void changeCurrentPanel(JPanel panel)
+	{
+		removeAll();
+
+		add(current_panel = panel);
+
+		// re-add the main menu button so it appears after the panel again
+		add(main_menu_button = new Main_Menu_Button(main_frame));
+
+		revalidate();
+		repaint();
+
+	} // end changeCurrentPanel()
+
+
+
+
+
 
 
 	/*********************************************************************************
-	* Initializes the buttons for Nurse_Menu_Panel.
+	* Different button options for the user for interacting with the Nurse tuples
+	* in the database.
 	*********************************************************************************/
-	private void initializeButtons()
+	protected class Nurse_Button_Options extends JPanel
 	{
-		main_menu_button = new JButton("Main Menu");
-	}
-
-
-
-	/*********************************************************************************
-	* Initializes the buttons for Nurse_Menu_Panel.
-	*********************************************************************************/
-	private void initializeLabels()
-	{
-		nurse_lookup_label = new JLabel("Nurse Lookup");
-		record_lookup_label = new JLabel("Record Lookup");
-	}
-
-
-
-	/*********************************************************************************
-	* Adds the action listeners for Nurse_Menu_Panel.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Return user to main menu */
-		main_menu_button.addActionListener(new ActionListener()
+		/*********************************************************************************
+		* Main constructor for the Nurse_Button_Options class.
+		*********************************************************************************/	
+		public Nurse_Button_Options()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		  	hospital_frame.getMainMenu();
-		  }
-		});
+			setLayout(new GridBagLayout());
 
-	} // end addActionListeners()
-
-
-
-	/*********************************************************************************
-	* Removes any panel displayed on the right side of the nurse menu window and
-	* adds 2 buttons options:
-	*
-	* ['NURSE RECORD LOOKUP','MODIFY NURSE INFO']
-	*
-	* Switches right_side_panel to an instance of Interface_Option_Buttons.
-	*********************************************************************************/
-	public void addNurseButtonOptions()
-	{
-		//if(right_side_panel != null)
-		{
-			remove(right_side_panel);
+			add(new Modify_Nurse_Info_Button());
+			add(new Search_Nurses_Button());
+			add(new Search_Records_Nurses_Button());
 		}
 
-		add(right_side_panel = new Nurse_Button_Options(this));
-		revalidate();
-		repaint();
-	}
+
+		/*********************************************************************************
+		* Button to take user to modify Nurse info panel by switching the current panel
+		* to an instance of Modify_Nurse_Info_Panel (to be created).
+		*********************************************************************************/
+		private class Modify_Nurse_Info_Button extends JButton
+		{
+			public Modify_Nurse_Info_Button()
+			{
+				super("Modify Nurse Info");
+
+				addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						changeCurrentPanel(new Modify_Nurse_Info_Panel());
+					}
+				});
+			}
+
+		}
+			
+
+		/*********************************************************************************
+		* Button to take user to search Nurses panel by switching the current panel
+		* to an instance of Search_Nurses_Panel.
+		*********************************************************************************/
+		private class Search_Nurses_Button extends JButton
+		{
+			public Search_Nurses_Button()
+			{
+				super("Search Nurses");
+
+				addActionListener(new ActionListener()
+				{
+								public void actionPerformed(ActionEvent e)
+		{
+						changeCurrentPanel(new Nurse_Lookup_Panel());
+					}
+				});
+			}
+
+		}
+
+		/*********************************************************************************
+		* Button to take user to search Nurses panel by switching the current panel
+		* to an instance of Search_Records_Nurses_Panel.
+		*********************************************************************************/
+		private class Search_Records_Nurses_Button extends JButton
+		{
+			public Search_Records_Nurses_Button()
+			{
+				super("Search Records for a Nurse");
+
+				addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+						changeCurrentPanel(new Nurse_Record_Lookup_Panel());
+					}
+				});
+			}
+
+		}
+
+	} // end Nurse_Button_Options class
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/********************************************************************************************************
+	* Displayed when the user selects 'modify' in the Nurse_Menu_Panel.
+	********************************************************************************************************/
+	private class Modify_Nurse_Info_Panel extends JPanel
+	{
+
+		/*******************************************************************************************
+		* Main constructor for the Nurse_Button_Options class.
+		*******************************************************************************************/	
+		public Modify_Nurse_Info_Panel()
+		{
+			setLayout(new GridBagLayout());
+
+			add(new Back_Button());
+
+			add(new Select_Attribute_Panel());
+			
+		}
+
+
+
+		/*******************************************************************************************
+		* Displayed after modify clicked on the Modify_Nurse_Info_Panel in the Nurse_Menu_Panel. 
+		*******************************************************************************************/
+		private class Select_Attribute_Panel extends JPanel
+		{
+
+			/******************************************************************************
+			* Main constructor for Select_Attribute_Panel.
+			******************************************************************************/
+			public Select_Attribute_Panel()
+			{
+				add(new JLabel("Modify : "));
+
+				add(new Supervisor_Button());
+			}
+
+
+
+
+			/******************************************************************************
+			* Button in the Modify_Nurse_Info_Panel to take the user to the 
+			* Supervisor_Modificaton_Panel when pressed.
+			******************************************************************************/
+			private class Supervisor_Button extends JButton
+			{
+				/******************************************************************
+				* Main constructor for Supervisor_Button.
+				******************************************************************/
+				public Supervisor_Button()
+				{
+					super("Supervisor");
+
+					addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							changeCurrentPanel(new Supervisor_Modificaton_Panel());
+						}
+
+					});
+
+				}
+
+			} // end Supervisor_Button Class
+
+
+
+		} // end Select_Attribute_Panel Class
+
+
+
+
+
+
+
+
+
+
+		/*******************************************************************************************
+		* Panel displayed when user selects to modify a Nurse's age in the Select_Attribute_Panel.
+		*******************************************************************************************/
+		private class Supervisor_Modificaton_Panel extends JPanel
+		{
+			private JTextField supervisor_field, ssn_field;
+
+			private String ssn, supervisor;
+
+
+			/******************************************************************************
+			* Main constructor for Supervisor_Modificaton_Panel.
+			******************************************************************************/
+			public Supervisor_Modificaton_Panel()
+			{
+				setLayout(new GridBagLayout());
+
+				add(new Back_Button());
+
+				add(new JLabel("   Change Supervisor To "));
+
+				add(supervisor_field = new JTextField(10));
+
+				add(new JLabel(" for Nurse with SSN "));
+
+				add(ssn_field = new JTextField(7));
+
+				add(new Submit_Button());
+			}
+
+
+
+			/******************************************************************************
+			* Submit button for Supervisor_Modificaton_Panel class.
+			******************************************************************************/
+			private class Submit_Button extends JButton
+			{
+
+				/******************************************************************
+				* Main construcot for Submit_Button.
+				******************************************************************/
+				public Submit_Button()
+				{
+					super("Submit");
+
+					addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent e)
+						{
+							loadText();
+
+							String input = ssn + supervisor;
+							// pass input into Nurse instance to modify tuple
+						}
+					});
+				}
+
+
+
+				/******************************************************************
+				* Load input from supervisor and ssn fields into corresponding int and 
+				* string variables.
+				*
+				* If load is successful, true is returned, otherwise, false
+				* is returned.
+				******************************************************************/
+				private boolean loadText()
+				{
+					// get ssn from field
+					try
+					{
+						ssn = ssn_field.getText();
+					} 
+					catch (Exception e)
+					{
+						JOptionPane.showMessageDialog(new JPanel(), "SSN input invalid", "Error", JOptionPane.ERROR_MESSAGE);
+						return false;	
+					}
+
+					// get supervisor from field
+					try
+					{
+						supervisor = supervisor_field.getText();
+					} 
+					catch (Exception e)
+					{
+						JOptionPane.showMessageDialog(new JPanel(), "Supervisor input invalid", "Error", JOptionPane.ERROR_MESSAGE);
+						return false;	
+					}
+
+					// if this point is reached supervisor and ssn were successfully retrieved
+					return true;
+				}
+
+
+			} // end Submit_Button class
+
+
+		} // end Supervisor_Modificaton_Panel class
+
+
+	} // end Modify_Nurse_Info_Panel class
+
+
+
+
+
+
+
 
 
 
 	/*********************************************************************************
-	* Replaces the button interface with a nurse lookup interface when the 
-	* 'NURSE RECORD LOOKUP' button is pressed in the button interface. 
-	*
-	* Switches right_side_panel from Interface_Option_Buttons to Nurse_Lookup_Panel.
+	* Returns the user to the Nurse menu.
 	*********************************************************************************/
-	public void addNurseRecordLookup()
+	private class Back_Button extends JButton
 	{
-		remove(right_side_panel);
-		add(right_side_panel = new Nurse_Record_Lookup(this));
-		revalidate();
-		repaint();
-	}
+		/******************************************************************
+		* Main constructor for Back_Button
+		******************************************************************/
+		public Back_Button()
+		{
+			super("<- Back");
 
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					changeCurrentPanel(new Nurse_Button_Options());
+					//main_frame.changeScreen(new Nurse_Menu_Panel(main_frame));
+				}
+			});
+		}
 
-
-	/*********************************************************************************
-	* Replaces the button interface with a nurse lookup interface when the 
-	* 'MODIFY NURSE INFO' button is pressed in the button interface. 
-	*
-	* Switches right_side_panel from Interface_Option_Buttons to Modify_Nurse_Info_Panel.
-	*********************************************************************************/
-	public void addModifyNurseInfo()
-	{
-		remove(right_side_panel);
-		add(right_side_panel = new Modify_Nurse_Info_Panel(this));
-		revalidate();
-		repaint();
-	}
+	} // end Back_Button class
 
 
 
 
-} // end nurse menu class
+} // end Nurse menu class

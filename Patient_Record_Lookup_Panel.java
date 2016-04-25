@@ -25,7 +25,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 		add(new Lookup_Panel());
 
-		add(new Patient_Record_Output());
+		add(record_output_panel = new Patient_Record_Output());
 	}
 
 	/*********************************************************************************
@@ -39,6 +39,8 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 		add(record_output_panel = output);
 
+		revalidate();
+		repaint();
 	}
 
 

@@ -11,11 +11,11 @@ public class Insert_Medication_Menu_Panel extends JPanel
 	/* Pointer to the main java window to access its get() methods for other panels */
 	private Hospital_Frame main_frame;
 
-	/* Buttons to return the screen to the main menu and submit input data */
-	private JButton submit_button, main_menu_button;	
-
-	/* Text fields for the user to enter intput data */
+	/* Text fields for the user to enter input data */
 	private JTextField medication_id_field, medication_name_field, medication_use_field;
+
+	/* String to get input data from fields */
+	private String input;
 
 
 	/*********************************************************************************
@@ -28,8 +28,6 @@ public class Insert_Medication_Menu_Panel extends JPanel
 		setLayout(new GridLayout(9, 2));
 
 		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		initializeButtons();
-		addActionListeners();
 
 		initializeTextFields();
 
@@ -57,8 +55,8 @@ public class Insert_Medication_Menu_Panel extends JPanel
 		add(new JLabel(""));
 		add(new JLabel(""));
 
-		add(main_menu_button);
-		add(submit_button);
+		add(new Main_Menu_Button(frame));
+		add(new Submit_Button());
 
 	}
 
@@ -74,44 +72,80 @@ public class Insert_Medication_Menu_Panel extends JPanel
 	}
 
 
-	/*********************************************************************************
-	* Initializes the buttons for Insert_Medication_Menu_Panel.
-	*********************************************************************************/
-	private void initializeButtons()
+	/******************************************************************************
+	* Submit button for Insert_Medication_Menu_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
 	{
-		main_menu_button = new JButton("Main Menu");
-		submit_button = new JButton("Submit");
-	}
-
-
-
-	/*********************************************************************************
-	* Adds the action listeners for Insert_Medication_Menu_Panel.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Return user to main menu */
-		main_menu_button.addActionListener(new ActionListener()
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
 		{
-			public void actionPerformed(ActionEvent e)
-			{
-				main_frame.getMainMenu();
-			}
-		});
+			super("Submit");
 
-		/* Add functionality - Submit input data */
-		submit_button.addActionListener(new ActionListener()
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadText();
+
+					// * somehow get string of doctors name, ssn, code from instance *  and then:
+					//Medication.insert(input);
+					JOptionPane.showMessageDialog(null,"Submitted");
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable.
+		*
+		* If load is successful, true is returned, otherwise false
+		* is returned.
+		******************************************************************/
+		private boolean loadText()
 		{
-			public void actionPerformed(ActionEvent e)
+			// get ssn from field
+			try
 			{
-
+				input = medication_id_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Medication input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
 			}
-		});
+
+			// get medication name from field
+			try
+			{
+				input += medication_name_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Medication name input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+			// get medication use from field
+			try
+			{
+				input += medication_use_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Medication use input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
 
 
-	} // end addActionListeners()
+			// if this point is reached age and ssn were successfully retrieved
+			return true;
 
+		}
 
+	} // end Submit_Button class
 
 
 } // end Medication menu class

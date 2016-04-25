@@ -35,7 +35,7 @@ public class Doctor_Lookup_Panel extends JPanel
 
 		add(new JLabel("Doctor Info:"));
 
-		add(new Doctor_Info_Output());
+		add(doctor_output_panel = new Doctor_Info_Output());
 	}
 
 
@@ -50,6 +50,8 @@ public class Doctor_Lookup_Panel extends JPanel
 
 		add(doctor_output_panel = output);
 
+		revalidate();
+		repaint();
 	}
 
 
@@ -73,13 +75,12 @@ public class Doctor_Lookup_Panel extends JPanel
 					loadText();
 
 					// pass input into Doctor instance to modify tuple
-					// Doctor doc = new Doctor(ssn);
-					// * somehow get string of doctors name, ssn, code from instance *  and then:
+					//Doctor doc = new Doctor(ssn);
+
+					//String result = doc.search("DOCTOR");
 
 					// extract fields from string and pass to doctor:
-					// displayNewDoctorOutput(new Doctor_Info_Output(doctorsName, doctorsSSN, doctorsCode)); 
-					// ^ doctorsName = firstname + lastname combined
-
+					//displayNewDoctorOutput(new Doctor_Info_Output(result)); 
 				}
 			});
 		}
@@ -141,19 +142,14 @@ public class Doctor_Lookup_Panel extends JPanel
 		/***********************************************************************
 		* Primary constructor for Doctor_Info_Output.
 		***********************************************************************/
-		public Doctor_Info_Output(String name, String dssn, String dcode)
+		public Doctor_Info_Output(String result)
 		{
+			setLayout(new GridLayout(2, 1));
+
 			add(new Centered_Text_Panel("Doctor Info:"));
-			add(new Centered_Text_Panel(""));
-
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel(name));
-
-			add(new Centered_Text_Panel("Doctor SSN:"));
-			add(new Centered_Text_Panel(dssn));
-
-			add(new Centered_Text_Panel("Doctor Code:"));
-			add(new Centered_Text_Panel(dcode));
+			//add(new Centered_Text_Panel(""));
+			//add(new Centered_Text_Panel(result);
+			add(new JTextField(result));
 		}
 
 

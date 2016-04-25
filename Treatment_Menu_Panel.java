@@ -18,6 +18,8 @@ public class Treatment_Menu_Panel extends JPanel
 	/* Panel with 1 BUTTON to return the screen to the MAIN MENU */
 	private JPanel main_menu_button;	
 
+	/* String to get input data from fields */
+	private String input;
 
 
 	/*********************************************************************************
@@ -28,9 +30,6 @@ public class Treatment_Menu_Panel extends JPanel
 		this.hospital_frame = frame;
 
 		setLayout(new GridLayout(2,1));
-
-		//initializeButtons();
-		//addActionListeners();
 
 		add(current_panel = new Treatment_Button_Options());
 
@@ -142,10 +141,7 @@ public class Treatment_Menu_Panel extends JPanel
 	* A menu displayed to the user to insert a new Treatment into the database. 
 	*****************************************************************************************************/
 	private class Insert_Treatment_Menu_Panel extends JPanel 
-	{
-		/* Button to return the screen to the main menu */
-		private JButton submit_button;	
-
+	{	
 		/* Text fields for the user to enter intput data */
 		private JTextField treatment_id_field, patient_ssn_field, doctor_ssn_field, treatment_start_date_field, 
 						   treatment_end_date_field, medicaton_field, dosage_field, method_of_delivery_field;
@@ -157,9 +153,6 @@ public class Treatment_Menu_Panel extends JPanel
 		public Insert_Treatment_Menu_Panel() 
 		{
 			setLayout(new GridLayout(10, 2));
-
-			initializeButtons();
-			addActionListeners();
 
 			initializeTextFields();
 
@@ -191,7 +184,7 @@ public class Treatment_Menu_Panel extends JPanel
 			add(method_of_delivery_field);
 
 			add(new Back_Button());
-			add(submit_button);
+			add(new Submit_Button());
 
 
 		}
@@ -217,32 +210,52 @@ public class Treatment_Menu_Panel extends JPanel
 		}
 
 
-		/*********************************************************************************
-		* Initializes the buttons for Insert_Treatment_Menu_Panel.
-		*********************************************************************************/
-		private void initializeButtons()
+
+		/******************************************************************************
+		* Submit button for Insert_Treatment_Menu_Panel class.
+		******************************************************************************/
+		private class Submit_Button extends JButton
 		{
-			submit_button = new JButton("Submit");
-		}
-
-
-
-		/*********************************************************************************
-		* Adds the action listeners for Insert_Treatment_Menu_Panel.
-		*********************************************************************************/
-		private void addActionListeners()
-		{
-			/* Add functionality - Submit data in text fields */
-			submit_button.addActionListener(new ActionListener()
+			/******************************************************************
+			* Main constructor for Submit_Button
+			******************************************************************/
+			public Submit_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				super("Submit");
+
+				addActionListener(new ActionListener()
 				{
+					public void actionPerformed(ActionEvent e)
+					{
+						// get input from ssn field into ssn string variable
+						loadInput();
 
-				}
-			});
+						// * somehow get string of doctors name, ssn, code from instance *  and then:
+						//Treatement.insert(input);
 
-		} // end addActionListeners()
+					}
+				});
+			}
 
+			/******************************************************************
+			* Load input from ssn field into corresponding string variable and
+			* return that string.
+			******************************************************************/
+			private String loadInput()
+			{
+				// get input from textfields and load them into a single string
+
+				input = treatment_id_field.getText() + "\t" + patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+				treatment_start_date_field.getText() + "\t" + treatment_end_date_field.getText() + "\t" + medicaton_field.getText() + 
+				"\t" + dosage_field.getText() + "\t" + method_of_delivery_field.getText();
+
+				
+				// if this point is reached age and ssn were successfully retrieved
+				return input;
+
+			}
+
+		} // end Submit_Button class
 
 
 
@@ -278,9 +291,6 @@ public class Treatment_Menu_Panel extends JPanel
 		{
 			setLayout(new GridLayout(4, 2));
 
-			initializeButtons();
-			addActionListeners();
-
 			initializeTextFields();
 
 			add(new Centered_Text_Panel("Enter ID of Treatment to be deleted:"));
@@ -290,7 +300,7 @@ public class Treatment_Menu_Panel extends JPanel
 			add(new JLabel(""));
 
 			add(new Back_Button());
-			add(submit_button);
+			add(new Submit_Button());
 		}
 
 		/*********************************************************************************
@@ -302,31 +312,47 @@ public class Treatment_Menu_Panel extends JPanel
 		}
 
 
-		/*********************************************************************************
-		* Initializes the buttons for Delete_Treatment_Menu_Panel.
-		*********************************************************************************/
-		private void initializeButtons()
+		/******************************************************************************
+		* Submit button for Delete_Treatment_Menu_Panel class.
+		******************************************************************************/
+		private class Submit_Button extends JButton
 		{
-			submit_button = new JButton("Submit");
-		}
-
-
-
-		/*********************************************************************************
-		* Adds the action listeners for Delete_Treatment_Menu_Panel.
-		*********************************************************************************/
-		private void addActionListeners()
-		{
-			/* Add functionality - Submit data in text fields */
-			submit_button.addActionListener(new ActionListener()
+			/******************************************************************
+			* Main constructor for Submit_Button
+			******************************************************************/
+			public Submit_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				super("Submit");
+
+				addActionListener(new ActionListener()
 				{
+					public void actionPerformed(ActionEvent e)
+					{
+						// get input from ssn field into ssn string variable
+						loadInput();
 
-				}
-			});
+						//Treatment.delete(input);
 
-		} // end addActionListeners()
+					}
+				});
+			}
+
+			/******************************************************************
+			* Load input from ssn field into corresponding string variable and
+			* return that string.
+			******************************************************************/
+			private String loadInput()
+			{
+				// get input from textfields and load them into a single string
+
+				input = treatment_id_field.getText();
+				
+				// if this point is reached age and ssn were successfully retrieved
+				return input;
+
+			}
+
+		} // end Submit_Button class
 
 
 

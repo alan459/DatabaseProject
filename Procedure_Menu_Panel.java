@@ -18,6 +18,9 @@ public class Procedure_Menu_Panel extends JPanel
 	/* Pointer to menu button panel so it can be removed when necessary */
 	private JPanel main_menu_button;	
 
+	/* String to get input data from fields */
+	private String input;
+
 
 
 
@@ -32,7 +35,7 @@ public class Procedure_Menu_Panel extends JPanel
 
 		add(current_panel = new Procedure_Button_Options());
 
-		add(main_menu_button = new Main_Menu_Button(frame));
+		add(main_menu_button = new Main_Menu_Button(hospital_frame));
 	}
 
 	
@@ -141,9 +144,6 @@ public class Procedure_Menu_Panel extends JPanel
 	*****************************************************************************************************/
 	private class Insert_Procedure_Menu_Panel extends JPanel 
 	{
-		/* Button to return the screen to the main menu */
-		private JButton submit_button;	
-
 		/* Text fields for the user to enter intput data */
 		private JTextField procedure_id_field, procedure_description_field, patient_ssn_field, doctor_ssn_field,
 						   nurse_ssn_field, scheduled_time_field, scheduled_date_field;
@@ -155,9 +155,6 @@ public class Procedure_Menu_Panel extends JPanel
 		public Insert_Procedure_Menu_Panel() 
 		{
 			setLayout(new GridLayout(9, 2));
-
-			initializeButtons();
-			addActionListeners();
 
 			initializeTextFields();
 
@@ -186,8 +183,7 @@ public class Procedure_Menu_Panel extends JPanel
 			add(scheduled_time_field);
 
 			add(new Back_Button());
-			add(submit_button);
-
+			add(new Submit_Button());
 
 		}
 
@@ -208,31 +204,52 @@ public class Procedure_Menu_Panel extends JPanel
 		}
 
 
-		/*********************************************************************************
-		* Initializes the buttons for Insert_Procedure_Menu_Panel.
-		*********************************************************************************/
-		private void initializeButtons()
+		/******************************************************************************
+		* Submit button for Insert_Procedure_Menu_Panel class.
+		******************************************************************************/
+		private class Submit_Button extends JButton
 		{
-			submit_button = new JButton("Submit");
-		}
-
-
-
-		/*********************************************************************************
-		* Adds the action listeners for Insert_Procedure_Menu_Panel.
-		*********************************************************************************/
-		private void addActionListeners()
-		{
-			/* Add functionality - Submit data in text fields */
-			submit_button.addActionListener(new ActionListener()
+			/******************************************************************
+			* Main constructor for Submit_Button
+			******************************************************************/
+			public Submit_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				super("Submit");
+
+				addActionListener(new ActionListener()
 				{
+					public void actionPerformed(ActionEvent e)
+					{
+						// get input from ssn field into ssn string variable
+						loadInput();
 
-				}
-			});
+						// * somehow get string of doctors name, ssn, code from instance *  and then:
+						//Patient.insert(input);
 
-		} // end addActionListeners()
+						JOptionPane.showMessageDialog(null,"Submitted");
+
+					}
+				});
+			}
+
+			/******************************************************************
+			* Load input from ssn field into corresponding string variable and
+			* return that string.
+			******************************************************************/
+			private String loadInput()
+			{
+				// get input from textfields and load them into a single string
+
+				input = procedure_id_field.getText() + "\t" + patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+				nurse_ssn_field.getText() + "\t" + scheduled_date_field.getText() + "\t" + scheduled_time_field.getText();
+
+				
+				// if this point is reached age and ssn were successfully retrieved
+				return input;
+
+			}
+
+		} // end Submit_Button class
 
 
 	} // end Insert Procedure menu class
@@ -252,9 +269,6 @@ public class Procedure_Menu_Panel extends JPanel
 	*****************************************************************************************************/
 	private class Delete_Procedure_Menu_Panel extends JPanel 
 	{
-		/* Button to return the screen to the main menu */
-		private JButton submit_button;	
-
 		/* Text fields for the user to enter intput data */
 		private JTextField procedure_id_field;
 
@@ -266,9 +280,6 @@ public class Procedure_Menu_Panel extends JPanel
 		{
 			setLayout(new GridLayout(4, 2));
 
-			initializeButtons();
-			addActionListeners();
-
 			initializeTextFields();
 
 			add(new Centered_Text_Panel("Enter ID of Procedure to be deleted:"));
@@ -278,7 +289,7 @@ public class Procedure_Menu_Panel extends JPanel
 			add(new JLabel(""));
 
 			add(new Back_Button());
-			add(submit_button);
+			add(new Submit_Button());
 		}
 
 		/*********************************************************************************
@@ -289,32 +300,48 @@ public class Procedure_Menu_Panel extends JPanel
 			procedure_id_field = new JTextField(6);
 		}
 
-
-		/*********************************************************************************
-		* Initializes the buttons for Delete_Procedure_Menu_Panel.
-		*********************************************************************************/
-		private void initializeButtons()
+		/******************************************************************************
+		* Submit button for Delete_Procedure_Menu_Panel class.
+		******************************************************************************/
+		private class Submit_Button extends JButton
 		{
-			submit_button = new JButton("Submit");
-		}
-
-
-
-		/*********************************************************************************
-		* Adds the action listeners for Delete_Procedure_Menu_Panel.
-		*********************************************************************************/
-		private void addActionListeners()
-		{
-			/* Add functionality - Submit data in text fields */
-			submit_button.addActionListener(new ActionListener()
+			/******************************************************************
+			* Main constructor for Submit_Button
+			******************************************************************/
+			public Submit_Button()
 			{
-				public void actionPerformed(ActionEvent e)
+				super("Submit");
+
+				addActionListener(new ActionListener()
 				{
+					public void actionPerformed(ActionEvent e)
+					{
+						// get input from ssn field into ssn string variable
+						loadInput();
 
-				}
-			});
+						// * somehow get string of doctors name, ssn, code from instance *  and then:
+						//Procedure.delete(input);
 
-		} // end addActionListeners()
+					}
+				});
+			}
+
+			/******************************************************************
+			* Load input from ssn field into corresponding string variable and
+			* return that string.
+			******************************************************************/
+			private String loadInput()
+			{
+				// get input from textfields and load them into a single string
+
+				input = procedure_id_field.getText();
+				
+				// if this point is reached age and ssn were successfully retrieved
+				return input;
+
+			}
+
+		} // end Submit_Button class
 
 
 	} // end Delete_Procedure_Menu_Panel class

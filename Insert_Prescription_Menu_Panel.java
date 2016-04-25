@@ -8,17 +8,18 @@ import java.awt.event.*;
 *****************************************************************************************************/
 public class Insert_Prescription_Menu_Panel extends JPanel 
 {
-	/* Button to return the screen to the main menu */
-	private JButton submit_button;	
 
 	/* Text fields for the user to enter intput data */
 	private JTextField prescription_id_field, patient_ssn_field, doctor_ssn_field, prescription_date_field, medicaton_field, dosage_field;
+
+	/* String to get input data from fields */
+	private String input;
 
 
 	/*********************************************************************************
 	* Main constructor used for setting up the Insert_Prescription_Menu_Panel.
 	*********************************************************************************/
-	public Insert_Prescription_Menu_Panel() 
+	public Insert_Prescription_Menu_Panel(Hospital_Frame frame) 
 	{
 		setLayout(new GridLayout(8, 2));
 
@@ -49,7 +50,8 @@ public class Insert_Prescription_Menu_Panel extends JPanel
 		add(new JLabel(" Dosage:"));
 		add(dosage_field);
 
-		add(submit_button);
+		add(new Main_Menu_Button(frame));
+		add(new Submit_Button());
 
 
 	}
@@ -70,32 +72,50 @@ public class Insert_Prescription_Menu_Panel extends JPanel
 		dosage_field = new JTextField(6);
 	}
 
-
-	/*********************************************************************************
-	* Initializes the buttons for Insert_Prescription_Menu_Panel.
-	*********************************************************************************/
-	private void initializeButtons()
+	/******************************************************************************
+	* Submit button for Insert_Precription_Menu_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
 	{
-		submit_button = new JButton("submit");
-	}
-
-
-
-	/*********************************************************************************
-	* Adds the action listeners for Insert_Prescription_Menu_Panel.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Submit data in text fields */
-		submit_button.addActionListener(new ActionListener()
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
 		{
-			public void actionPerformed(ActionEvent e)
+			super("Submit");
+
+			addActionListener(new ActionListener()
 			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadInput();
 
-			}
-		});
+					//Prescription.insert(input);s
 
-	} // end addActionListeners()
+					// display a new popup saying insertion was successful?
+					JOptionPane.showMessageDialog(null,"Submitted");
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable and
+		* return that string.
+		******************************************************************/
+		private String loadInput()
+		{
+			// get input from textfields and load them into a single string
+
+			input = prescription_id_field.getText() + "\t" + patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+			prescription_date_field().getText() + "\t" + medicaton_field.getText() + "\t" + dosage_field.getText();
+			
+			return input;
+		}
+
+	} // end Submit_Button class
+
+
 
 
 

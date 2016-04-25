@@ -11,12 +11,12 @@ public class Insert_Patient_Menu_Panel extends JPanel
 	/* Pointer to the main java window to access its get() methods for other panels */
 	private Hospital_Frame main_frame;
 
-	/* Button to return the screen to the main menu */
-	private JButton mainMenuButton;	
-
 	/* Text fields for the user to enter intput data */
 	private JTextField ssn_field, first_name_field, last_name_field, m_initial_field, dob_field, age_field, location_field;
 	// fields that might need to be drop down - dob, gender, location
+
+	/* String to get input data from fields */
+	private String input;
 
 	private JComboBox gender_selection;
 
@@ -31,8 +31,6 @@ public class Insert_Patient_Menu_Panel extends JPanel
 		setLayout(new GridLayout(10, 2));
 
 		//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		initializeButtons();
-		addActionListeners();
 
 		initializeTextFields();
 		initializeComboBoxes();
@@ -64,8 +62,8 @@ public class Insert_Patient_Menu_Panel extends JPanel
 		add(new Centered_Text_Panel(" Location:"));
 		add(location_field);
 
-		add(mainMenuButton);
-		add(new JButton("submit"));
+		add(new Main_Menu_Button(main_frame));
+		add(new Submit_Button());
 
 
 	}
@@ -96,31 +94,145 @@ public class Insert_Patient_Menu_Panel extends JPanel
 	}
 
 
-	/*********************************************************************************
-	* Initializes the buttons for Insert_Patient_Menu_Panel.
-	*********************************************************************************/
-	private void initializeButtons()
+	/******************************************************************************
+	* Submit button for Insert_Patient_Menu_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
 	{
-		mainMenuButton = new JButton("Main Menu");
-	}
-
-
-
-	/*********************************************************************************
-	* Adds the action listeners for Insert_Patient_Menu_Panel.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Return user to main menu */
-		mainMenuButton.addActionListener(new ActionListener()
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
 		{
-		  public void actionPerformed(ActionEvent e)
-		  {
-		  	main_frame.getMainMenu();
-		  }
-		});
+			super("Submit");
 
-	} // end addActionListeners()
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadText();
+
+					// * somehow get string of doctors name, ssn, code from instance *  and then:
+					//Patient.insert(input);
+
+					JOptionPane.showMessageDialog(null,"Submitted");
+
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable.
+		*
+		* If load is successful, true is returned, otherwise false
+		* is returned.
+		******************************************************************/
+		private boolean loadText()
+		{
+			// get ssn from field
+			try
+			{
+				input = ssn_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "SSN input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get first name from field
+			try
+			{
+				input += first_name_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "First name input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get Middle initial  from field
+			try
+			{
+				input += m_initial_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Middle initial input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get last name from field
+			try
+			{
+				input += last_name_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Last name input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get dob from field
+			try
+			{
+				input += dob_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "DOB input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get age from field
+			try
+			{
+				input += age_field.getText() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Age input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get gender selection from field
+			try
+			{
+				input += gender_selection.getSelectedItem().toString() + "\t";
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Gender input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// get gender selection from field
+			try
+			{
+				input += location_field.getText();
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "Location input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+
+			// if this point is reached age and ssn were successfully retrieved
+			return true;
+
+		}
+
+	} // end Submit_Button class
+
 
 
 

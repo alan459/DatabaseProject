@@ -4,145 +4,167 @@ import java.awt.event.*;
 
 
 /*****************************************************************************************************
-* To be used as the leftside INNER panel as part of a larger panel containing all the options for 
-* the user. 
-*
-* A display for the user to lookup nurses in the database.
+* A display for the user to lookup Nurses in the database.
 *****************************************************************************************************/
 public class Nurse_Lookup_Panel extends JPanel 
 {
-	/* Input submission buttons */
-	private JButton ssn_lookup_button; //, recordLookupButton;		
-
-	/* Display to the user what type of information is being displayed in the adjacent position */
-	private JLabel enter_ssn_label, nurse_lookup_label;	
-
-	/* Labels for displaying output data */
-	private JLabel nurse_info_label, nurse_name_output_label, nurse_ssn_output_label, nurse_dob_output_label;
+	/* Panel for displaying output data - deleted and re-added afer every click of 'submit' */
+	private JPanel nurse_output_panel;
 
 	/* Fields for getting input from the user */
-	private JTextField ssn_lookup_field;	
+	private JTextField ssn_field;	
+	private String ssn;
 
 
 
 	/*********************************************************************************
-	* Main constructor for setting up the nurse lookup menu. 
+	* Main constructor for setting up the Nurse lookup menu. 
 	*********************************************************************************/
 	public Nurse_Lookup_Panel() 
 	{
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		initializeLabels();
-		initializeButtons();
 		initializeTextFields();
-		addActionListeners();
 
 		// add the components to the panel
-		add(nurse_lookup_label);
-		//add(recordLookupLabel);
-		add(enter_ssn_label);
-		add(ssn_lookup_field);
-		add(ssn_lookup_button);
+		add(new JLabel("Nurse Lookup"));
 
-		// add labels that will display output info for nurses 
-		// labels will be appended with the nurse info after 'submit'
-		// clicked (ex: ssn - setText(getSSNText() + ssn) )
-		add(nurse_info_label);
-		add(nurse_name_output_label);
-		add(nurse_ssn_output_label);
-		add(nurse_dob_output_label);
+		add(new JLabel("by: SSN"));
+		add(ssn_field);
+		add(new Submit_Button());
 
+		add(new JLabel("Nurse Info:"));
 
-		//add(recordLookupButton);
-		//add(mainMenuButton);
+		add(nurse_output_panel = new Nurse_Info_Output());
 	}
 
 
 	/*********************************************************************************
-	* Initializes the labels for the nurse lookup menu.
+	* Display new output information for a Nurse, if any output is currently being
+	* displayed, remove it first.
 	*********************************************************************************/
-	private void initializeLabels()
-	{
-		nurse_lookup_label = new JLabel("Nurse Lookup");
-		//recordLookupLabel = new JLabel("Record Lookup");
+	protected void displayNewNurseOutput(JPanel output)
+	{	
+		if(nurse_output_panel != null)
+			remove(nurse_output_panel);
 
-		enter_ssn_label = new JLabel("\nby ssn:");
+		add(nurse_output_panel = output);
 
-		nurse_info_label = new JLabel("Nurse Info:");
-
-		nurse_name_output_label = new JLabel("Name:");
-		nurse_ssn_output_label = new JLabel("SSN:");
-		nurse_dob_output_label = new JLabel("DOB:");
+		revalidate();
+		repaint();
 	}
 
 
+	/******************************************************************************
+	* Submit button for Nurse_Lookup_Panel class.
+	******************************************************************************/
+	private class Submit_Button extends JButton
+	{
+		/******************************************************************
+		* Main constructor for Submit_Button
+		******************************************************************/
+		public Submit_Button()
+		{
+			super("Submit");
+
+			addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					// get input from ssn field into ssn string variable
+					loadText();
+
+					// pass input into Nurse instance to modify tuple
+					//Nurse doc = new Nurse(ssn);
+
+					//String result = doc.search("NURSE");
+
+					// extract fields from string and pass to Nurse:
+					//displayNewNurseOutput(new Nurse_Info_Output(result)); 
+				}
+			});
+		}
+
+		/******************************************************************
+		* Load input from ssn field into corresponding string variable.
+		*
+		* If load is successful, true is returned, otherwise false
+		* is returned.
+		******************************************************************/
+		private boolean loadText()
+		{
+			// get ssn from field
+			try
+			{
+				ssn = ssn_field.getText();
+			} 
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(new JPanel(), "SSN input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
+				return false;	
+			}
+
+			// if this point is reached age and ssn were successfully retrieved
+			return true;
+
+		}
+
+	} // end Submit_Button class
+
+
+
 	/*********************************************************************************
-	* Initializes the buttons for the nurse lookup menu.
+	* Panel for displaying Nurse info output data based on input data from the user.
 	*********************************************************************************/
-	private void initializeButtons()
+	protected class Nurse_Info_Output extends JPanel
 	{
-		ssn_lookup_button = new JButton("Submit");
-	}
+		/***********************************************************************
+		* Default constructor for Nurse_Info_Output, initializing empty results.
+		***********************************************************************/
+		public Nurse_Info_Output()
+		{
+			setLayout(new GridLayout(5, 2));
+
+			add(new Centered_Text_Panel("Nurse Info:"));
+			add(new Centered_Text_Panel(""));
+
+			add(new Centered_Text_Panel("Name:"));
+			add(new Centered_Text_Panel("<First><M><Last>"));
+
+			add(new Centered_Text_Panel("SSN:"));
+			add(new Centered_Text_Panel("ddd-dd-dddd"));
+
+			add(new Centered_Text_Panel("Dcode:"));
+			add(new Centered_Text_Panel("ddddd"));
+		}
+
+
+		/***********************************************************************
+		* Primary constructor for Nurse_Info_Output.
+		***********************************************************************/
+		public Nurse_Info_Output(String result)
+		{
+			setLayout(new GridLayout(2, 1));
+
+			add(new Centered_Text_Panel("Nurse Info:"));
+			//add(new Centered_Text_Panel(""));
+			//add(new Centered_Text_Panel(result);
+			add(new JTextField(result));
+		}
+
+
+	} // end Nurse_Info_Output class
+
+
 
 
 	/*********************************************************************************
-	* Initializes the textfields for the nurse lookup menu.
+	* Initializes the textfields for the Nurse lookup menu.
 	*********************************************************************************/
 	private void initializeTextFields()
 	{
-		ssn_lookup_field = new JTextField(10);
+		ssn_field = new JTextField(10);
 	}
 
 
-	/*********************************************************************************
-	* Adds the action listeners for the nurse lookup menu.
-	*********************************************************************************/
-	private void addActionListeners()
-	{
-		/* Add functionality - Lookup a nurse based on ssn */
-		ssn_lookup_button.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				String ssn = getSSNData();
-				if (ssn != null)
-				{
-					// pass the ssn data to a method that lookups nurse data and returns it as a string
-					// String nurseData = getnurseData(ssn);
-					//displaynurseData(nurseData); 
-				}
-				else
-				{
-					// display error message somewhere
-				}
-			}
-			});
-
-	}
-
-
-	/*********************************************************************************
-	* Returns the input in the "lookup nurse by ssn" field.
-	*********************************************************************************/
-	private String getSSNData()
-	{
-		try 
-		{
-			return ssn_lookup_field.getText();
-		} 
-		catch (Exception e) 
-		{
-			return null;
-		}
-	}
-
-
-	/*********************************************************************************
-	* Fills the nurse display fields with a nurse's data.
-	*********************************************************************************/
-	private void displayNurseData(String data)
-	{
-
-	}
-
-} // end nurse lookup class
+} // end Nurse lookup class
