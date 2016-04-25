@@ -34,7 +34,10 @@ public abstract class DataRecord
 		}
 	}
 
-	public abstract void insert(String s);
+	public static void insert(String s)
+        {
+            // will be overridden in subclasses
+        }
 	public abstract void update(String s);
 
 

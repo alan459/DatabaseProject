@@ -17,15 +17,63 @@ public class Nurse extends DataRecord
      */
     public void update(String s)
     {
+        try 
+        {
+            String[] values = s.split("\t");
+            if(values.length == 3)
+            {
+            String query = "UPDATE Nurse SET Fname=?,Minit=?,Lname=? WHERE Nssn = (?)";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1,values[0]);
+            pstmt.setString(2,values[1]);
+            pstmt.setString(3,values[2]);
+            pstmt.setString(4,info);
 
+            int affectedRows = pstmt.executeUpdate();
+                if(affectedRows == 0)
+                { System.err.println("Failed to update to Nurse info.");} 
+                else 
+                { System.out.println("\tSuccessfully updated Nurse info. \n");}
+                
+            pstmt.close();
+            }
+        } 
+        catch (SQLException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
     }
 
     /**
      * Inserts a new Nurse into the database using the info contained in the string  
      */
-    public void insert(String s)
+    public static void insert(String s)
     {
-
+        try 
+        {
+            String Template = "INSERT INTO Nurse (Nssn,Fname,Minit,Lname,supervisor) VALUES (?,?,?,?,?)";
+            String[] values = s.split("\t");
+                if(values.length == 5)
+                {
+                    PreparedStatement pstmt = conn.prepareStatement(Template);
+                    pstmt.setString(1,values[0]);
+                    pstmt.setString(2,values[1]);
+                    pstmt.setString(3,values[2]);
+                    pstmt.setString(4,values[3]);
+                    pstmt.setString(5,values[4]);
+           
+                    int affectedRows = pstmt.executeUpdate();
+                    if(affectedRows == 0)
+                    { System.err.println("Failed to insert to Nurses table.");} 
+                    else 
+                    { System.out.println("\n Successfully inserted new Nurse. \n");}
+                pstmt.close();
+                }
+        }
+        catch (SQLException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -44,6 +92,102 @@ public class Nurse extends DataRecord
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Searches the database to get information about a particular Nurse, including name and supervisor.
+     */
+    private String searchNurse()
+    {
+        String result = "";
+        try 
+        {
+            String query = "SELECT * FROM Nurse WHERE Nssn = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, info);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            String nurseInfo = "Nurse: " + rs.getString("Fname") + " " + rs.getString("Minit") + " " + rs.getString("Lname")+ "\n";
+
+
+            String supervisorSsn = rs.getString("supervisor");
+            String supervisorQuery = "SELECT * FROM Doctor WHERE Dssn = ?";
+            PreparedStatement ps2 = conn.prepareStatement(supervisorQuery);
+            ps2.setString(1,supervisorSsn);
+            ResultSet rs2 = ps2.executeQuery();
+            rs2.next(); 
+            String supervisorInfo = "Supervisor: " + rs2.getString("Fname") + " " + rs2.getString("Minit") + " " + rs2.getString("Lname") + "\n";
+            
+            
+            result = nurseInfo + supervisorInfo;
+            
+            
+            rs.close();
+            rs2.close();
+            ps.close(); 
+        } 
+        catch (SQLException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    /**
+     * Searches the database to get information about a particular Nurse's scheduled procedures.
+     */
+    private String searchProcedure()
+    {
+        String result = "";
+        try 
+        {
+            String query = "SELECT * FROM Procedure WHERE Nssn = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, info);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            
+            String queryP = "SELECT Fname,Minit,Lname FROM Patient WHERE Pssn = ?";
+            PreparedStatement psP = conn.prepareStatement(queryP);
+            
+            String queryD = "SELECT Fname, Minit, Lname FROM Doctor WHERE Dssn = ?";
+            PreparedStatement psD = conn.prepareStatement(queryD);
+            
+            while(!rs.isAfterLast())
+                {   
+                    // Get the name of the patient undergoing the current procedure
+                    psP.setString(1, rs.getString("Pssn"));
+                    ResultSet p = psP.executeQuery();
+                    p.next();
+                    String patientName = p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname");
+
+                    //Get the name of the Dr involved in the procedure
+                    psD.setString(1, rs.getString("Dssn"));
+                    ResultSet d = psD.executeQuery();
+                    d.next();
+                    String docName = d.getString("Fname") + " " + d.getString("Minit") + " " + d.getString("Lname");
+
+                    String procedure = "Procedure Type: " + rs.getString("procedureDescription") + "\n"
+                            + "Date/Time: " + rs.getDate("scheduled_Date") + " "+ rs.getInt("scheduled_Time") + ":00"+ "\n"
+                            + "Supervising Doctor: " + docName + "\n"
+                            + "Patient: " + patientName + "\n\n";
+                    result = result + procedure;
+                    
+                    rs.next();
+                    p.close();
+                    d.close();
+                }
+            
+            rs.close();
+            ps.close(); 
+            psP.close();
+            psD.close();
+        } 
+        catch (SQLException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     /**
      * Searches the database to get information about a particular Nurse, info will contain the primary key of NURSE
@@ -51,73 +195,16 @@ public class Nurse extends DataRecord
      */
     public String search(String table)
     {
-        String query = "";
         String result = "";
-        try{
-            Statement stmt = conn.createStatement();
-
             //Construct a select query using the appropriate key and table to search
             if(table.equals("NURSE"))   //If you're searching the Nurse table using the Nssn then you'll return all the info about the requested Nurse
             {
-                query = "select * from NURSE where Nssn = " + info;
-
-                //The results from the original search query will be in here
-                ResultSet rs = stmt.executeQuery(query);
-
-                //We likely also want to get the actual name of the supervising doctor instead of just the ssn
-                rs.next();
-                String superSsn = rs.getString("supervisor");
-
-                String superQuery = "select Fname, Minit, Lname from DOCTOR where Dssn = " + superSsn;
-
-                ResultSet drName = stmt.executeQuery(superQuery);
-
-                //We then use the result set to generate the string that will be returned to the user depending on the type of query
-                rs.next();
-                drName.next();
-
-                while(!rs.isAfterLast())
-                {
-                    //Build the string to return the Nurse Information
-                    String nName = "Nurse Name: " + rs.getString("Fname") + " " + rs.getString("Minit") + " " + rs.getString("Lname");
-                    String supervisor = "Supervisor Name: " + drName.getString("Fname") + " " + drName.getString("Minit") + " " + drName.getString("Lname");
-
-                    result = nName + "\n" + supervisor;
-                }
+                result = searchNurse();
             }
             else if(table.equals("PROCEDURE"))  //If you're searching the Procedure table using the Nssn then you'll return info about 
             {                                   //the procedures that the nurse is assisting with
-                query = "select * from PROCEDURE where Nssn = " + info;
-
-                //The results from the search query will be in here
-                ResultSet rs = stmt.executeQuery(query);
-
-                rs.next();
-
-                while(!rs.isAfterLast())
-                {
-                    //Get the name of the patient undergoing the procedure
-                    String pQuery = "select Fname, Minit, Lname from PATIENT where Pssn = " + rs.getString("Pssn");
-                    ResultSet p = stmt.executeQuery(pQuery);
-                    p.next();
-                    String patientName = p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname");
-
-                    //Get the name of the Dr involved in the procedure
-                    String dQuery = "select Fname, Minit, Lname from DOCTOR where Dssn = " + rs.getString("Dssn");
-                    ResultSet d = stmt.executeQuery(dQuery);
-                    d.next();
-                    String docName = d.getString("Fname") + " " + d.getString("Minit") + " " + d.getString("Lname");
-
-                    String procedure = "Procedure type: " + rs.getString("procedureDescription") + ", Date/Time: " + rs.getDate("scheduled_Date") + " " + rs.getInt("scheduled_Time") + ":00, Supervising Doctor: " + docName + ", Patient: " + patientName + "\n";
-
-                    result = result + procedure;
-                }
+                result = searchProcedure();
             }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
         return result;
     }
 }
