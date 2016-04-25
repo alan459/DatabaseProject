@@ -1,2 +1,30 @@
-Need to implement a nurse interface
+Need to implement insert record options
 
+Finished insert panels, just need to handle submit button being pressed - getting input data from text fields.
+
+
+
+ Patient
+o Enter (insert) new patient info 
+o Modify select patient info  Room/location
+ Age
+
+ Doctor
+o Enter (insert) new doctor info
+ Nurse
+o Enter (insert) new nurse info o Modify  supervisor
+ Record
+o Insert new record o Modify  status of record  diagnosis
+ Procedure
+o Schedule (insert) new procedure o Cancel (delete) a procedure o Modify (update) a procedure  Scheduled_time  Schedules_date
+ Doctor  Nurse
+
+ Description
+ Treatment
+o Schedule (insert) new treatment o Cancel (delete) a treatment o Modify (update) a treatment
+ Start_date  End_date  Medication  Dosage  Method_of_delivery
+ Prescription
+o Schedule (insert) new prescription o Cancel (delete) a prescription o ***no modification
+ Medication
+o Insert new meds o ***no modification, no deletion
+ Building, Room, Department >>> do not have interactions Select Queries:  Get all <treatment, procedure, prescription> for Patient ****  Get <patient list> for Doctor ****  Get <nurse list> for Doctor ****  Get list of scheduled <procedures, treatments> for a doctor for a given date  Get list of all scheduled <procedures, treatments> for a doctor  Get list of all prescriptions written by a doctor  Get list of patients and number of patients in a given room  Get list of doctors in a department  Get list of records for <doctor, patient>

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+// NEED TO ADD SUBMIT BUTTON HERE
 
 /*****************************************************************************************************
 * A Prescription menu to display to the user all the options for interacting with the prescription
@@ -149,6 +150,8 @@ public class Prescription_Menu_Panel extends JPanel
 		/* Text fields for the user to enter intput data */
 		private JTextField prescription_id_field, patient_ssn_field, doctor_ssn_field, prescription_date_field, medicaton_field, dosage_field;
 
+		private String input;
+
 
 		/*********************************************************************************
 		* Main constructor used for setting up the Insert_Prescription_Menu_Panel.
@@ -230,7 +233,9 @@ public class Prescription_Menu_Panel extends JPanel
 			{
 				public void actionPerformed(ActionEvent e)
 				{
+					loadInput();
 
+					//Prescription.insert(input);
 				}
 			});
 
@@ -246,6 +251,14 @@ public class Prescription_Menu_Panel extends JPanel
 		} // end addActionListeners()
 
 
+		/*********************************************************************************
+		* Loads the text from the fields into input String variable.
+		*********************************************************************************/
+		private void loadInput()
+		{
+			input = prescription_id_field.getText() + "\t" + patient_ssn_field().getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+			prescription_date_field.getText() + "\t" + medicaton_field.getText() + "\t" + dosage_field.getText();
+		}
 
 	} // end Insert_Prescription_Menu_Panel class
 
@@ -270,6 +283,7 @@ public class Prescription_Menu_Panel extends JPanel
 		/* Text fields for the user to enter intput data */
 		private JTextField prescription_id_field;
 
+		private String input;
 
 		/*********************************************************************************
 		* Main constructor used for setting up the Delete_Prescription_Menu_Panel.
@@ -326,7 +340,9 @@ public class Prescription_Menu_Panel extends JPanel
 			{
 				public void actionPerformed(ActionEvent e)
 				{
+					loadInput();
 
+					//Prescription.delete(input);
 				}
 			});
 
@@ -340,6 +356,15 @@ public class Prescription_Menu_Panel extends JPanel
 			});
 
 		} // end addActionListeners()
+
+
+		/*********************************************************************************
+		* Loads the text from the fields into input String variable.
+		*********************************************************************************/
+		private void loadInput()
+		{
+			input = prescription_id_field.getText();
+		}
 
 
 

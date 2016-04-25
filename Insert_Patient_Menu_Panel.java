@@ -113,10 +113,10 @@ public class Insert_Patient_Menu_Panel extends JPanel
 					// get input from ssn field into ssn string variable
 					loadText();
 
-					// * somehow get string of doctors name, ssn, code from instance *  and then:
+					// insert the patient into the database
 					//Patient.insert(input);
 
-					JOptionPane.showMessageDialog(null,"Submitted");
+					JOptionPane.showMessageDialog(null, "Submitted");
 
 				}
 			});
