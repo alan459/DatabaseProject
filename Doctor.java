@@ -230,29 +230,31 @@ public class Doctor extends DataRecord
     /**
      * Inserts a new treatment/procedure/prescription
      */
-    public static void insertPPT(String s, String x)
+    public static String insertPPT(String s, String x)
     {
+        String success = "";
         if(s.equals("PRESCRIPTION"))
         {
-            Doctor.insertPre(x);
+            success = Doctor.insertPre(x);
         }
         else if(s.equals("PROCEDURE"))
         {
-            Doctor.insertPro(x);
+            success = Doctor.insertPro(x);
         }
         else if(s.equals("TREATMENT"))
         {
-            Doctor.insertTre(x);
+            success = Doctor.insertTre(x);
         }
     }
     
     /**
      * Inserts a new prescription using the information provided by the GUI
      */
-    private static void insertPre(String s)
+    private static String insertPre(String s)
     {
         String tmp = "insert into Prescription (prescriptionID, Pssn, Dssn, prescribed_date, medication, dosage, optional_generic, num_refills) values (?,?,?,?,?,?,?,?)";
         String[] values = s.split("\t");
+        String success = ""
         try
         {
             if(values.length == 7)
@@ -275,10 +277,11 @@ public class Doctor extends DataRecord
                     pstmt.setString(8,values[6]);
            
                     int affectedRows = pstmt.executeUpdate();
+
                     if(affectedRows == 0)
-                    { System.err.println("Failed to insert to Prescription table.");} 
+                    {success = "Failed to insert to Prescription table."; }
                     else 
-                    { System.out.println("\n Successfully inserted new Prescription. \n");}
+                    { success = "Successfully inserted new Prescription.";}
                 pstmt.close();
                 }
         } catch (Exception e)
@@ -286,6 +289,7 @@ public class Doctor extends DataRecord
             System.err.println(e);
             e.printStackTrace();
         }
+        return success;
     }
     
         /**
