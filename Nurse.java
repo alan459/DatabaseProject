@@ -144,7 +144,6 @@ public class Nurse extends DataRecord
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, info);
             ResultSet rs = ps.executeQuery();
-            rs.next();
             
             String queryP = "SELECT Fname,Minit,Lname FROM Patient WHERE Pssn = ?";
             PreparedStatement psP = conn.prepareStatement(queryP);
@@ -152,7 +151,14 @@ public class Nurse extends DataRecord
             String queryD = "SELECT Fname, Minit, Lname FROM Doctor WHERE Dssn = ?";
             PreparedStatement psD = conn.prepareStatement(queryD);
             
-            while(!rs.isAfterLast())
+            if(!rs.isBeforeFirst())
+            {
+                result = "No procedures reported for this nurse";
+            }
+            else
+            {
+                rs.next();
+                while(!rs.isAfterLast())
                 {   
                     // Get the name of the patient undergoing the current procedure
                     psP.setString(1, rs.getString("Pssn"));
@@ -176,6 +182,7 @@ public class Nurse extends DataRecord
                     p.close();
                     d.close();
                 }
+            }
             
             rs.close();
             ps.close(); 

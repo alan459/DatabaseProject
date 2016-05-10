@@ -147,7 +147,7 @@ public class Main_Menu_Panel extends JPanel
 		private JComboBox relation_selection_combo_box;
 
 		/* Options for the user to select from in the drop down menu */
-		private String[] relation_selection_options = {"Patient", "Nurse", "Doctor", "Medication", "Prescription", "Treatment", "Procedure"};
+		private String[] relation_selection_options = {"Patient", "Nurse", "Doctor", "Record", "Prescription", "Treatment", "Procedure"};
 
 
 		/*********************************************************************************
@@ -219,8 +219,8 @@ public class Main_Menu_Panel extends JPanel
 					hospital_frame.changeScreen(new Treatment_Menu_Panel(hospital_frame));
 					break;
 
-				case "Medication": 
-					hospital_frame.changeScreen(new Insert_Medication_Menu_Panel(hospital_frame));
+				case "Record": 
+					hospital_frame.changeScreen(new Insert_Record_Menu_Panel(hospital_frame));
 					break;
 
 				case "Procedure":

@@ -140,7 +140,6 @@ public class Doctor extends DataRecord
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, info);
             ResultSet rs = ps.executeQuery();
-            rs.next();
             
             String queryP = "SELECT Fname,Minit,Lname FROM Patient WHERE Pssn = ?";
             PreparedStatement psP = conn.prepareStatement(queryP);
@@ -148,8 +147,14 @@ public class Doctor extends DataRecord
             String queryN = "SELECT Fname, Minit, Lname FROM Nurse WHERE Nssn = ?";
             PreparedStatement psN = conn.prepareStatement(queryN);
             
-            
-            while(!rs.isAfterLast())
+            if(!rs.isBeforeFirst())
+            {
+                result = "No procedures reported for this doctor";
+            }
+            else
+            {
+                rs.next();
+                while(!rs.isAfterLast())
                 {   
                     // Get the name of the patient undergoing the current procedure
                     psP.setString(1, rs.getString("Pssn"));
@@ -174,10 +179,135 @@ public class Doctor extends DataRecord
                     n.close();
                 }
             
+            }
+            
             rs.close();
             ps.close(); 
             psP.close();
             psN.close();
+        } 
+        catch (SQLException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    /**
+     * Searches the database to get information about a particular Doctor's scheduled procedures.
+     */
+    private String searchTreatment()
+    {
+        String result = "";
+        try 
+        {
+            String query = "SELECT * FROM Treatment WHERE Dssn = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, info);
+            ResultSet rs = ps.executeQuery();
+            
+            String queryP = "SELECT Fname,Minit,Lname FROM Patient WHERE Pssn = ?";
+            PreparedStatement psP = conn.prepareStatement(queryP);
+
+            String queryM = "select Mname from medication where MID = ?";
+            PreparedStatement psM = conn.prepareStatement(queryM);
+            
+            if(!rs.isBeforeFirst())
+            {
+                result = "No treatments reported for this doctor";
+            }
+            else
+            {
+                rs.next();
+                while(!rs.isAfterLast())
+                    {   
+                        // Get the name of the patient undergoing the current procedure
+                        psP.setString(1, rs.getString("Pssn"));
+                        ResultSet p = psP.executeQuery();
+                        p.next();
+                        String patientName = p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname");
+
+                        //Get the name of the medication used in the treatment
+                        psM.setString(1, rs.getString("medication"));
+                        ResultSet m = psM.executeQuery();
+                        m.next();
+                        String mName = m.getString("Mname");
+
+                        String treatment = "Treatment ID: " + rs.getString("treatmentID") + "  Medication: " + mName + "\nDosage: " + rs.getString("dosage" ) + "  Method of Delivery: " + rs.getString("method_of_delivery") + 
+                            "\n Start Date: " + rs.getString("start_date") + "  End Date: " + rs.getString("end_date") + "\nPatient: " + patientName + "\n\n";
+
+                        result = result + treatment;
+
+                        rs.next();
+                        p.close();
+                        m.close();
+                    }
+            }
+            
+            rs.close();
+            ps.close(); 
+            psP.close();
+            psM.close();
+        } 
+        catch (SQLException e) {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    private String searchPrescription()
+    {
+        String result = "";
+        try 
+        {
+            String query = "SELECT * FROM Prescription WHERE Dssn = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, info);
+            ResultSet rs = ps.executeQuery();
+            
+            String queryP = "SELECT Fname,Minit,Lname FROM Patient WHERE Pssn = ?";
+            PreparedStatement psP = conn.prepareStatement(queryP);
+
+            String queryM = "select Mname from medication where MID = ?";
+            PreparedStatement psM = conn.prepareStatement(queryM);
+            
+            if(!rs.isBeforeFirst())
+            {
+                result = "No prescriptions reported for this doctor";
+            }
+            else
+            {
+                rs.next();
+                while(!rs.isAfterLast())
+                    {   
+                    // Get the name of the patient undergoing the current prescription
+                    psP.setString(1, rs.getString("Pssn"));
+                    ResultSet p = psP.executeQuery();
+                    p.next();
+                    String patientName = p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname");
+
+                    //Get the name of the medication used
+                    psM.setString(1, rs.getString("medication"));
+                    ResultSet m = psM.executeQuery();
+                    m.next();
+                    String mName = m.getString("Mname");
+
+                    String prescription = "Prescription ID: " + rs.getString("prescriptionID") + "  Medication: " + mName + "\nDosage: " + rs.getString("dosage") + "  Generic Okay? " + rs.getString("optional_generic") + 
+                        "\n Date Prescribed: " + rs.getString("prescribed_date") + "  Number of Refills: " + rs.getString("num_refills") + " \n Patient: " + patientName;
+
+                    result = result + prescription;
+                    
+                    rs.next();
+                    p.close();
+                    m.close();
+                    }
+            }
+            
+            rs.close();
+            ps.close(); 
+            psP.close();
+            psM.close();
         } 
         catch (SQLException e) {
             System.err.println(e);
@@ -194,7 +324,7 @@ public class Doctor extends DataRecord
         String result = "";
         try 
         {
-            String query = "SELECT * FROM Patient WHERE Dssn = ?";
+            String query = "SELECT * FROM Record WHERE primary_doctor = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, info);
             ResultSet rs = ps.executeQuery();
@@ -206,7 +336,7 @@ public class Doctor extends DataRecord
             while(!rs.isAfterLast())
                 {   
                     // Get the name of the patient undergoing the current procedure
-                    psP.setString(1, rs.getString("Pssn"));
+                    psP.setString(1, rs.getString("patient"));
                     ResultSet p = psP.executeQuery();
                     p.next();
                     String patient = "Patient: " + p.getString("Fname") + " " + p.getString("Minit") + " " + p.getString("Lname") + "\n\n";
@@ -411,6 +541,14 @@ public class Doctor extends DataRecord
             else if(table.equals("PROCEDURE"))  //If you're searching the Procedure table using the Dssn then you'll return info about 
             {                                   //the procedures that the doctor is assisting with
                 result = searchProcedure();
+            }
+            else if(table.equals("PRESCRIPTION"))  //If you're searching the Procedure table using the Dssn then you'll return info about 
+            {                                   //the procedures that the doctor is assisting with
+                result = searchPrescription();
+            }
+            else if(table.equals("TREATMENT"))  //If you're searching the Procedure table using the Dssn then you'll return info about 
+            {                                   //the procedures that the doctor is assisting with
+                result = searchTreatment();
             }
             else if (table.equals("PATIENT"))   //If you're searching the patient table you'll get a list of the doctor's patients
             {

@@ -18,10 +18,13 @@ public class Nurse_Record_Lookup_Panel extends JPanel
 	* Main constructor for setting up the Nurse lookup menu. 
 	*********************************************************************************/
 	public Nurse_Record_Lookup_Panel() 
-	{
-		setLayout(new GridLayout(3, 1));
+	{       
+                //setLayout(new GridLayout(3, 1));
+                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		add(new Centered_Text_Panel("Record Lookup:"));
+                JPanel top = new JPanel();
+		top.add(new Centered_Text_Panel("Record Lookup:"));
+                add(top);
 
 		add(new Lookup_Panel());
 
@@ -57,7 +60,7 @@ public class Nurse_Record_Lookup_Panel extends JPanel
 
 		// variables involved with selecting record type
 		private String selected_record_type;
-		private String[] record_types = {"Supervisor"};
+		private String[] record_types = {"PROCEDURE"};
 		private JComboBox record_types_combo_box;
 
 
@@ -101,12 +104,14 @@ public class Nurse_Record_Lookup_Panel extends JPanel
 						loadInput();
 
 						// pass ssn input and/or type of record?
-						// Nurse a = new Nurse(input);
+						 Nurse a = new Nurse(input);
 
-						//String result = a.search("NURSE");
+						String result = a.search("PROCEDURE");
+                                                
+                                                String[] values = result.split("\n");
 
 						// create new instance of output panel to display result
-						// displayNewRecordOutput(new Nurse_Record_Output(result));
+						 displayNewRecordOutput(new Nurse_Record_Output(values));
 					}
 				});
 			}
@@ -159,6 +164,21 @@ public class Nurse_Record_Lookup_Panel extends JPanel
 			add(new JTextField(result));
 			
 
+		}
+                
+                /***********************************************************************
+		* Primary constructor for Nurse_Record_Output.
+		***********************************************************************/
+		public Nurse_Record_Output(String[] result)
+		{
+			setLayout(new GridLayout(result.length + 1, 1));
+
+			add(new Centered_Text_Panel("Results:"));
+                        for(int i = 0; i < result.length; i++)
+                        {
+                            add(new JLabel(result[i]));
+                        }
+			
 		}
 
 	} // end Nurse_Record_Output class

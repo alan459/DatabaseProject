@@ -90,7 +90,7 @@ public class Insert_Patient_Menu_Panel extends JPanel
 	*********************************************************************************/
 	private void initializeComboBoxes()
 	{
-		gender_selection = new JComboBox(new String[]{"Male", "Female"});
+		gender_selection = new JComboBox(new String[]{"M", "F"});
 	}
 
 
@@ -112,9 +112,10 @@ public class Insert_Patient_Menu_Panel extends JPanel
 				{
 					// get input from ssn field into ssn string variable
 					loadText();
-
+                                        
 					// insert the patient into the database
-					//Patient.insert(input);
+					Patient.insert(input);
+                                       
 
 					JOptionPane.showMessageDialog(null, "Submitted");
 
@@ -224,7 +225,6 @@ public class Insert_Patient_Menu_Panel extends JPanel
 				JOptionPane.showMessageDialog(new JPanel(), "Location input could not be read", "Error", JOptionPane.ERROR_MESSAGE);
 				return false;	
 			}
-
 
 			// if this point is reached age and ssn were successfully retrieved
 			return true;

@@ -148,7 +148,8 @@ public class Prescription_Menu_Panel extends JPanel
 		private JButton submit_button, back_button;	
 
 		/* Text fields for the user to enter intput data */
-		private JTextField prescription_id_field, patient_ssn_field, doctor_ssn_field, prescription_date_field, medicaton_field, dosage_field;
+		private JTextField patient_ssn_field, doctor_ssn_field, prescription_date_field, medicaton_field, dosage_field,
+                        optional_field, refills_field;
 
 		private String input;
 
@@ -158,7 +159,7 @@ public class Prescription_Menu_Panel extends JPanel
 		*********************************************************************************/
 		public Insert_Prescription_Menu_Panel() 
 		{
-			setLayout(new GridLayout(8, 2));
+			setLayout(new GridLayout(9, 2));
 
 			//setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 			initializeButtons();
@@ -170,9 +171,6 @@ public class Prescription_Menu_Panel extends JPanel
 
 			// skip to the next row in the grid layout
 			add(new JLabel(""));
-
-			add(new JLabel(" Prescription ID:"));
-			add(prescription_id_field);
 
 			add(new JLabel(" Patient SSN:"));
 			add(patient_ssn_field);
@@ -188,6 +186,12 @@ public class Prescription_Menu_Panel extends JPanel
 
 			add(new JLabel(" Dosage:"));
 			add(dosage_field);
+                        
+                        add(new JLabel(" Optional:"));
+			add(optional_field);
+                        
+                        add(new JLabel(" Refills:"));
+			add(refills_field);
 
 			add(back_button);
 			add(submit_button);
@@ -200,8 +204,6 @@ public class Prescription_Menu_Panel extends JPanel
 		*********************************************************************************/
 		private void initializeTextFields()
 		{
-			prescription_id_field = new JTextField(6);
-
 			patient_ssn_field  = new JTextField(6);
 			doctor_ssn_field = new JTextField(6);
 
@@ -209,6 +211,9 @@ public class Prescription_Menu_Panel extends JPanel
 			medicaton_field = new JTextField(2);
 
 			dosage_field = new JTextField(6);
+                        
+                        optional_field = new JTextField(1);
+			refills_field = new JTextField(3);
 		}
 
 
@@ -235,7 +240,9 @@ public class Prescription_Menu_Panel extends JPanel
 				{
 					loadInput();
 
-					//Prescription.insert(input);
+					Doctor.insertPPT("PRESCRIPTION", input);
+                                        
+                                        JOptionPane.showMessageDialog(null, "Submitted");
 				}
 			});
 
@@ -256,8 +263,9 @@ public class Prescription_Menu_Panel extends JPanel
 		*********************************************************************************/
 		private void loadInput()
 		{
-			input = prescription_id_field.getText() + "\t" + patient_ssn_field().getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
-			prescription_date_field.getText() + "\t" + medicaton_field.getText() + "\t" + dosage_field.getText();
+			input =  patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+			prescription_date_field.getText() + "\t" + medicaton_field.getText() + "\t" + dosage_field.getText()
+                                + "\t" + optional_field.getText() + "\t" + refills_field.getText();
 		}
 
 	} // end Insert_Prescription_Menu_Panel class
@@ -342,7 +350,9 @@ public class Prescription_Menu_Panel extends JPanel
 				{
 					loadInput();
 
-					//Prescription.delete(input);
+					Patient.delete(input, "PRESCRIPTION");
+                                        
+                                        JOptionPane.showMessageDialog(null, "Deleted");
 				}
 			});
 

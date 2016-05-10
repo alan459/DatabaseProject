@@ -93,7 +93,7 @@ public class Insert_Nurse_Menu_Panel extends JPanel
 					// get input from ssn field into ssn string variable
 					loadInput();
 
-					//Nurse.insert(input);s
+					Nurse.insert(input);
 
 					// display a new popup saying insertion was successful?
 					JOptionPane.showMessageDialog(null,"Submitted");

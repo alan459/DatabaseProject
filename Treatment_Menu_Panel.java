@@ -143,7 +143,7 @@ public class Treatment_Menu_Panel extends JPanel
 	private class Insert_Treatment_Menu_Panel extends JPanel 
 	{	
 		/* Text fields for the user to enter intput data */
-		private JTextField treatment_id_field, patient_ssn_field, doctor_ssn_field, treatment_start_date_field, 
+		private JTextField patient_ssn_field, doctor_ssn_field, treatment_start_date_field, 
 						   treatment_end_date_field, medicaton_field, dosage_field, method_of_delivery_field;
 
 
@@ -158,9 +158,6 @@ public class Treatment_Menu_Panel extends JPanel
 
 			add(new JLabel("Enter information of Treatment to be added: "));
 			add(new JLabel(""));
-
-			add(new JLabel(" Treatment ID:"));
-			add(treatment_id_field);
 
 			add(new JLabel(" Patient SSN:"));
 			add(patient_ssn_field);
@@ -186,7 +183,6 @@ public class Treatment_Menu_Panel extends JPanel
 			add(new Back_Button());
 			add(new Submit_Button());
 
-
 		}
 
 		/*********************************************************************************
@@ -194,8 +190,6 @@ public class Treatment_Menu_Panel extends JPanel
 		*********************************************************************************/
 		private void initializeTextFields()
 		{
-			treatment_id_field = new JTextField(6);
-
 			patient_ssn_field  = new JTextField(6);
 			doctor_ssn_field = new JTextField(6);
 
@@ -230,9 +224,9 @@ public class Treatment_Menu_Panel extends JPanel
 						// get input from ssn field into ssn string variable
 						loadInput();
 
-						// * somehow get string of doctors name, ssn, code from instance *  and then:
-						//Treatement.insert(input);
-
+						Doctor.insertPPT("TREATMENT", input);
+                                                
+                                                JOptionPane.showMessageDialog(null, "Submitted");
 					}
 				});
 			}
@@ -245,7 +239,7 @@ public class Treatment_Menu_Panel extends JPanel
 			{
 				// get input from textfields and load them into a single string
 
-				input = treatment_id_field.getText() + "\t" + patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+				input = patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
 				treatment_start_date_field.getText() + "\t" + treatment_end_date_field.getText() + "\t" + medicaton_field.getText() + 
 				"\t" + dosage_field.getText() + "\t" + method_of_delivery_field.getText();
 
@@ -331,8 +325,9 @@ public class Treatment_Menu_Panel extends JPanel
 						// get input from ssn field into ssn string variable
 						loadInput();
 
-						//Treatment.delete(input);
-
+						Patient.delete(input, "TREATMENT");
+                                                
+                                                JOptionPane.showMessageDialog(null, "Deleted");
 					}
 				});
 			}

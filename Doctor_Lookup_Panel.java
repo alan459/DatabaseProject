@@ -22,18 +22,19 @@ public class Doctor_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	public Doctor_Lookup_Panel() 
 	{
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		initializeTextFields();
-
+                JPanel top = new JPanel();
 		// add the components to the panel
-		add(new JLabel("Doctor Lookup"));
-
-		add(new JLabel("by: SSN"));
-		add(ssn_field);
-		add(new Submit_Button());
-
-		add(new JLabel("Doctor Info:"));
+		top.add(new Centered_Text_Panel("Doctor Lookup"));
+                //add(new JLabel(""));
+		top.add(new Centered_Text_Panel("by: SSN"));
+                add(top);
+                
+                JPanel bottom = new JPanel();
+		bottom.add(ssn_field = new JTextField(9));
+                bottom.add(new Submit_Button());
+                add(bottom);
 
 		add(doctor_output_panel = new Doctor_Info_Output());
 	}
@@ -75,12 +76,14 @@ public class Doctor_Lookup_Panel extends JPanel
 					loadText();
 
 					// pass input into Doctor instance to modify tuple
-					//Doctor doc = new Doctor(ssn);
+					Doctor doc = new Doctor(ssn);
 
-					//String result = doc.search("DOCTOR");
+					String result = doc.search("DOCTOR");
+                                        
+                                        String[] values = result.split("\n");
 
 					// extract fields from string and pass to doctor:
-					//displayNewDoctorOutput(new Doctor_Info_Output(result)); 
+					displayNewDoctorOutput(new Doctor_Info_Output(values)); 
 				}
 			});
 		}
@@ -123,21 +126,23 @@ public class Doctor_Lookup_Panel extends JPanel
 		***********************************************************************/
 		public Doctor_Info_Output()
 		{
-			setLayout(new GridLayout(5, 2));
+			add(new Centered_Text_Panel("Doctor Info:"));
+		}
+                
+                /***********************************************************************
+		* Primary constructor for Doctor_Info_Output.
+		***********************************************************************/
+		public Doctor_Info_Output(String[] result)
+		{
+			setLayout(new GridLayout(result.length + 1, 1));
 
 			add(new Centered_Text_Panel("Doctor Info:"));
-			add(new Centered_Text_Panel(""));
-
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel("<First><M><Last>"));
-
-			add(new Centered_Text_Panel("SSN:"));
-			add(new Centered_Text_Panel("ddd-dd-dddd"));
-
-			add(new Centered_Text_Panel("Dcode:"));
-			add(new Centered_Text_Panel("ddddd"));
+                        for(int i = 0; i < result.length; i++)
+                        {
+                            add(new JLabel(result[i]));
+                        }
+			
 		}
-
 
 		/***********************************************************************
 		* Primary constructor for Doctor_Info_Output.
@@ -156,15 +161,6 @@ public class Doctor_Lookup_Panel extends JPanel
 	} // end Doctor_Info_Output class
 
 
-
-
-	/*********************************************************************************
-	* Initializes the textfields for the Doctor lookup menu.
-	*********************************************************************************/
-	private void initializeTextFields()
-	{
-		ssn_field = new JTextField(10);
-	}
 
 
 } // end Doctor lookup class

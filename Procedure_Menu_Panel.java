@@ -145,7 +145,7 @@ public class Procedure_Menu_Panel extends JPanel
 	private class Insert_Procedure_Menu_Panel extends JPanel 
 	{
 		/* Text fields for the user to enter intput data */
-		private JTextField procedure_id_field, procedure_description_field, patient_ssn_field, doctor_ssn_field,
+		private JTextField procedure_description_field, patient_ssn_field, doctor_ssn_field,
 						   nurse_ssn_field, scheduled_time_field, scheduled_date_field;
 
 
@@ -154,15 +154,12 @@ public class Procedure_Menu_Panel extends JPanel
 		*********************************************************************************/
 		public Insert_Procedure_Menu_Panel() 
 		{
-			setLayout(new GridLayout(9, 2));
+			setLayout(new GridLayout(8, 2));
 
 			initializeTextFields();
 
 			add(new JLabel("Enter information of Procedure to be added: "));
 			add(new JLabel(""));
-
-			add(new JLabel(" Procedure ID:"));
-			add(procedure_id_field);
 
 			add(new JLabel(" Procedure Description:"));
 			add(procedure_description_field);
@@ -192,7 +189,6 @@ public class Procedure_Menu_Panel extends JPanel
 		*********************************************************************************/
 		private void initializeTextFields()
 		{
-			procedure_id_field = new JTextField(6);
 			procedure_description_field = new JTextField(25);
 
 			patient_ssn_field  = new JTextField(6);
@@ -223,8 +219,8 @@ public class Procedure_Menu_Panel extends JPanel
 						// get input from ssn field into ssn string variable
 						loadInput();
 
-						// * somehow get string of doctors name, ssn, code from instance *  and then:
-						//Patient.insert(input);
+						// insert the procedure into the database
+						Doctor.insertPPT("PROCEDURE", input);
 
 						JOptionPane.showMessageDialog(null,"Submitted");
 
@@ -240,8 +236,9 @@ public class Procedure_Menu_Panel extends JPanel
 			{
 				// get input from textfields and load them into a single string
 
-				input = procedure_id_field.getText() + "\t" + patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
-				nurse_ssn_field.getText() + "\t" + scheduled_date_field.getText() + "\t" + scheduled_time_field.getText();
+				input = procedure_description_field.getText() + "\t" + scheduled_time_field.getText() + "\t" 
+                                       + scheduled_date_field.getText() + "\t" + patient_ssn_field.getText() + "\t" + doctor_ssn_field.getText() + "\t" + 
+				nurse_ssn_field.getText();
 
 				
 				// if this point is reached age and ssn were successfully retrieved
@@ -319,8 +316,8 @@ public class Procedure_Menu_Panel extends JPanel
 						// get input from ssn field into ssn string variable
 						loadInput();
 
-						// * somehow get string of doctors name, ssn, code from instance *  and then:
-						//Procedure.delete(input);
+						// delete the procedure into the database
+						Patient.delete(input, "PROCEDURE");
 
 					}
 				});

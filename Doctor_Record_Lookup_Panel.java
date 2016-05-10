@@ -19,9 +19,12 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	public Doctor_Record_Lookup_Panel() 
 	{
-		setLayout(new GridLayout(3, 1));
+		//setLayout(new GridLayout(3, 1));
+                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		add(new Centered_Text_Panel("Record Lookup:"));
+                JPanel top = new JPanel();
+		top.add(new Centered_Text_Panel("Record Lookup:"));
+                add(top);
 
 		add(new Lookup_Panel());
 
@@ -56,7 +59,7 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 
 		private String selected_record_type, ssn;
 
-		private String[] record_types = {"Patients", "Nurses", "Treatments", "Procedures", "Prescriptions"};
+		private String[] record_types = {"PATIENT", "TREATMENT", "PROCEDURE", "PRESCRIPTION"};
 
 		private JComboBox record_types_combo_box;
 
@@ -100,10 +103,14 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 						loadText();
 
 						// pass ssn input into Doctor instance to lookup tuple
-						// Doctor a = new Doctor(ssn);
-
+						 Doctor a = new Doctor(ssn);
+                                                 
+                                                 String result = a.search(selected_record_type);
+                                                 
+                                                 String[] values = result.split("\n");
+                                                 
 						// create new instance of output panel to display result
-						// displayNewRecordOutput(new Doctor_Record_Output(result));
+						 displayNewRecordOutput(new Doctor_Record_Output(values));
 					}
 				});
 			}
@@ -164,7 +171,22 @@ public class Doctor_Record_Lookup_Panel extends JPanel
 		public Doctor_Record_Output()
 		{
 			add(new Centered_Text_Panel("Results:"));
-			add(new JTextField(10));
+		}
+                
+                
+                 /***********************************************************************
+		* Primary constructor for Doctor_Info_Output.
+		***********************************************************************/
+		public Doctor_Record_Output(String[] result)
+		{
+			setLayout(new GridLayout(result.length + 1, 1));
+
+			add(new Centered_Text_Panel("Results:"));
+                        for(int i = 0; i < result.length; i++)
+                        {
+                            add(new JLabel(result[i]));
+                        }
+			
 		}
 
 

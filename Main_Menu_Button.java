@@ -5,7 +5,7 @@ import java.awt.event.*;
 // panel with functioning main menu button
 public class Main_Menu_Button extends JPanel
 {
-	public Main_Menu_Button(Hospital_Frame hospital_frame)
+	public Main_Menu_Button(final Hospital_Frame hospital_frame)
 	{
 		setLayout(new GridBagLayout());
 
@@ -13,13 +13,14 @@ public class Main_Menu_Button extends JPanel
 
 
 		/* Add functionality - Return user to main menu */
-		main_menu_button.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				hospital_frame.changeScreen(new Main_Menu_Panel(hospital_frame));
-			}
-		});
+		main_menu_button.addActionListener(
+                        new ActionListener()
+                        {
+                                public void actionPerformed(ActionEvent e)
+                                {       
+                                    hospital_frame.changeScreen(new Main_Menu_Panel(hospital_frame));
+                                }
+                        });
 		
 
 		add(main_menu_button);

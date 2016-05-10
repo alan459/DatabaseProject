@@ -78,33 +78,11 @@ public class Nurse_Menu_Panel extends JPanel
 		{
 			setLayout(new GridBagLayout());
 
-			add(new Modify_Nurse_Info_Button());
 			add(new Search_Nurses_Button());
 			add(new Search_Records_Nurses_Button());
 		}
 
 
-		/*********************************************************************************
-		* Button to take user to modify Nurse info panel by switching the current panel
-		* to an instance of Modify_Nurse_Info_Panel (to be created).
-		*********************************************************************************/
-		private class Modify_Nurse_Info_Button extends JButton
-		{
-			public Modify_Nurse_Info_Button()
-			{
-				super("Modify Nurse Info");
-
-				addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						changeCurrentPanel(new Modify_Nurse_Info_Panel());
-					}
-				});
-			}
-
-		}
-			
 
 		/*********************************************************************************
 		* Button to take user to search Nurses panel by switching the current panel

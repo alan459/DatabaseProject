@@ -84,6 +84,7 @@ public class Tester
         System.out.println(p1Pr);
         
         Patient.insert("123000399\tLiz\tG\tGonye\t2001-03-19\t15\tF\tC299");
+        Patient.insert("111111111	Franci	C	Cuerva	1993-10-31	22	M	C299");
         
         System.out.println("TESTING PRESCRIPTION INSERT");
         

@@ -46,7 +46,7 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 		add(new JLabel(" Last Name:"));
 		add(last_name_field);
 
-		add(new JLabel(" Doctor Code:"));
+		add(new JLabel(" Department:"));
 		add(code_field);
 
 
@@ -88,7 +88,7 @@ public class Insert_Doctor_Menu_Panel extends JPanel
 					// get input from ssn field into ssn string variable
 					loadInput();
 
-					//Doctor.insert(input);s
+					Doctor.insert(input);
 
 					// display a new popup saying insertion was successful?
 					JOptionPane.showMessageDialog(null,"Submitted");

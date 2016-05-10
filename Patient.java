@@ -46,12 +46,35 @@ public class Patient extends DataRecord
             e.printStackTrace();
         }
     }
+    
+    public static void changeRecordStatus(String rNum)
+    {
+        try
+        {
+            String query = "update Record set status = 0 where recordID = " + rNum;
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            
+            int affectedRows = pstmt.executeUpdate();
+            if(affectedRows == 0)
+                { System.err.println("Failed to update to Record info.");} 
+                else 
+                { System.out.println("\tSuccessfully updated Record info. \n");}
+
+                pstmt.close();
+        } 
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+                
+    }
 
     /**
      * Inserts a new Patient into the database using the info contained in the string  
      */
     public static void insert(String s)
     {
+
         try 
         {
             //Depending on the information provided for the search, if it was by ssn or by name/DOB construct the query
@@ -167,8 +190,10 @@ public class Patient extends DataRecord
             if(info.contains("\t"))
             {
                 //System.out.println("Contains tab");
+                //System.out.println(info);
+                
                 String[] values = info.split("\t");
-                String tmp = "select * from Patient where FName = ? and Minit = ? and Lname = ? and DOB = ?";
+                String tmp = "select * from Patient where Fname = ? and Minit = ? and Lname = ? and DOB = ?";
                 ps = conn.prepareStatement(tmp);
                 ps.setString(1, values[0]);
                 ps.setString(2, values[1]);
@@ -183,41 +208,58 @@ public class Patient extends DataRecord
             }
 
             ResultSet rs = ps.executeQuery();
-            rs.next();
-
-            String patientInfo = "Patient: " + rs.getString("Fname") + " " + rs.getString("Minit") + " " + rs.getString("Lname")
-                + "\n" + "SSN: " + rs.getString("Pssn") + "  DOB: "+rs.getString("DOB")+ "  Age: " + rs.getString("age") +  "\nSex: " + rs.getString("sex") + " Location: " 
+            
+            
+            if(!rs.isBeforeFirst())
+            {
+                result = "                  No patient found with that information.\n";
+            }
+            else
+            {
+                rs.next();
+                String patientInfo = "          Patient: " + rs.getString("Fname") + " " + rs.getString("Minit") + " " + rs.getString("Lname")
+                + "\n" + "          SSN: " + rs.getString("Pssn") + "  DOB: "+rs.getString("DOB")+ "  Age: " + rs.getString("age") +  "\n          Sex: " + rs.getString("sex") + " Location: " 
                 + rs.getString("location") +   "\n";
-            result = patientInfo;
+                result = patientInfo;
+            }
+            
 
             //The retrieve all existing patient records for the patient
             String rQuery = "select * from Record where patient = ?";
             PreparedStatement records = conn.prepareStatement(rQuery);
             records.setString(1, info);
             ResultSet recordSet = records.executeQuery();
-            recordSet.next();
+            
 
             String queryD = "SELECT Fname, Minit, Lname FROM Doctor WHERE Dssn = ?";
             PreparedStatement psD = conn.prepareStatement(queryD);
 
-            while(!recordSet.isAfterLast())
+            if(!recordSet.isBeforeFirst())
             {
-                //Get the name of the Dr that admitted/diagnosed the patient
-                psD.setString(1, recordSet.getString("primary_doctor"));
-                ResultSet d = psD.executeQuery();
-                d.next();
-                String docName = d.getString("Fname") + " " + d.getString("Minit") + " " + d.getString("Lname");
-
-                String recordInfo = "Date Admitted: " + recordSet.getString("admittanceDate") + " Admitted by Dr. " + docName + "\nCondition: " + recordSet.getString("patient_diagnosis"); 
-                String recordStatus = recordSet.getString("status");
-
-                if(recordStatus.equals("0"))
-                    recordInfo = recordInfo + " Record is: INACTIVE" +  "\n";
-                else
-                    recordInfo = recordInfo + " Record is: ACTIVE" +  "\n";
-
-                result = result + recordInfo;
+                result = result + "                  No records found for this patient.";
+            }
+            else
+            {
                 recordSet.next();
+                while(!recordSet.isAfterLast())
+                {
+                    //Get the name of the Dr that admitted/diagnosed the patient
+                    psD.setString(1, recordSet.getString("primary_doctor"));
+                    ResultSet d = psD.executeQuery();
+                    d.next();
+                    String docName = d.getString("Fname") + " " + d.getString("Minit") + " " + d.getString("Lname");
+
+                    String recordInfo = "          RecordID: " + recordSet.getString("recordID") +"\n          Date Admitted: " + recordSet.getString("admittanceDate") + " Admitted by Dr. " + docName + "\n          Condition: " + recordSet.getString("patient_diagnosis"); 
+                    String recordStatus = recordSet.getString("status");
+
+                    if(recordStatus.equals("0"))
+                        recordInfo = recordInfo + " Record is: INACTIVE" +  "\n";
+                    else
+                        recordInfo = recordInfo + " Record is: ACTIVE" +  "\n";
+
+                    result = result + recordInfo;
+                    recordSet.next();
+                }
             }
 
             rs.close();
@@ -412,7 +454,7 @@ public class Patient extends DataRecord
                     String mName = m.getString("Mname");
 
                     String prescription = "Prescription ID: " + pre.getString("prescriptionID") + "  Medication: " + mName + "\nDosage: " + pre.getString("dosage") + "  Generic Okay? " + pre.getString("optional_generic") + 
-                        "\n Date Prescribed: " + pre.getString("prescribed_date") + "  Number of Refills: " + pre.getString("num_refills") + "\nPrescribing Doctor: " + docName + "\n\n";
+                        "\n Date Prescribed: " + pre.getString("prescribed_date") + "  Number of Refills: " + pre.getString("num_refills") + " \n Prescribing Doctor: " + docName;
 
                     result = result + prescription;
 
@@ -429,6 +471,49 @@ public class Patient extends DataRecord
         }
 
         return result;
+    }
+    
+    /**
+     * Inserts a new patient record.
+     */
+    public static String insertRecord(String s)
+    {
+        String tmp = "insert into Record (RecordID, patient, admittanceDate, primary_doctor, patient_diagnosis,status) values (?,?,?,?,?,?)";
+        String[] values = s.split("\t");
+        String success = "";
+        
+        try
+        {
+            if(values.length == 5)
+                {
+                    //Get the highest value for prescriptionID in the database, then increment it by one to use for the new prescription's ID
+                    String maxStr = "select max(recordID) from Record";
+                    PreparedStatement max = conn.prepareStatement(maxStr);
+                    ResultSet vals = max.executeQuery();
+                    vals.next();
+                    int recID = Integer.parseInt(vals.getString(1)) + 1;
+                    
+                    PreparedStatement pstmt = conn.prepareStatement(tmp);
+                    pstmt.setString(1, String.valueOf(recID)); //This one you need to assign the procedureID based on how many prescriptions are already in the database
+                    pstmt.setString(2,values[0]);
+                    pstmt.setDate(3,formatDate(values[1]));
+                    pstmt.setString(4,values[2]);
+                    pstmt.setString(5,values[3]);
+                    pstmt.setInt(6, 1);
+           
+                    int affectedRows = pstmt.executeUpdate();
+                    if(affectedRows == 0)
+                    { success = "Failed to insert Record.";} 
+                    else 
+                    { success = "Successfully inserted new Record.";}
+                    pstmt.close();
+                }
+        } catch (Exception e)
+        {
+            System.err.println(e);
+            e.printStackTrace();
+        }
+        return success;
     }
 
     /**

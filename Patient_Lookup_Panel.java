@@ -20,9 +20,9 @@ public class Patient_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	public Patient_Lookup_Panel() 
 	{
-		setLayout(new GridLayout(4, 1));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		add(new Centered_Text_Panel("Lookup Patient:"));
+		//add(new Centered_Text_Panel("Lookup Patient:"));
 
 		add(new By_SSN_Panel());
 
@@ -64,11 +64,15 @@ public class Patient_Lookup_Panel extends JPanel
 		***********************************************************************/
 		public By_SSN_Panel()
 		{
-			setLayout(new GridLayout(4, 3));
+			setLayout(new GridLayout(5, 3));
+
+                        add(new Centered_Text_Panel(""));
+                        add(new Centered_Text_Panel("Lookup Patient:"));
+			add(new Centered_Text_Panel(""));
 
 			add(new Centered_Text_Panel("by:"));
 			add(new Centered_Text_Panel("SSN"));
-			add(ssn_field = new JTextField(8));
+			add(ssn_field = new JTextField(9));
 
 			add(new Centered_Text_Panel(""));
 			add(new Centered_Text_Panel(""));
@@ -103,13 +107,17 @@ public class Patient_Lookup_Panel extends JPanel
 					{
 						loadText();
 
-						// pass input into Patient instance to modify tuple
-						//Patient pat = new Patient(ssn);
+                                                // pass input into Doctor instance to modify tuple
+						Patient pat = new Patient(ssn);
 
-						//String result = pat.search("PATIENT");
+						String result = pat.search("PATIENT");
+                                                
+                                                String[] values = result.split("\n");
+                                                
+                                            
+						// extract fields from string and pass to doctor:
+						displayNewPatientOutput(new Patient_Info_Output(values)); 
 
-						// extract fields from string and pass to Patient:
-						//displayNewPatientOutput(new Patient_Info_Output(result)); 
 					}
 				});
 			}
@@ -155,9 +163,9 @@ public class Patient_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	protected class By_Name_Panel extends JPanel
 	{
-		private JTextField first_name_field, m_initial_field, last_name_field;
+		private JTextField first_name_field, m_initial_field, last_name_field, dob_field;
 
-		private String first_name, m_initial, last_name;
+		private String first_name, m_initial, last_name, dob;
 
 		private String input;
 
@@ -167,7 +175,7 @@ public class Patient_Lookup_Panel extends JPanel
 		***********************************************************************/
 		public By_Name_Panel()
 		{
-			setLayout(new GridLayout(4, 3));
+			setLayout(new GridLayout(5, 3));
 
 			add(new Centered_Text_Panel("by:"));
 			add(new Centered_Text_Panel("First Name"));
@@ -175,11 +183,15 @@ public class Patient_Lookup_Panel extends JPanel
 
 			add(new Centered_Text_Panel(""));
 			add(new Centered_Text_Panel("Middle Initial"));
-			add(last_name_field = new JTextField(1));
+			add(m_initial_field = new JTextField(1));
 
 			add(new Centered_Text_Panel(""));
 			add(new Centered_Text_Panel("Last Name"));
 			add(last_name_field = new JTextField(8));
+                        
+                        add(new Centered_Text_Panel(""));
+			add(new Centered_Text_Panel("DOB"));
+			add(dob_field = new JTextField(8));
 
 			add(new Centered_Text_Panel(""));
 			add(new Submit_Button());
@@ -208,12 +220,15 @@ public class Patient_Lookup_Panel extends JPanel
 						loadText();
 
 						// pass input into Doctor instance to modify tuple
-						//Patient pat = new Patient(input);
+						Patient pat = new Patient(input);
 
-						//String result = pat.search("PATIENT");
-
+						String result = pat.search("PATIENT");
+                                                
+                                                String[] values = result.split("\n");
+                                                
+                                            
 						// extract fields from string and pass to doctor:
-						//displayNewPatientOutput(new Patient_Info_Output(result)); 
+						displayNewPatientOutput(new Patient_Info_Output(values)); 
 					}
 				});
 			}
@@ -231,7 +246,8 @@ public class Patient_Lookup_Panel extends JPanel
 		private String loadText()
 		{
 			// get name from fields
-			input = first_name_field.getText() + "\t" + m_initial_field.getText() + "\t" + last_name_field.getText();
+			input = first_name_field.getText() + "\t" + m_initial_field.getText() + "\t" + last_name_field.getText()
+                                + "\t" + dob_field.getText();
 
 			// if this point is reached age and ssn were successfully retrieved
 			return input;
@@ -254,21 +270,10 @@ public class Patient_Lookup_Panel extends JPanel
 		***********************************************************************/
 		public Patient_Info_Output()
 		{
-			setLayout(new GridLayout(5, 2));
+			setLayout(new GridLayout(2,1));
 
 			add(new Centered_Text_Panel("Patient Info:"));
-			add(new Centered_Text_Panel(""));
-
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel("<First><M><Last>"));
-
-			add(new Centered_Text_Panel("DOB:"));
-			add(new Centered_Text_Panel("mm/dd/yyyy"));
-
-			add(new Centered_Text_Panel("SSN:"));
-			add(new Centered_Text_Panel("ddd-dd-dddd"));
-
-			add(new Centered_Text_Panel("Room:"));
+	
 
 		}
 
@@ -285,6 +290,21 @@ public class Patient_Lookup_Panel extends JPanel
 			//add(new Centered_Text_Panel(result));
 			add(new JTextField(result));
 
+		}
+                
+                /***********************************************************************
+		* Primary constructor for Patient_Info_Output.
+		***********************************************************************/
+		public Patient_Info_Output(String[] result)
+		{
+			setLayout(new GridLayout(result.length + 1, 1));
+
+			add(new Centered_Text_Panel("Patient Info:"));
+                        for(int i = 0; i < result.length; i++)
+                        {
+                            add(new JLabel(result[i]));
+                        }
+			
 		}
 
 	} // end Patient_Info_Output class

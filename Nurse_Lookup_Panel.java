@@ -24,18 +24,21 @@ public class Nurse_Lookup_Panel extends JPanel
 	{
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		initializeTextFields();
-
+		JPanel top = new JPanel();
 		// add the components to the panel
-		add(new JLabel("Nurse Lookup"));
-
-		add(new JLabel("by: SSN"));
-		add(ssn_field);
-		add(new Submit_Button());
-
-		add(new JLabel("Nurse Info:"));
+		top.add(new Centered_Text_Panel("Nurse Lookup"));
+                //add(new JLabel(""));
+		top.add(new Centered_Text_Panel("by: SSN"));
+                add(top);
+                
+                JPanel bottom = new JPanel();
+		bottom.add(ssn_field = new JTextField(9));
+                bottom.add(new Submit_Button());
+                add(bottom);
 
 		add(nurse_output_panel = new Nurse_Info_Output());
+               
+
 	}
 
 
@@ -75,12 +78,14 @@ public class Nurse_Lookup_Panel extends JPanel
 					loadText();
 
 					// pass input into Nurse instance to modify tuple
-					//Nurse doc = new Nurse(ssn);
+					Nurse doc = new Nurse(ssn);
 
-					//String result = doc.search("NURSE");
+					String result = doc.search("NURSE");
+                                        
+                                        String[] values = result.split("\n");
 
 					// extract fields from string and pass to Nurse:
-					//displayNewNurseOutput(new Nurse_Info_Output(result)); 
+					displayNewNurseOutput(new Nurse_Info_Output(values)); 
 				}
 			});
 		}
@@ -123,19 +128,8 @@ public class Nurse_Lookup_Panel extends JPanel
 		***********************************************************************/
 		public Nurse_Info_Output()
 		{
-			setLayout(new GridLayout(5, 2));
-
 			add(new Centered_Text_Panel("Nurse Info:"));
-			add(new Centered_Text_Panel(""));
-
-			add(new Centered_Text_Panel("Name:"));
-			add(new Centered_Text_Panel("<First><M><Last>"));
-
-			add(new Centered_Text_Panel("SSN:"));
-			add(new Centered_Text_Panel("ddd-dd-dddd"));
-
-			add(new Centered_Text_Panel("Dcode:"));
-			add(new Centered_Text_Panel("ddddd"));
+			
 		}
 
 
@@ -151,6 +145,23 @@ public class Nurse_Lookup_Panel extends JPanel
 			//add(new Centered_Text_Panel(result);
 			add(new JTextField(result));
 		}
+                
+                /***********************************************************************
+		* Primary constructor for Nurse_Info_Output.
+		***********************************************************************/
+		public Nurse_Info_Output(String[] result)
+		{
+			setLayout(new GridLayout(result.length + 1, 1));
+                        //setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+			add(new Centered_Text_Panel("Nurse Info:"));
+                        for(int i = 0; i < result.length; i++)
+                        {
+                            add(new JLabel(result[i]));
+                        }
+			
+		}
+
 
 
 	} // end Nurse_Info_Output class

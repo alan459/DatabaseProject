@@ -19,10 +19,13 @@ public class Patient_Record_Lookup_Panel extends JPanel
 	*********************************************************************************/
 	public Patient_Record_Lookup_Panel() 
 	{
-		setLayout(new GridLayout(3, 1));
+		//setLayout(new GridLayout(3, 1));
+                setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		add(new Centered_Text_Panel("Record Lookup:"));
-
+                JPanel top = new JPanel();
+		top.add(new Centered_Text_Panel("Record Lookup:"));
+                add(top);
+                
 		add(new Lookup_Panel());
 
 		add(record_output_panel = new Patient_Record_Output());
@@ -56,7 +59,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 
 		private String selected_record_type, ssn;
 
-		private String[] record_types = {"Treatments", "Procedures", "Prescriptions"};
+		private String[] record_types = {"TREATMENT", "PROCEDURE", "PRESCRIPTION"};
 
 		private JComboBox record_types_combo_box;
 
@@ -66,6 +69,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 		public Lookup_Panel()
 		{
 			setLayout(new GridLayout(2, 4));
+
 
 			add(new Centered_Text_Panel("Lookup"));
 			add(record_types_combo_box = new JComboBox(record_types));
@@ -100,9 +104,14 @@ public class Patient_Record_Lookup_Panel extends JPanel
 						loadText();
 
 						// pass ssn input into patient instance to lookup tuple
-						
+						Patient p = new Patient(ssn);
+                                                
+                                                String result = p.search(selected_record_type);
+                                                
+                                                String[] values = result.split("\n");
+                                                
 						// create new instance of output panel to display result
-						//displayNewRecordOutput(new Patient_Record_Output(result));
+						displayNewRecordOutput(new Patient_Record_Output(values));
 					}
 				});
 			}
@@ -164,6 +173,21 @@ public class Patient_Record_Lookup_Panel extends JPanel
 		{
 			add(new Centered_Text_Panel("Results:"));
 		}
+                
+                 /***********************************************************************
+		* Primary constructor for Patient_Record_Output.
+		***********************************************************************/
+		public Patient_Record_Output(String[] result)
+		{
+			setLayout(new GridLayout(result.length + 1, 1));
+
+			add(new Centered_Text_Panel("Results:"));
+                        for(int i = 0; i < result.length; i++)
+                        {
+                            add(new JLabel(result[i]));
+                        }
+			
+		}
 
 
 		/***********************************************************************
@@ -174,7 +198,7 @@ public class Patient_Record_Lookup_Panel extends JPanel
 			setLayout(new GridLayout(2, 1));
 
 			add(new Centered_Text_Panel("Results:"));
-			add(new JTextField(result));
+			add(new JLabel(result));
 
 			/*switch(relation)
 			{
