@@ -1,10 +1,6 @@
 # DatabaseProject
 
-Need to layout a mechanism for which the GUI sends a patient ssn to the backend and gets the data to display.
-
-LIZ'S STUFF:
-
-This is just an example for one class, Nurse. In the DataRecord abstract class there is an instance variable info which is a string that holds information that the Nurse instance will use for its query (so it could hold ssn, name info, etc.).
+Final project for databases class.
 
 In the GUI, a user either puts in information and presses a search button, or puts in information, selects an option from a drop down menu and pushes a search button. When the search button in pressed, a new instance of the Nurse class is created with the information that the user put in the search field assigned to its instance variable info. Then, depending on what information the user wants back, a string is passed to the search method which is called on the instance that was just created (see below).
 
